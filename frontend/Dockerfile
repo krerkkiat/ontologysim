@@ -1,5 +1,5 @@
 # pull official base image
-FROM node:16.13.2-alpine3.14 as builder
+FROM node:16.13.2-alpine3.14 AS builder
 
 # set working directory
 WORKDIR /app
@@ -27,4 +27,6 @@ RUN npm run build
 # The final image is just the built app with a static web server.
 # In this case, static-web-server, you could use Nginx, Apache, etc.
 FROM ghcr.io/static-web-server/static-web-server:2-alpine
-COPY --from=builder /app/build /var/public/
+COPY ./sws-config.toml ./
+COPY --from=builder /app/build /public
+CMD ["-w", "/sws-config.toml"]

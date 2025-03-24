@@ -1,0 +1,18 @@
+[general]
+
+#### Address & Root dir
+# host = "::"
+# port = 80
+root = "/public"
+
+#### Logging
+log-level = "info"
+
+#### Log request Remote Address if available
+log-remote-address = true
+
+#### Health-check endpoint (GET or HEAD `/health`)
+health = true
+
+#### Page fallback for 404s
+page-fallback = "/public/index.html"
