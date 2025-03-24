@@ -1,6 +1,8 @@
 from collections import defaultdict
 
-from ontologysim.ProductionSimulation.controller.machine_controller.MachineController import MachineController
+from ontologysim.ProductionSimulation.controller.machine_controller.MachineController import (
+    MachineController,
+)
 from ontologysim.ProductionSimulation.sim.Enum import Queue_Enum
 
 
@@ -22,7 +24,10 @@ class MachineController_EDD(MachineController):
             position_list = queue.has_for_position
             for position in position_list:
                 for product in position.has_for_product:
-                    if product.blocked_for_machine == 0 and product.has_for_product_state[0].state_name != "sink":
+                    if (
+                        product.blocked_for_machine == 0
+                        and product.has_for_product_state[0].state_name != "sink"
+                    ):
                         erg.append([product, product.start_of_production_time])
         erg.sort(key=lambda x: x[1])
 

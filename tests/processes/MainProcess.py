@@ -1,5 +1,3 @@
-
-
 # path to example
 import ast
 import inspect
@@ -50,6 +48,7 @@ def main():
     # init.set_save_time(400)
     # run Simulation
     init.run()
+
 
 if __name__ == "__main__":
     main()

@@ -2,6 +2,7 @@ class SubClassUtility:
     """
     given a parent class and it finds all sub classes
     """
+
     @classmethod
     def get_all_subclasses(cls, python_class):
         """
@@ -17,7 +18,6 @@ class SubClassUtility:
         while check_these:
             parent = check_these.pop()
             for child in parent.__subclasses__():
-
                 if child not in subclasses:
                     subclasses.add(child)
                     check_these.append(child)

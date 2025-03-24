@@ -8,7 +8,7 @@ class LoggerGenerator(Generator):
     Logger generator
     """
 
-    def __init__(self,seedParameter,path):
+    def __init__(self, seedParameter, path):
         """
 
         :param seedParameter: int: random parameter
@@ -24,16 +24,15 @@ class LoggerGenerator(Generator):
         :return: configparser element
         """
         logger_config = configparser.ConfigParser()
-        lvl="lvl3"
+        lvl = "lvl3"
         logger_config["Type"] = self.addType(lvl)
         addKpis = self.addKPIs()
-        logger_config['KPIs'] = addKpis
+        logger_config["KPIs"] = addKpis
         logger_config["ConfigIni"] = self.addConfigIni()
         logger_config["Plot"] = self.addPlot(addKpis)
         logger_config["Save"] = self.addSave()
 
         return logger_config
-
 
     def addKPIs(self):
         """
@@ -44,7 +43,9 @@ class LoggerGenerator(Generator):
 
         config = {}
         config["time_interval"] = 100
-        config["log_summary"] = True if self.randomDistribution.random()>0.5 else False
+        config["log_summary"] = (
+            True if self.randomDistribution.random() > 0.5 else False
+        )
         config["log_time"] = True if self.randomDistribution.random() > 0.5 else False
         config["log_events"] = True if self.randomDistribution.random() > 0.5 else False
         config["path"] = self.path
@@ -63,22 +64,24 @@ class LoggerGenerator(Generator):
 
         return config
 
-    def addPlot(self,kpiConfig):
+    def addPlot(self, kpiConfig):
         """
         define plot settings
 
         :return: dict
         """
         config = {}
-        if(kpiConfig["log_time"]==True):
-            config["plot"] = True if self.randomDistribution.random()>0.7 else False
+        if kpiConfig["log_time"] == True:
+            config["plot"] = True if self.randomDistribution.random() > 0.7 else False
         else:
             config["plot"] = False
         config["number_of_points_x"] = 15
         # max 3 values
-        config["data"] = [{'object_name': 'all', 'kpi': 'AE', 'type': 'machine'},
-                {'object_name': 'all', 'kpi': 'AUITp', 'type': 'transporter'},
-                {'object_name': 'all', 'kpi': 'AOET', 'type': 'product'}]
+        config["data"] = [
+            {"object_name": "all", "kpi": "AE", "type": "machine"},
+            {"object_name": "all", "kpi": "AUITp", "type": "transporter"},
+            {"object_name": "all", "kpi": "AOET", "type": "product"},
+        ]
 
         return config
 
@@ -89,12 +92,11 @@ class LoggerGenerator(Generator):
         :return: dict
         """
         config = {}
-        config["csv"] = True if self.randomDistribution.random()>0.3 else False
-        config["database"] = True if self.randomDistribution.random()>0.6 else False
+        config["csv"] = True if self.randomDistribution.random() > 0.3 else False
+        config["database"] = True if self.randomDistribution.random() > 0.6 else False
         config["path"] = "/ontologysim/example/log/"
-        config["sql_alchemy_database_uri"] = "sqlite:///ontologysim/ProductionSimulation/database/SimulationRun.db"
+        config["sql_alchemy_database_uri"] = (
+            "sqlite:///ontologysim/ProductionSimulation/database/SimulationRun.db"
+        )
 
         return config
-
-
-

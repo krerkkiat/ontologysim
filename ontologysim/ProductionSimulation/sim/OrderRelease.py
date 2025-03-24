@@ -1,6 +1,10 @@
 from owlready2 import *
 
-from ontologysim.ProductionSimulation.sim.Enum import Label, Evaluate_Enum, OrderRelease_Enum
+from ontologysim.ProductionSimulation.sim.Enum import (
+    Label,
+    Evaluate_Enum,
+    OrderRelease_Enum,
+)
 
 
 class OrderRelease:
@@ -27,9 +31,19 @@ class OrderRelease:
         :param percent: double
         """
         self.number_of_positions = len(
-            [position for position in self.simCore.onto.search(type=self.simCore.central.position_class) if
-             not (Label.EndQueue.value in position.is_queue_of.__getitem__(0).name) and not (
-                         Label.StartQueue.value in position.is_queue_of.__getitem__(0).name)])
+            [
+                position
+                for position in self.simCore.onto.search(
+                    type=self.simCore.central.position_class
+                )
+                if not (
+                    Label.EndQueue.value in position.is_queue_of.__getitem__(0).name
+                )
+                and not (
+                    Label.StartQueue.value in position.is_queue_of.__getitem__(0).name
+                )
+            ]
+        )
 
         self.max_number = self.number_of_positions * percent
 
@@ -54,8 +68,15 @@ class OrderRelease:
 
         product_type_onto = task_onto.has_for_product_type_task.__getitem__(0)
         self.simCore.logger.evaluatedInformations(
-            [{"type": event_onto.type, "event_onto_time": event_onto.time, "number_of_products": number_of_parts,
-              "product_type": product_type_onto.name}])
+            [
+                {
+                    "type": event_onto.type,
+                    "event_onto_time": event_onto.time,
+                    "number_of_products": number_of_parts,
+                    "product_type": product_type_onto.name,
+                }
+            ]
+        )
 
         self.simCore.event.add_to_logger(event_onto)
         self.simCore.event.remove_from_event_list(event_onto)
@@ -70,7 +91,6 @@ class OrderRelease:
         if len(products) > 0:
             i = 0
             for start_queue_instance in self.simCore.central.start_queue_list:
-
                 positions = start_queue_instance.has_for_position
 
                 for position in positions:
@@ -78,7 +98,9 @@ class OrderRelease:
                         position.has_for_product.append(products[i])
 
                         position.blockedSpace = 1
-                        self.simCore.queue.create_change_for_start_queue(products[i], position, time)
+                        self.simCore.queue.create_change_for_start_queue(
+                            products[i], position, time
+                        )
                         i += 1
                         if i >= len(products):
                             break
@@ -100,4 +122,3 @@ class OrderRelease:
         event_onto.number_of_products = number_of_parts
         task_onto.todo_number -= number_of_parts
         self.current_number_of_products += number_of_parts
-

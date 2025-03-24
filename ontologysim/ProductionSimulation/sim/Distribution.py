@@ -31,8 +31,12 @@ class Distribution:
 
         :return:
         """
-        for distribution in self.simCore.onto.search(type=self.simCore.central.distribution_class):
-            self.distribution_dict[distribution.name] = RandomState(MT19937(distribution.seed))
+        for distribution in self.simCore.onto.search(
+            type=self.simCore.central.distribution_class
+        ):
+            self.distribution_dict[distribution.name] = RandomState(
+                MT19937(distribution.seed)
+            )
 
     def add_distribution_dict(self, distribution):
         """
@@ -41,7 +45,9 @@ class Distribution:
         :param distribution: onto
         :return:
         """
-        self.distribution_dict[distribution.name] = RandomState(MT19937(distribution.seed))
+        self.distribution_dict[distribution.name] = RandomState(
+            MT19937(distribution.seed)
+        )
 
     def getTimefromLabel(self, distribution_label):
         """
@@ -54,7 +60,14 @@ class Distribution:
         mean = distribution_onto.mean
         deviate = distribution_onto.deviation
 
-        return abs(round(self.distribution_dict[distribution_onto.name].normal(mean, deviate, 1)[0].item(), 4))
+        return abs(
+            round(
+                self.distribution_dict[distribution_onto.name]
+                .normal(mean, deviate, 1)[0]
+                .item(),
+                4,
+            )
+        )
 
     def getTimefromOnto(self, distribution_onto):
         """
@@ -65,7 +78,14 @@ class Distribution:
         """
         mean = distribution_onto.mean
         deviate = distribution_onto.deviation
-        float_value = abs(round(self.distribution_dict[distribution_onto.name].normal(mean, deviate, 1)[0].item(), 4))
+        float_value = abs(
+            round(
+                self.distribution_dict[distribution_onto.name]
+                .normal(mean, deviate, 1)[0]
+                .item(),
+                4,
+            )
+        )
         # print(float_value,distribution_onto)
         return float_value
 
@@ -78,9 +98,13 @@ class Distribution:
         """
         min_value = random_distribution_onto.min_value
         max_value = random_distribution_onto.max_value
-        if(min_value==max_value):
+        if min_value == max_value:
             return min_value
-        int_value = int(self.distribution_dict[random_distribution_onto.name].randint(min_value, max_value, 1)[0])
+        int_value = int(
+            self.distribution_dict[random_distribution_onto.name].randint(
+                min_value, max_value, 1
+            )[0]
+        )
 
         return int_value
 
@@ -94,8 +118,17 @@ class Distribution:
         mean = distribution_onto.mean
         deviate = distribution_onto.deviation
 
-        return abs(round(self.distribution_dict[distribution_onto.name].normal(mean, deviate, 1)[0].item()),
-                   4) + self.simCore.getCurrentTimestep()
+        return (
+            abs(
+                round(
+                    self.distribution_dict[distribution_onto.name]
+                    .normal(mean, deviate, 1)[0]
+                    .item()
+                ),
+                4,
+            )
+            + self.simCore.getCurrentTimestep()
+        )
 
     def createDistribution(self, distribution_dict, onto_name):
         """
@@ -107,28 +140,27 @@ class Distribution:
         :return:
         """
         distributionInstance = None
-        if distribution_dict['type'] == "normal":
-
+        if distribution_dict["type"] == "normal":
             distributionInstance = self.simCore.central.normal_distribution_class(
-                Label.NormalDistribution.value + str(self.simCore.distribution_id))
+                Label.NormalDistribution.value + str(self.simCore.distribution_id)
+            )
 
-            distributionInstance.mean = distribution_dict['mean']
-            distributionInstance.deviation = distribution_dict['deviation']
-        elif distribution_dict['type'] == "random":
-
-            min = distribution_dict['min']
-            max = distribution_dict['max']
+            distributionInstance.mean = distribution_dict["mean"]
+            distributionInstance.deviation = distribution_dict["deviation"]
+        elif distribution_dict["type"] == "random":
+            min = distribution_dict["min"]
+            max = distribution_dict["max"]
 
             distributionInstance = self.simCore.central.random_distribution_class(
-                Label.RandomDistribution.value + str(self.simCore.distribution_id))
+                Label.RandomDistribution.value + str(self.simCore.distribution_id)
+            )
 
             distributionInstance.max_value = max
             distributionInstance.min_value = min
 
-
         if distributionInstance == None:
             raise Exception("normal error")
-        distributionInstance.distribution_type = distribution_dict['type']
+        distributionInstance.distribution_type = distribution_dict["type"]
         distributionInstance.seed = self.transform_name_to_int(onto_name)
         self.add_distribution_dict(distributionInstance)
         self.simCore.distribution_id += 1
@@ -144,7 +176,7 @@ class Distribution:
         """
         return sum([ord(char) for char in name]) + self.simCore.random_seed_add_value
 
-    def transformToDict(self,id):
+    def transformToDict(self, id):
         """
         transforms a onto-instance to dict
 
@@ -152,18 +184,18 @@ class Distribution:
         :return: dict{}
         """
 
-        response_dict={}
-        distribution_onto=self.simCore.onto[id]
-        response_dict['label']=distribution_onto.name
-        response_dict['type']=distribution_onto.distribution_type
-        if distribution_onto.distribution_type=="normal":
-            response_dict['mean']=distribution_onto.mean
-            response_dict['deviation']=distribution_onto.deviation
-        elif distribution_onto.distribution_type=="random":
-            response_dict['max_value']=distribution_onto.max_value
-            response_dict['min_value']=distribution_onto.min_value
+        response_dict = {}
+        distribution_onto = self.simCore.onto[id]
+        response_dict["label"] = distribution_onto.name
+        response_dict["type"] = distribution_onto.distribution_type
+        if distribution_onto.distribution_type == "normal":
+            response_dict["mean"] = distribution_onto.mean
+            response_dict["deviation"] = distribution_onto.deviation
+        elif distribution_onto.distribution_type == "random":
+            response_dict["max_value"] = distribution_onto.max_value
+            response_dict["min_value"] = distribution_onto.min_value
         elif distribution_onto.distribution_type == "steady":
-            response_dict['value'] = distribution_onto.value
+            response_dict["value"] = distribution_onto.value
         else:
             raise Exception("not defined")
         return response_dict

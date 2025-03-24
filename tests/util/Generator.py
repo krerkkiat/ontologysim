@@ -1,4 +1,3 @@
-
 from numpy.random import MT19937
 from numpy.random.mtrand import RandomState
 
@@ -8,13 +7,13 @@ class Generator(object):
     parent class for all generator
     """
 
-    def __init__(self,seedParameter=None):
+    def __init__(self, seedParameter=None):
         """
 
         :param seedParameter: int
         """
 
-        self.randomDistribution =  RandomState(MT19937(seedParameter))
+        self.randomDistribution = RandomState(MT19937(seedParameter))
 
     def createConfigDict(self):
         """
@@ -23,13 +22,13 @@ class Generator(object):
         """
         pass
 
-    def addType(self,lvl):
+    def addType(self, lvl):
         """
         creates lvl dict
         :param lvl: string
         :return: dict
         """
 
-        config= {}
+        config = {}
         config["type"] = lvl
         return config

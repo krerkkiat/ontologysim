@@ -1,4 +1,3 @@
-
 from enum import Enum
 
 
@@ -8,5 +7,6 @@ class Queue_Selection(Enum):
     SQF: Shortest Queue First
     NJF: Earliest Job First (nearest queue)
     """
-    SQF="SQF"
-    NJF="NJF"
+
+    SQF = "SQF"
+    NJF = "NJF"

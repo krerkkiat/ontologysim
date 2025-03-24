@@ -8,6 +8,7 @@ class Init(object):
     """
     transforms the ini into a dict
     """
+
     def __init__(self, filepath, time=0):
         """
 
@@ -17,14 +18,21 @@ class Init(object):
         """
         self.time = time
         self.config = configparser.ConfigParser()
-        if(filepath!=""):
+        if filepath != "":
             self.config.read(filepath)
         self.configs = dict()
 
-        self.productionKeys = ['Type', 'Machine', 'ProductType', 'Process', 'Transporter', 'RandomSeed']
-        self.owlKeys = ['OWL']
-        self.controllerKeys = ['Controller']
-        self.loggerKeys = ['Type', 'KPIs', 'ConfigIni', 'Plot']
+        self.productionKeys = [
+            "Type",
+            "Machine",
+            "ProductType",
+            "Process",
+            "Transporter",
+            "RandomSeed",
+        ]
+        self.owlKeys = ["OWL"]
+        self.controllerKeys = ["Controller"]
+        self.loggerKeys = ["Type", "KPIs", "ConfigIni", "Plot"]
         self.type = []
         # print("ini read")
 
@@ -34,7 +42,6 @@ class Init(object):
         """
 
         for sec in self.config.sections():
-
             self.configs[sec] = dict()
             for opt in self.config.options(sec):
                 try:
@@ -49,7 +56,13 @@ class Init(object):
                             helper = str(self.config[sec][opt])
                         except SyntaxError:
                             logging.error(
-                                'error while reading ' + str(sec) + " " + str(opt) + " " + str(self.config[sec][opt]))
+                                "error while reading "
+                                + str(sec)
+                                + " "
+                                + str(opt)
+                                + " "
+                                + str(self.config[sec][opt])
+                            )
                             helper = str(self.config[sec][opt])
                 self.configs[sec][opt] = helper
 
@@ -87,11 +100,16 @@ class Init(object):
                     self.loggerPossible = False
                     break
 
-        if not(self.loggerPossible or self.controllerPossible or self.owlPossible or self.productionPossible):
-            self.type=[]
+        if not (
+            self.loggerPossible
+            or self.controllerPossible
+            or self.owlPossible
+            or self.productionPossible
+        ):
+            self.type = []
             return
 
-        self.type=[]
+        self.type = []
         if self.productionPossible:
             self.type.append("production")
         elif self.loggerPossible:
@@ -103,16 +121,16 @@ class Init(object):
 
 
 class IniString(Init):
-
     def __init__(self, textString, time=0):
         """
         :param filepath:
         :param time: currently not used
         """
-        super().__init__(filepath="",time=time)
+        super().__init__(filepath="", time=time)
         self.config = configparser.ConfigParser()
         self.config.read_string(textString)
         self.configs = dict()
+
 
 class IniDict(Init):
     """
@@ -124,17 +142,7 @@ class IniDict(Init):
         :param filepath:
         :param time: currently not used
         """
-        super().__init__(filepath="",time=time)
+        super().__init__(filepath="", time=time)
         self.config = configparser.ConfigParser()
         self.config.read_dict(dictInformation)
         self.configs = dict()
-
-
-
-
-
-
-
-
-
-

@@ -9,13 +9,11 @@ sys.path.insert(0, parent_dir)
 from ontologysim.ProductionSimulation.plot.Log_plot import Plot
 from ontologysim.ProductionSimulation.utilities.path_utilities import PathTest
 
+
 def mainPlot():
     PathTest.current_main_dir = current_dir
-    plot = Plot('/example/config/plot_log.ini')
+    plot = Plot("/example/config/plot_log.ini")
     plot.plot()
-
-
-
 
 
 if __name__ == "__main__":

@@ -1,4 +1,3 @@
-
 import os
 import inspect
 
@@ -8,14 +7,13 @@ from functools import reduce
 from deprecated.sphinx import deprecated
 
 
-
 class PnmlTest:
     """
     Tests a given Pnml file
     """
 
     @classmethod
-    @deprecated(version='0.1.0', reason="pm4py excluded")
+    @deprecated(version="0.1.0", reason="pm4py excluded")
     def check_pnml(cls, net):
         """
         deprecated
@@ -64,15 +62,18 @@ class PnmlTest:
                     raise Exception("place connection is wrong")
 
             for arc in place.in_arcs:
-                if not isinstance(arc.source, pm4py.objects.petri.petrinet.PetriNet.Transition):
+                if not isinstance(
+                    arc.source, pm4py.objects.petri.petrinet.PetriNet.Transition
+                ):
                     raise Exception(str(place) + " in arc is incorrect")
 
             for arc in place.out_arcs:
-                if not isinstance(arc.target, pm4py.objects.petri.petrinet.PetriNet.Transition):
+                if not isinstance(
+                    arc.target, pm4py.objects.petri.petrinet.PetriNet.Transition
+                ):
                     raise Exception(str(place) + " out arc is incorrect")
 
         for trans in transitions:
-
             if len(trans.in_arcs) == 0:
                 raise Exception(str(trans), " connection is wrong")
 
@@ -80,11 +81,15 @@ class PnmlTest:
                 raise Exception(str(trans), " connection is wrong")
 
             for arc in trans.in_arcs:
-                if not isinstance(arc.source, pm4py.objects.petri.petrinet.PetriNet.Place):
+                if not isinstance(
+                    arc.source, pm4py.objects.petri.petrinet.PetriNet.Place
+                ):
                     raise Exception(str(trans) + " arc source is incorrect")
 
             for arc in trans.out_arcs:
-                if not isinstance(arc.target, pm4py.objects.petri.petrinet.PetriNet.Place):
+                if not isinstance(
+                    arc.target, pm4py.objects.petri.petrinet.PetriNet.Place
+                ):
                     raise Exception(str(trans) + " arc target is incorrect")
 
         place_id_list = [place.name for place in places]
@@ -96,7 +101,10 @@ class PnmlTest:
         if len(trasistion_id_list) != len(set(trasistion_id_list)):
             raise Exception("place id not unique")
 
-        if len(reduce(set.intersection, [set(trasistion_id_list), set(place_id_list)])) > 0:
+        if (
+            len(reduce(set.intersection, [set(trasistion_id_list), set(place_id_list)]))
+            > 0
+        ):
             raise Exception("place and transistion id not unique")
 
         return True

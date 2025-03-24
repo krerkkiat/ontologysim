@@ -1,5 +1,7 @@
 from ontologysim.ProductionSimulation.sim.Enum import Label, Evaluate_Enum, Machine_Enum
-from ontologysim.ProductionSimulation.sim.RepairService.RepairService import RepairService
+from ontologysim.ProductionSimulation.sim.RepairService.RepairService import (
+    RepairService,
+)
 
 
 class RepairServiceMachine(RepairService):
@@ -30,14 +32,16 @@ class RepairServiceMachine(RepairService):
         """
         service_onto = None
         if number_of_repair > 0:
-
             service_onto = self.simCore.central.machine_service_class(
-                Label.MachineService.value + str(self.simCore.machine_service_id))
+                Label.MachineService.value + str(self.simCore.machine_service_id)
+            )
 
             self.simCore.machine_service_id += 1
             service_onto.has_for_wait_machine_service = []
             for i in range(number_of_repair):
-                service_onto.has_for_machine_service_operator.append(self.createServiceOperator())
+                service_onto.has_for_machine_service_operator.append(
+                    self.createServiceOperator()
+                )
             service_onto.number_service_operator = number_of_repair
             service_onto.free_service_operator = number_of_repair
 
@@ -50,7 +54,9 @@ class RepairServiceMachine(RepairService):
         :return: service operator onto
         """
         service_operator = self.simCore.central.machine_service_operator_class(
-            Label.MachineServiceOperator.value + str(self.simCore.machine_service_operator_id))
+            Label.MachineServiceOperator.value
+            + str(self.simCore.machine_service_operator_id)
+        )
         self.simCore.machine_service_operator_id += 1
         service_operator.has_for_machine_service_operator_machine = []
 
@@ -73,8 +79,11 @@ class RepairServiceMachine(RepairService):
         :param service_onto: onto
         :return: [service operaor]
         """
-        return [service_operator for service_operator in service_onto.has_for_machine_service_operator if
-                len(service_operator.has_for_machine_service_operator_machine) == 0]
+        return [
+            service_operator
+            for service_operator in service_onto.has_for_machine_service_operator
+            if len(service_operator.has_for_machine_service_operator_machine) == 0
+        ]
 
     def repair(self, event_onto):
         """
@@ -88,21 +97,28 @@ class RepairServiceMachine(RepairService):
         machine_onto = event_onto.has_for_machine_event[0]
         service_onto = event_onto.has_for_service_event[0]
 
-
-        self.simCore.logger.evaluatedInformations([{'type': event_onto.type,
-                                                    'triggered_defect_time': machine_onto.next_defect_machine,
-                                                    'repair_time': event_onto.time_diff,
-                                                    'event_onto_time': event_onto.time,
-                                                    'machine_name': machine_onto.name}])
+        self.simCore.logger.evaluatedInformations(
+            [
+                {
+                    "type": event_onto.type,
+                    "triggered_defect_time": machine_onto.next_defect_machine,
+                    "repair_time": event_onto.time_diff,
+                    "event_onto_time": event_onto.time,
+                    "machine_name": machine_onto.name,
+                }
+            ]
+        )
         self.simCore.event.add_to_logger(event_onto)
         self.simCore.event.remove_from_event_list(event_onto)
-        #self.simCore.event.store_event(event_onto)
+        # self.simCore.event.store_event(event_onto)
 
         machine_onto.is_defect_machine = 0
         service_onto.free_service_operator += 1
         machine_onto.is_machine_service_operator_machine_of = []
 
-        self.simCore.machine.setNextDefectTime(machine_onto, machine_onto.has_for_defect_machine[0])
+        self.simCore.machine.setNextDefectTime(
+            machine_onto, machine_onto.has_for_defect_machine[0]
+        )
 
         self.evaluateCreateEvent(service_onto, machine_onto)
 
@@ -126,18 +142,27 @@ class RepairServiceMachine(RepairService):
                 break
 
         for event in event_list:
-
-            if (event.type in [machine_enum.value for machine_enum in
-                               Machine_Enum] or event.type == Evaluate_Enum.Machine.value):
+            if (
+                event.type in [machine_enum.value for machine_enum in Machine_Enum]
+                or event.type == Evaluate_Enum.Machine.value
+            ):
                 if event in machine_onto.is_machine_event_of:
                     number_of_events_machine = 1
 
-        if number_of_events_service_onto == 0 and len(
-                service_onto.has_for_wait_machine_service) > 0 and service_onto.free_service_operator > 0:
-            event_onto = self.simCore.event.createEvent(self.simCore.getCurrentTimestep(), Evaluate_Enum.MachineDefect,
-                                                        0)
-            self.simCore.event.add_service_to_event(event_onto, self.simCore.repair_service_machine.service_onto)
+        if (
+            number_of_events_service_onto == 0
+            and len(service_onto.has_for_wait_machine_service) > 0
+            and service_onto.free_service_operator > 0
+        ):
+            event_onto = self.simCore.event.createEvent(
+                self.simCore.getCurrentTimestep(), Evaluate_Enum.MachineDefect, 0
+            )
+            self.simCore.event.add_service_to_event(
+                event_onto, self.simCore.repair_service_machine.service_onto
+            )
 
         if number_of_events_machine == 0:
-            event_onto = self.simCore.event.createEvent(self.simCore.getCurrentTimestep(), Evaluate_Enum.Machine, 0)
+            event_onto = self.simCore.event.createEvent(
+                self.simCore.getCurrentTimestep(), Evaluate_Enum.Machine, 0
+            )
             self.simCore.event.add_machine_to_event(event_onto, machine_onto)

@@ -6,28 +6,32 @@ class Logger_Enum(Enum):
     Logger enum
     """
 
-    MachineLogger="machine"
-    ProductLogger="product"
-    AllProductsLogger="all_products"
-    QueueFillLevelLogger="queue"
-    TransporterLogger="transporter"
-    TransporterDistributionLogger="transporter_distribution"
-    TransporterLocationLogger="transporter_location"
-    SimLogger="sim"
+    MachineLogger = "machine"
+    ProductLogger = "product"
+    AllProductsLogger = "all_products"
+    QueueFillLevelLogger = "queue"
+    TransporterLogger = "transporter"
+    TransporterDistributionLogger = "transporter_distribution"
+    TransporterLocationLogger = "transporter_location"
+    SimLogger = "sim"
+
 
 class Logger_Type_Enum(Enum):
     """
     defines type of logging
     """
-    All="all"
-    Time="time"
-    Summary="summary"
-    Not="not"
+
+    All = "all"
+    Time = "time"
+    Summary = "summary"
+    Not = "not"
+
 
 class Folder_name(Enum):
     """
     defines the folder name for the logger
     """
+
     machine = "machine"
     ini = "_ini"
     product = "product"

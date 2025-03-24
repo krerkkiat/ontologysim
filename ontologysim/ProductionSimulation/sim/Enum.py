@@ -5,6 +5,7 @@ class Machine_Enum(Enum):
     """
     Enum for Machine, defines the different states
     """
+
     Defect = "MachineDefect"
     SetUp = "SetUp"
     Wait = "Wait_Machine"
@@ -15,6 +16,7 @@ class Queue_Enum(Enum):
     """
     Enum for Queue, defines the different change types
     """
+
     Change = "Change"
     AddToTransporter = "AddToTransporter"
     RemoveFromTransporter = "RemoveFromTransporter"
@@ -23,13 +25,14 @@ class Queue_Enum(Enum):
     EndProcess = "EndProcess"
     Default = "Default"
     RemoveFromTransporterDeadlock = "RemoveFromTransporterDeadlock"
-    StartOfProduction="StartOfProduction"
+    StartOfProduction = "StartOfProduction"
 
 
 class Transporter_Enum(Enum):
     """
     Enum for transporter, defines all states of transporter
     """
+
     Defect = "TransporterDefect"
     Wait = "Wait_Transport"
     Transport = "Transport"
@@ -39,6 +42,7 @@ class Evaluate_Enum(Enum):
     """
     Enum for evaluation, defines which onto category gets evaluated
     """
+
     Machine = "Machine"
     Transporter = "Transporter"
     Product = "Product"
@@ -52,6 +56,7 @@ class OrderRelease_Enum(Enum):
     """
     Enum for order release, defines the states for order release
     """
+
     Release = "Release"
 
 
@@ -59,6 +64,7 @@ class Product_Enum(Enum):
     """
     Enum for Product, defines the states of product
     """
+
     Wait = "Wait"
     Defect = "Defect"
     Transport = "Transport"
@@ -66,11 +72,11 @@ class Product_Enum(Enum):
     EndBlockForTransporter = "EndBlockForTransporter"
 
 
-
 class Defect_Type_Enum(Enum):
     """
     Enum for defect, defines the type of defect
     """
+
     Short = "short"
     Medium = "medium"
     Long = "long"
@@ -81,6 +87,7 @@ class Label(Enum):
     is part of the id/name of the enum instance
     each onto name starts with one of these labels
     """
+
     Transporter = "t"
     Machine = "m"
     Distribution = "d"
@@ -92,7 +99,7 @@ class Label(Enum):
     ProductType = "p_t"
     Position = "po"
     Process = "pr"
-    ProdProcess ="ppr"
+    ProdProcess = "ppr"
     ProdTypeProcess = "ptpr"
     State = "state"
     Event = "e"

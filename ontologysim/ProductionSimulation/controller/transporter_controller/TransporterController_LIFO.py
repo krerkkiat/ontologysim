@@ -1,6 +1,8 @@
 from collections import defaultdict
 
-from ontologysim.ProductionSimulation.controller.transporter_controller import TransporterController
+from ontologysim.ProductionSimulation.controller.transporter_controller import (
+    TransporterController,
+)
 from ontologysim.ProductionSimulation.sim.Enum import Queue_Enum, Label
 
 
@@ -9,7 +11,6 @@ class TransporterController_LIFO(TransporterController.TransporterController):
     transporter controller for LIFO (last in first out) (shortest waiting time)
     based on SQF for selecting next queue
     """
-
 
     def sort_products_on_transporter(self, transport_onto):
         """
@@ -25,16 +26,22 @@ class TransporterController_LIFO(TransporterController.TransporterController):
         for queue in queue_list:
             for position in queue.has_for_position:
                 for product in position.has_for_product:
-                    if product.blocked_for_transporter == 0 and self.transport.end_queue_allowed(transport_onto,product):
-
+                    if (
+                        product.blocked_for_transporter == 0
+                        and self.transport.end_queue_allowed(transport_onto, product)
+                    ):
                         # event_onto_list=self.transport.simCore.onto.search(has_for_position_event=position,is_event_logger_of=self.transport.simCore.onto[Label.Logger.value+"0"])
-                        event_onto_list = [event for event in position.is_position_event_of if
-                                           self.transport.simCore.onto[
-                                               Label.ShortTermLogger.value + "0"] in event.is_event_short_term_logger_of]
+                        event_onto_list = [
+                            event
+                            for event in position.is_position_event_of
+                            if self.transport.simCore.onto[
+                                Label.ShortTermLogger.value + "0"
+                            ]
+                            in event.is_event_short_term_logger_of
+                        ]
 
                         # for event in event_onto_list:
                         for event in event_onto_list:
-
                             self.counter += 1
                             if event.type == Queue_Enum.Change.value:
                                 event_list.append([product.name, event.time])
@@ -43,14 +50,15 @@ class TransporterController_LIFO(TransporterController.TransporterController):
 
         res = defaultdict(list)
 
-        for v, k in event_list: res[v].append(k)
+        for v, k in event_list:
+            res[v].append(k)
         products_on_transporter = [[k, v[-1]] for k, v in res.items()]
-        #TODO not necessary
-        products_on_transporter.sort(key=lambda x: x[1],reverse=True)
+        # TODO not necessary
+        products_on_transporter.sort(key=lambda x: x[1], reverse=True)
 
         return products_on_transporter
 
-    def sort_products_not_on_transporter(self,transport_onto=None):
+    def sort_products_not_on_transporter(self, transport_onto=None):
         """
         sort all products not on transporter
 
@@ -61,10 +69,18 @@ class TransporterController_LIFO(TransporterController.TransporterController):
         for queue in self.transport.get_queue_transportation_allowed(transport_onto):
             for position in queue.has_for_position:
                 for product in position.has_for_product:
-                    if product.blocked_for_transporter == 0 and self.transport.end_queue_allowed(transport_onto,product):
-                        event_onto_list = [event for event in position.is_position_event_of if
-                                           self.transport.simCore.onto[
-                                               Label.ShortTermLogger.value + "0"] in event.is_event_short_term_logger_of]
+                    if (
+                        product.blocked_for_transporter == 0
+                        and self.transport.end_queue_allowed(transport_onto, product)
+                    ):
+                        event_onto_list = [
+                            event
+                            for event in position.is_position_event_of
+                            if self.transport.simCore.onto[
+                                Label.ShortTermLogger.value + "0"
+                            ]
+                            in event.is_event_short_term_logger_of
+                        ]
 
                         for event in event_onto_list:
                             if event.type == Queue_Enum.Change.value:
@@ -72,11 +88,12 @@ class TransporterController_LIFO(TransporterController.TransporterController):
 
         event_list.sort(key=lambda x: x[1])
         res = defaultdict(list)
-        for v, k in event_list: res[v].append(k)
+        for v, k in event_list:
+            res[v].append(k)
 
         # TODO optimization add type directly
         products_not_on_transporter = [[k, v[-1]] for k, v in res.items()]
-        products_not_on_transporter.sort(key=lambda x: x[1],reverse=True)
+        products_not_on_transporter.sort(key=lambda x: x[1], reverse=True)
 
         return products_not_on_transporter
 
@@ -91,10 +108,12 @@ class TransporterController_LIFO(TransporterController.TransporterController):
         type_on = "on"
         type_not_on = "not_on"
         elements = products_on_transporter + products_not_on_transporter
-        type_list = [type_on] * len(products_on_transporter) + [type_not_on] * len(products_not_on_transporter)
+        type_list = [type_on] * len(products_on_transporter) + [type_not_on] * len(
+            products_not_on_transporter
+        )
 
         for x, y in zip(elements, type_list):
             x.append(y)
 
-        elements.sort(key=lambda x: x[1],reverse=True)
+        elements.sort(key=lambda x: x[1], reverse=True)
         return elements

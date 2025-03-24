@@ -18,10 +18,10 @@ class ConnectDataBaseAction(APIAction):
         """
         self.action()
 
-        self.flaskApp.db = DataBase("sqlite:///ontologysim/ProductionSimulation/database/SimulationRun.db")
+        self.flaskApp.db = DataBase(
+            "sqlite:///ontologysim/ProductionSimulation/database/SimulationRun.db"
+        )
 
-        response = self.response200OK(json.dumps({"message":"OK"}))
+        response = self.response200OK(json.dumps({"message": "OK"}))
 
         return response
-
-

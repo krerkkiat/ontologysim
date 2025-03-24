@@ -4,7 +4,13 @@ import os
 import sys
 import owlready2
 
-from ontologysim.ProductionSimulation.sim.Enum import Label, Machine_Enum, Queue_Enum, Transporter_Enum, OrderRelease_Enum
+from ontologysim.ProductionSimulation.sim.Enum import (
+    Label,
+    Machine_Enum,
+    Queue_Enum,
+    Transporter_Enum,
+    OrderRelease_Enum,
+)
 
 from ontologysim.ProductionSimulation.utilities import init_utilities
 from ontologysim.ProductionSimulation.utilities.path_utilities import PathTest
@@ -16,17 +22,13 @@ class EventLogger:
     """
 
     def __init__(self, simCore):
-
         self.simCore = simCore
         self.simCore.event_logger = self
         self.type = "csv"
         self.logger_onto = self.simCore.onto[Label.Logger.value + "1"]
 
-        self.path_csv=""
-        self.is_activated=True
-
-
-
+        self.path_csv = ""
+        self.is_activated = True
 
     def save_to_csv(self, type):
         """
@@ -35,11 +37,13 @@ class EventLogger:
         :param type: if overwrite or add
         """
 
-        if(self.is_activated):
-            with open(self.path_csv, type, newline='') as order_logger:
-                wr = csv.writer(order_logger, delimiter=';', quotechar=' ', quoting=csv.QUOTE_ALL)
+        if self.is_activated:
+            with open(self.path_csv, type, newline="") as order_logger:
+                wr = csv.writer(
+                    order_logger, delimiter=";", quotechar=" ", quoting=csv.QUOTE_ALL
+                )
 
-                erg_list=self.getEventList()
+                erg_list = self.getEventList()
                 wr.writerows(erg_list)
 
     def getEventList(self):
@@ -47,11 +51,12 @@ class EventLogger:
         return event list with all data for the event logger
         :return:
         """
-        erg_list=[]
-        for event in self.simCore.onto[Label.Logger.value + "1"].has_for_event_of_logger:
-            erg_list.append(self.simCore.event_utilities.transformEventLoggerOntoToList(event))
+        erg_list = []
+        for event in self.simCore.onto[
+            Label.Logger.value + "1"
+        ].has_for_event_of_logger:
+            erg_list.append(
+                self.simCore.event_utilities.transformEventLoggerOntoToList(event)
+            )
 
         return erg_list
-
-
-

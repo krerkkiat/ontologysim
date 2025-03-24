@@ -3,10 +3,14 @@ import operator
 from owlready2 import *
 from itertools import islice
 
-from ontologysim.ProductionSimulation.controller.machine_controller.MachineController import MachineController
+from ontologysim.ProductionSimulation.controller.machine_controller.MachineController import (
+    MachineController,
+)
 from ontologysim.ProductionSimulation.sim.Enum import Label, Queue_Enum, Evaluate_Enum
 from ontologysim.ProductionSimulation.sim.Machine import Machine
-from ontologysim.ProductionSimulation.utilities.sub_class_utilities import SubClassUtility
+from ontologysim.ProductionSimulation.utilities.sub_class_utilities import (
+    SubClassUtility,
+)
 
 
 class MachineController_Hybrid(MachineController):
@@ -16,8 +20,8 @@ class MachineController_Hybrid(MachineController):
 
     def __init__(self):
         self.machine = None  # add it over machine.addMachineController
-        self.controller_parameter_dict = {} #key: python class name, value: 0 < weight <1
-        self.controller_instance_dict = {} #key: python class name, value: python instance
+        self.controller_parameter_dict = {}  # key: python class name, value: 0 < weight <1
+        self.controller_instance_dict = {}  # key: python class name, value: python instance
 
     def addControllerDict(self, controller_dict):
         """
@@ -26,9 +30,10 @@ class MachineController_Hybrid(MachineController):
         :param controller_dict: {Python class:int [0:1]}
         """
         for python_class, v in controller_dict.items():
-
-            if python_class in SubClassUtility.get_all_subclasses(
-                    MachineController) or python_class == MachineController:
+            if (
+                python_class in SubClassUtility.get_all_subclasses(MachineController)
+                or python_class == MachineController
+            ):
                 if v > 1 or v < 0:
                     raise Exception(str(v) + " out of range")
                 self.controller_parameter_dict[python_class.__name__] = v
@@ -36,7 +41,9 @@ class MachineController_Hybrid(MachineController):
                 python_instance.machine = self.machine
                 self.controller_instance_dict[python_class.__name__] = python_instance
             else:
-                raise Exception(str(python_class) + " not subclass of MachineController")
+                raise Exception(
+                    str(python_class) + " not subclass of MachineController"
+                )
 
     def sort_products(self, machine_onto):
         """
@@ -61,16 +68,21 @@ class MachineController_Hybrid(MachineController):
                     for erg in erg_dict[k]:
                         product_onto = erg[0]
                         if product_onto.name in product_dict.keys():
-                            product_dict[product_onto.name] += value * self.controller_parameter_dict[k]
+                            product_dict[product_onto.name] += (
+                                value * self.controller_parameter_dict[k]
+                            )
                         else:
-                            product_dict[product_onto.name] = value * self.controller_parameter_dict[k]
+                            product_dict[product_onto.name] = (
+                                value * self.controller_parameter_dict[k]
+                            )
 
                             product_dict_value[product_onto.name] = erg
                         value -= increment
 
         if len(product_dict) > 0:
-
-            sorted_products = sorted(product_dict.items(), key=operator.itemgetter(1), reverse=True)
+            sorted_products = sorted(
+                product_dict.items(), key=operator.itemgetter(1), reverse=True
+            )
 
             for k, v in sorted_products:
                 erg_list.append(product_dict_value[k])

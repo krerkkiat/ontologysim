@@ -2,20 +2,31 @@ import datetime
 
 import jwt
 
-from sqlalchemy import Boolean, Column, DateTime, ForeignKey, Integer, String, Text, Float, TypeDecorator
+from sqlalchemy import (
+    Boolean,
+    Column,
+    DateTime,
+    ForeignKey,
+    Integer,
+    String,
+    Text,
+    Float,
+    TypeDecorator,
+)
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, backref
 from sqlalchemy.sql import func
 
 from ontologysim.ProductionSimulation.database.models.Base import Base
 
+
 class User(Base):
-    __tablename__ = 'User'
+    __tablename__ = "User"
     id = Column(Integer, primary_key=True)
-    userName = Column(String,nullable=False,unique=True)
+    userName = Column(String, nullable=False, unique=True)
     simulationRuns = relationship("SimulationRun", back_populates="user")
 
-    email = Column(String,unique=True)
+    email = Column(String, unique=True)
     password = Column(String)
     authenticated = Column(Boolean, default=False)
     isAdmin = Column(Boolean, default=False)
@@ -39,15 +50,16 @@ class User(Base):
         """
         try:
             payload = {
-                'exp': datetime.datetime.utcnow() + datetime.timedelta(days=0, seconds=5),
-                'iat': datetime.datetime.utcnow(),
-                'sub': user_id
+                "exp": datetime.datetime.utcnow()
+                + datetime.timedelta(days=0, seconds=5),
+                "iat": datetime.datetime.utcnow(),
+                "sub": user_id,
             }
             return jwt.encode(
                 payload,
-                #app.config.get('SECRET_KEY'),
+                # app.config.get('SECRET_KEY'),
                 "secretKey",
-                algorithm='HS256'
+                algorithm="HS256",
             )
         except Exception as e:
             return e
@@ -55,6 +67,7 @@ class User(Base):
     def verify_password(self, password, bcrypt=None):
         pwhash = bcrypt.hashpw(password, self.password)
         return self.password == pwhash
+
 
 @staticmethod
 def decode_auth_token(auth_token):
@@ -64,13 +77,13 @@ def decode_auth_token(auth_token):
     :return: integer|string
     """
     try:
-        #payload = jwt.decode(auth_token, app.config.get('SECRET_KEY'))
-        payload = jwt.decode(auth_token,"secretKey")
+        # payload = jwt.decode(auth_token, app.config.get('SECRET_KEY'))
+        payload = jwt.decode(auth_token, "secretKey")
 
-        #TODO test
+        # TODO test
 
-        return payload['sub']
+        return payload["sub"]
     except jwt.ExpiredSignatureError:
-        return 'Signature expired. Please log in again.'
+        return "Signature expired. Please log in again."
     except jwt.InvalidTokenError:
-        return 'Invalid token. Please log in again.'
+        return "Invalid token. Please log in again."

@@ -2,8 +2,15 @@ import logging
 
 from owlready2 import *
 
-from ontologysim.ProductionSimulation.sim.Enum import Machine_Enum, Label, Evaluate_Enum, Queue_Enum, Transporter_Enum, \
-    OrderRelease_Enum, Product_Enum
+from ontologysim.ProductionSimulation.sim.Enum import (
+    Machine_Enum,
+    Label,
+    Evaluate_Enum,
+    Queue_Enum,
+    Transporter_Enum,
+    OrderRelease_Enum,
+    Product_Enum,
+)
 from ontologysim.ProductionSimulation.utilities.path_utilities import PathTest
 
 
@@ -11,6 +18,7 @@ class SimCore:
     """
     main class, connection point for all side classes
     """
+
     prefixString = """PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
                     PREFIX owl: <http://www.w3.org/2002/07/owl#>
                     PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
@@ -18,9 +26,7 @@ class SimCore:
                     PREFIX ns: <http://test.org/onto.owl#>"""
 
     def __init__(self):
-        """
-
-        """
+        """ """
         self.onto = owlready2.get_ontology("http://example.org/my_ontology#")
 
         self.currentRunID = ""
@@ -71,15 +77,15 @@ class SimCore:
         self.position = None
         self.state = None
 
-        self.run_as_api=False
-        self.stateStorage=None
-        self.changeStorageState=False
+        self.run_as_api = False
+        self.stateStorage = None
+        self.changeStorageState = False
 
         self.save_time = -1
 
         self.random_seed_add_value = 0
 
-        self.db=None
+        self.db = None
 
         self.end = False
 
@@ -95,7 +101,6 @@ class SimCore:
         logging.info("destroyed")
 
         self.onto = None
-
 
     def setRandomSeedAddValue(self, value):
         """
@@ -113,15 +118,14 @@ class SimCore:
         """
         self.save_time = save_time
 
-
-    def save_ontology(self,path="./ontologysim/example/owl/test.owl"):
+    def save_ontology(self, path="./ontologysim/example/owl/test.owl"):
         """
         saves the ontology to owl-file
 
         :param path:
         """
         pass
-        #self.onto.save(file=PathTest.check_dir_path(path), format="rdfxml")
+        # self.onto.save(file=PathTest.check_dir_path(path), format="rdfxml")
 
     def createSimInstance(self):
         """
@@ -138,12 +142,11 @@ class SimCore:
         main method which is used while running simulation
         """
 
-
         self.run = True
 
         self.order_release.orderReleaseController.evaluateCreateOrderRelease()
 
-        while (self.run):
+        while self.run:
             self.runNextEvent()
 
         time = self.getCurrentTimestep()
@@ -169,13 +172,13 @@ class SimCore:
         event_onto, event_type = self.event.getNextEvent()
         self.setCurrentTimeStep(event_onto.time)
 
-        event_list=[]
+        event_list = []
 
         if event_onto.time >= self.save_time and self.save_time >= 0:
             self.save_ontology()
             sys.exit()
 
-        #self.event.getNumberOfEvents()
+        # self.event.getNumberOfEvents()
         if event_onto == None:
             self.run = False
             return
@@ -183,13 +186,11 @@ class SimCore:
         if self.run_as_api:
             event_list = self.event_utilities.transfromEventOntoToList(event_onto)
 
-        if (self.changeStorageState):
+        if self.changeStorageState:
             self.stateStorage.changeState(event_onto)
 
-
-        #print([self.event_utilities.transfromEventOntoToList(event_onto) for event_onto in self.onto[Label.EventList.value + "0"].has_for_event])
-        #print([self.event_utilities.transfromEventOntoToList(event_onto) for event_onto in self.onto[Label.ShortTermLogger.value +"0"].has_for_event_short_term_logger])
-
+        # print([self.event_utilities.transfromEventOntoToList(event_onto) for event_onto in self.onto[Label.EventList.value + "0"].has_for_event])
+        # print([self.event_utilities.transfromEventOntoToList(event_onto) for event_onto in self.onto[Label.ShortTermLogger.value +"0"].has_for_event_short_term_logger])
 
         if event_type == Evaluate_Enum.Machine.value:
             if not self.machine.evaluateDefect(event_onto):
@@ -197,7 +198,6 @@ class SimCore:
         elif event_type == Evaluate_Enum.Product.value:
             raise Exception("event type currently not implemented")
         elif event_type == Evaluate_Enum.Transporter.value:
-
             if not self.transport.evaluateDefect(event_onto):
                 self.transport.transportController.evaluateTransport(event_onto)
         elif event_type == Evaluate_Enum.ProductFinished.value:
@@ -223,20 +223,22 @@ class SimCore:
         elif event_type == OrderRelease_Enum.Release.value:
             self.order_release.release(event_onto)
         elif event_type == Evaluate_Enum.TransporterDefect.value:
-            self.repair_service_transporter.serviceController.evaluateService(event_onto)
+            self.repair_service_transporter.serviceController.evaluateService(
+                event_onto
+            )
         elif event_type == Evaluate_Enum.MachineDefect.value:
             self.repair_service_machine.serviceController.evaluateService(event_onto)
         elif event_type == Product_Enum.EndBlockForTransporter.value:
             self.product.endBlockForTransporter(event_onto)
         else:
-            raise Exception("event type does not exist: " + str(event_type) + ", " + str(event_onto))
+            raise Exception(
+                "event type does not exist: " + str(event_type) + ", " + str(event_onto)
+            )
 
         self.logger.plot.update_plot(self.getCurrentTimestep())
 
         if self.end == True:
             self.run = False
-
-
 
         return event_list
 
@@ -246,83 +248,129 @@ class SimCore:
         """
 
         with self.onto:
-            '''
+            """
             for element in classesList:
                 types.new_class(element,(Thing,))
-            '''
+            """
 
-            class Sim(owlready2.Thing): pass
+            class Sim(owlready2.Thing):
+                pass
 
-            class number_of_finshed_products(Sim >> int, owlready2.FunctionalProperty): pass
+            class number_of_finshed_products(Sim >> int, owlready2.FunctionalProperty):
+                pass
 
-            class current_timestep(Sim >> float, owlready2.FunctionalProperty): pass
+            class current_timestep(Sim >> float, owlready2.FunctionalProperty):
+                pass
 
-            class allStartTasksFinished(Sim >> bool, owlready2.FunctionalProperty): pass
+            class allStartTasksFinished(Sim >> bool, owlready2.FunctionalProperty):
+                pass
 
-            class allLoggingTasksFinished(Sim >> bool, owlready2.FunctionalProperty): pass
+            class allLoggingTasksFinished(Sim >> bool, owlready2.FunctionalProperty):
+                pass
 
-            class Transporter(owlready2.Thing): pass
+            class Transporter(owlready2.Thing):
+                pass
 
-            class transporter_waiting_time(Transporter >> float, owlready2.FunctionalProperty): pass
+            class transporter_waiting_time(
+                Transporter >> float, owlready2.FunctionalProperty
+            ):
+                pass
 
-            class start_current_location(Transporter >> float, owlready2.FunctionalProperty): pass
+            class start_current_location(
+                Transporter >> float, owlready2.FunctionalProperty
+            ):
+                pass
 
-            class speed(Transporter >> float, owlready2.FunctionalProperty): pass
+            class speed(Transporter >> float, owlready2.FunctionalProperty):
+                pass
 
-            class route_type(Transporter >> str, owlready2.FunctionalProperty): pass
+            class route_type(Transporter >> str, owlready2.FunctionalProperty):
+                pass
 
-            class Queue(owlready2.Thing): pass
+            class Queue(owlready2.Thing):
+                pass
 
-            class Location(owlready2.Thing): pass
+            class Location(owlready2.Thing):
+                pass
 
-            class x(Location >> float, owlready2.FunctionalProperty): pass
+            class x(Location >> float, owlready2.FunctionalProperty):
+                pass
 
-            class y(Location >> float, owlready2.FunctionalProperty): pass
+            class y(Location >> float, owlready2.FunctionalProperty):
+                pass
 
-            class z(Location >> float, owlready2.FunctionalProperty): pass
+            class z(Location >> float, owlready2.FunctionalProperty):
+                pass
 
-            class TodoQueue(Queue): pass
+            class TodoQueue(Queue):
+                pass
 
-            class TranspQueue(Queue): pass
+            class TranspQueue(Queue):
+                pass
 
-            class InputQueue(Queue): pass
+            class InputQueue(Queue):
+                pass
 
-            class OutputQueue(Queue): pass
+            class OutputQueue(Queue):
+                pass
 
-            class EndQueue(Queue): pass
+            class EndQueue(Queue):
+                pass
 
-            class current_size(Queue >> int, owlready2.FunctionalProperty): pass
+            class current_size(Queue >> int, owlready2.FunctionalProperty):
+                pass
 
-            class size(Queue >> int, owlready2.FunctionalProperty): pass
+            class size(Queue >> int, owlready2.FunctionalProperty):
+                pass
 
-            class Product(owlready2.Thing): pass
+            class Product(owlready2.Thing):
+                pass
 
-            class Task(owlready2.Thing): pass
+            class Task(owlready2.Thing):
+                pass
 
-            class number(Task >> int, owlready2.FunctionalProperty): pass
+            class number(Task >> int, owlready2.FunctionalProperty):
+                pass
 
-            class todo_number(Task >> int, owlready2.FunctionalProperty): pass
+            class todo_number(Task >> int, owlready2.FunctionalProperty):
+                pass
 
-            class due_date(Product >> float, owlready2.FunctionalProperty): pass
+            class due_date(Product >> float, owlready2.FunctionalProperty):
+                pass
 
-            class start_time(Task >> float, owlready2.FunctionalProperty): pass
+            class start_time(Task >> float, owlready2.FunctionalProperty):
+                pass
 
-            class task_type(Task >> str, owlready2.FunctionalProperty): pass
+            class task_type(Task >> str, owlready2.FunctionalProperty):
+                pass
 
             # python_name = "cost"
-            class blocked_for_transporter(Product >> float, owlready2.FunctionalProperty): pass
+            class blocked_for_transporter(
+                Product >> float, owlready2.FunctionalProperty
+            ):
+                pass
 
-            class blocked_for_machine(Product >> float, owlready2.FunctionalProperty): pass
+            class blocked_for_machine(Product >> float, owlready2.FunctionalProperty):
+                pass
 
-            class marking(Product >> str, owlready2.FunctionalProperty): pass
+            class marking(Product >> str, owlready2.FunctionalProperty):
+                pass
 
-            class start_of_production_time(Product >> float, owlready2.FunctionalProperty): pass
+            class start_of_production_time(
+                Product >> float, owlready2.FunctionalProperty
+            ):
+                pass
 
-            class end_of_production_time(Product >> float, owlready2.FunctionalProperty): pass
+            class end_of_production_time(
+                Product >> float, owlready2.FunctionalProperty
+            ):
+                pass
 
-            class queue_input_time(Product >> float, owlready2.FunctionalProperty): pass
+            class queue_input_time(Product >> float, owlready2.FunctionalProperty):
+                pass
 
-            class SubProduct(owlready2.Thing): pass
+            class SubProduct(owlready2.Thing):
+                pass
 
             class has_for_sub_product(owlready2.ObjectProperty):
                 domain = [SubProduct]
@@ -333,14 +381,21 @@ class SimCore:
                 range = [SubProduct]
                 inverse_property = has_for_sub_product
 
-            class start_of_sub_production_time(SubProduct >> float, owlready2.FunctionalProperty): pass
+            class start_of_sub_production_time(
+                SubProduct >> float, owlready2.FunctionalProperty
+            ):
+                pass
 
-            class end_of_sub_production_time(SubProduct >> float, owlready2.FunctionalProperty): pass
+            class end_of_sub_production_time(
+                SubProduct >> float, owlready2.FunctionalProperty
+            ):
+                pass
 
-            class sub_product_type(SubProduct >> str, owlready2.FunctionalProperty): pass
+            class sub_product_type(SubProduct >> str, owlready2.FunctionalProperty):
+                pass
 
-
-            class ProductType(owlready2.Thing): pass
+            class ProductType(owlready2.Thing):
+                pass
 
             class has_for_product_type(owlready2.ObjectProperty):
                 domain = [Product]
@@ -351,45 +406,67 @@ class SimCore:
                 range = [Product]
                 inverse_property = has_for_product_type
 
-            class sum_number_of_products(ProductType >> float, owlready2.FunctionalProperty): pass
+            class sum_number_of_products(
+                ProductType >> float, owlready2.FunctionalProperty
+            ):
+                pass
 
-            class planned_number_of_products(ProductType >> float, owlready2.FunctionalProperty): pass
+            class planned_number_of_products(
+                ProductType >> float, owlready2.FunctionalProperty
+            ):
+                pass
 
-            class str_number_of_products(ProductType >> str, owlready2.FunctionalProperty): pass
+            class str_number_of_products(
+                ProductType >> str, owlready2.FunctionalProperty
+            ):
+                pass
 
-            class pnml(ProductType >> str, owlready2.FunctionalProperty): pass
+            class pnml(ProductType >> str, owlready2.FunctionalProperty):
+                pass
 
             class has_for_product_type_task(owlready2.ObjectProperty):
                 domain = [Task]
                 range = [ProductType]
 
-            class ProdProcess(owlready2.Thing): pass
+            class ProdProcess(owlready2.Thing):
+                pass
 
-            class Machine(owlready2.Thing): pass
+            class Machine(owlready2.Thing):
+                pass
 
-            class machine_waiting_time(Machine >> float, owlready2.FunctionalProperty): pass
+            class machine_waiting_time(Machine >> float, owlready2.FunctionalProperty):
+                pass
 
             class has_for_last_process(owlready2.ObjectProperty):
                 domain = [Machine]
                 range = [ProdProcess]
 
-            class Distribution(owlready2.Thing): pass
+            class Distribution(owlready2.Thing):
+                pass
 
-            class seed(Distribution >> int, owlready2.FunctionalProperty): pass
+            class seed(Distribution >> int, owlready2.FunctionalProperty):
+                pass
 
-            class distribution_type(Distribution >> str, owlready2.FunctionalProperty): pass
+            class distribution_type(Distribution >> str, owlready2.FunctionalProperty):
+                pass
 
-            class RandomDistribution(Distribution): pass
+            class RandomDistribution(Distribution):
+                pass
 
-            class min_value(RandomDistribution >> int, owlready2.FunctionalProperty): pass
+            class min_value(RandomDistribution >> int, owlready2.FunctionalProperty):
+                pass
 
-            class max_value(RandomDistribution >> int, owlready2.FunctionalProperty): pass
+            class max_value(RandomDistribution >> int, owlready2.FunctionalProperty):
+                pass
 
-            class NormalDistribution(Distribution): pass
+            class NormalDistribution(Distribution):
+                pass
 
-            class mean(NormalDistribution >> float, owlready2.FunctionalProperty): pass
+            class mean(NormalDistribution >> float, owlready2.FunctionalProperty):
+                pass
 
-            class deviation(NormalDistribution >> float, owlready2.FunctionalProperty): pass
+            class deviation(NormalDistribution >> float, owlready2.FunctionalProperty):
+                pass
 
             class has_for_add_time(owlready2.ObjectProperty):
                 domain = [Queue]
@@ -399,9 +476,11 @@ class SimCore:
                 domain = [Queue]
                 range = [Distribution]
 
-            class Position(owlready2.Thing): pass
+            class Position(owlready2.Thing):
+                pass
 
-            class blockedSpace(Position >> float, owlready2.FunctionalProperty): pass
+            class blockedSpace(Position >> float, owlready2.FunctionalProperty):
+                pass
 
             class has_for_product(owlready2.ObjectProperty):
                 domain = [Position]
@@ -412,8 +491,8 @@ class SimCore:
                 range = [Position]
                 inverse_property = has_for_product
 
-            class SetUp(owlready2.Thing): pass
-
+            class SetUp(owlready2.Thing):
+                pass
 
             class has_for_start_process(owlready2.ObjectProperty):
                 domain = [SetUp]
@@ -450,37 +529,57 @@ class SimCore:
                 range = [Machine]
                 inverse_property = has_for_set_up
 
-            class EventList(owlready2.Thing): pass
+            class EventList(owlready2.Thing):
+                pass
 
-            class ShortTermLogger(EventList): pass
+            class ShortTermLogger(EventList):
+                pass
 
-            class Logger(owlready2.Thing): pass
+            class Logger(owlready2.Thing):
+                pass
 
-            class Event(owlready2.Thing): pass
+            class Event(owlready2.Thing):
+                pass
 
-            class waiting_time(Event >> float, owlready2.FunctionalProperty): pass
+            class waiting_time(Event >> float, owlready2.FunctionalProperty):
+                pass
 
-            class time_diff(Event >> float, owlready2.FunctionalProperty): pass
+            class time_diff(Event >> float, owlready2.FunctionalProperty):
+                pass
 
-            class time(Event >> float, owlready2.FunctionalProperty): pass
+            class time(Event >> float, owlready2.FunctionalProperty):
+                pass
 
-            class type(Event >> str, owlready2.FunctionalProperty): pass
+            class type(Event >> str, owlready2.FunctionalProperty):
+                pass
 
-            class number_of_products(Event >> int, owlready2.FunctionalProperty): pass
+            class number_of_products(Event >> int, owlready2.FunctionalProperty):
+                pass
 
-            class additional_type(Event >> str, owlready2.FunctionalProperty): pass
+            class additional_type(Event >> str, owlready2.FunctionalProperty):
+                pass
 
-            class EventOfLogger(owlready2.Thing): pass
+            class EventOfLogger(owlready2.Thing):
+                pass
 
-            class time_logger(EventOfLogger >> float, owlready2.FunctionalProperty): pass
+            class time_logger(EventOfLogger >> float, owlready2.FunctionalProperty):
+                pass
 
-            class type_logger(EventOfLogger >> str, owlready2.FunctionalProperty): pass
+            class type_logger(EventOfLogger >> str, owlready2.FunctionalProperty):
+                pass
 
-            class additional_type_logger(EventOfLogger >> str, owlready2.FunctionalProperty): pass
+            class additional_type_logger(
+                EventOfLogger >> str, owlready2.FunctionalProperty
+            ):
+                pass
 
-            class number_of_products_logger(Event >> int, owlready2.FunctionalProperty): pass
+            class number_of_products_logger(Event >> int, owlready2.FunctionalProperty):
+                pass
 
-            class time_diff_logger(EventOfLogger >> float, owlready2.FunctionalProperty): pass
+            class time_diff_logger(
+                EventOfLogger >> float, owlready2.FunctionalProperty
+            ):
+                pass
 
             class has_for_task_event(owlready2.ObjectProperty):
                 domain = [Event]
@@ -700,9 +799,13 @@ class SimCore:
             class Service(owlready2.Thing):
                 pass
 
-            class number_service_operator(Service >> float, owlready2.FunctionalProperty): pass
+            class number_service_operator(
+                Service >> float, owlready2.FunctionalProperty
+            ):
+                pass
 
-            class free_service_operator(Service >> float, owlready2.FunctionalProperty): pass
+            class free_service_operator(Service >> float, owlready2.FunctionalProperty):
+                pass
 
             class Machine_Service(Service):
                 pass
@@ -737,11 +840,15 @@ class SimCore:
             class Transporter_Service_Operator(Thing):
                 pass
 
-            class has_for_transporter_service_operator_transporter(owlready2.ObjectProperty):
+            class has_for_transporter_service_operator_transporter(
+                owlready2.ObjectProperty
+            ):
                 domain = [Transporter_Service_Operator]
                 range = [Transporter]
 
-            class is_transporter_service_operator_transporter_of(owlready2.ObjectProperty):
+            class is_transporter_service_operator_transporter_of(
+                owlready2.ObjectProperty
+            ):
                 domain = [Transporter]
                 range = [Transporter_Service_Operator]
                 inverse_property = has_for_transporter_service_operator_transporter
@@ -760,7 +867,8 @@ class SimCore:
             class SubDefect(owlready2.Thing):
                 pass
 
-            class defect_type(SubDefect >> str, owlready2.FunctionalProperty): pass
+            class defect_type(SubDefect >> str, owlready2.FunctionalProperty):
+                pass
 
             class has_for_sub_defect_distribution(owlready2.ObjectProperty):
                 domain = [SubDefect]
@@ -792,17 +900,29 @@ class SimCore:
                 domain = [Defect]
                 range = [SubDefect]
 
-            class is_defect_machine(Machine >> int, owlready2.FunctionalProperty): pass
+            class is_defect_machine(Machine >> int, owlready2.FunctionalProperty):
+                pass
 
-            class is_defect_transporter(Transporter >> int, owlready2.FunctionalProperty): pass
+            class is_defect_transporter(
+                Transporter >> int, owlready2.FunctionalProperty
+            ):
+                pass
 
-            class defect_type_machine(Machine >> str, owlready2.FunctionalProperty): pass
+            class defect_type_machine(Machine >> str, owlready2.FunctionalProperty):
+                pass
 
-            class defect_type_transporter(Transporter >> str, owlready2.FunctionalProperty): pass
+            class defect_type_transporter(
+                Transporter >> str, owlready2.FunctionalProperty
+            ):
+                pass
 
-            class next_defect_machine(Machine >> float, owlready2.FunctionalProperty): pass
+            class next_defect_machine(Machine >> float, owlready2.FunctionalProperty):
+                pass
 
-            class next_defect_transporter(Transporter >> float, owlready2.FunctionalProperty): pass
+            class next_defect_transporter(
+                Transporter >> float, owlready2.FunctionalProperty
+            ):
+                pass
 
             class has_for_service_event(owlready2.ObjectProperty):
                 domain = [Event]
@@ -812,11 +932,10 @@ class SimCore:
                 domain = [EventOfLogger]
                 range = [Service]
 
-
             class State(owlready2.Thing):
                 pass
 
-            #not Prodprocess
+            # not Prodprocess
             class Process(owlready2.Thing):
                 pass
 
@@ -829,7 +948,8 @@ class SimCore:
             class CombineProcessData(owlready2.Thing):
                 pass
 
-            class number_state(CombineProcessData >> int, owlready2.FunctionalProperty): pass
+            class number_state(CombineProcessData >> int, owlready2.FunctionalProperty):
+                pass
 
             class has_for_prod_type_process(owlready2.ObjectProperty):
                 domain = [Process]
@@ -875,17 +995,27 @@ class SimCore:
                 range = [MergeProcess]
                 inverse_property = has_for_output_combine
 
-            class current_number_of_products(State >> int, owlready2.FunctionalProperty): pass
+            class current_number_of_products(
+                State >> int, owlready2.FunctionalProperty
+            ):
+                pass
 
-            class goal_number_of_products(State >> int, owlready2.FunctionalProperty): pass
+            class goal_number_of_products(State >> int, owlready2.FunctionalProperty):
+                pass
 
-            class str_state_number_of_products(State >> str, owlready2.FunctionalProperty): pass
+            class str_state_number_of_products(
+                State >> str, owlready2.FunctionalProperty
+            ):
+                pass
 
-            class state_name(State >> str, owlready2.FunctionalProperty): pass
+            class state_name(State >> str, owlready2.FunctionalProperty):
+                pass
 
-            class combine_process(Process >> bool, owlready2.FunctionalProperty): pass
+            class combine_process(Process >> bool, owlready2.FunctionalProperty):
+                pass
 
-            class process_id(Process >> int, owlready2.FunctionalProperty): pass
+            class process_id(Process >> int, owlready2.FunctionalProperty):
+                pass
 
             class has_for_prod_type_process_state(owlready2.ObjectProperty):
                 domain = [State]
@@ -912,7 +1042,7 @@ class SimCore:
             class is_product_state_of(owlready2.ObjectProperty):
                 domain = [State]
                 range = [Product]
-                inverse_property=has_for_product_state
+                inverse_property = has_for_product_state
 
             class has_for_product_type_state(owlready2.ObjectProperty):
                 domain = [State]
@@ -921,7 +1051,7 @@ class SimCore:
             class is_product_type_of_state(owlready2.ObjectProperty):
                 domain = [ProductType]
                 range = [State]
-                inverse_property=has_for_product_type_state
+                inverse_property = has_for_product_type_state
 
             class has_for_product_type_source(owlready2.ObjectProperty):
                 domain = [State]
@@ -930,15 +1060,14 @@ class SimCore:
             class is_product_type_of_source(owlready2.ObjectProperty):
                 domain = [ProductType]
                 range = [State]
-                inverse_property=has_for_product_type_source
-
+                inverse_property = has_for_product_type_source
 
     def createWorld(self):
         """
         sync reasoning of owlready2
         """
         pass
-        #owlready2.sync_reasoner(self.onto)
+        # owlready2.sync_reasoner(self.onto)
 
     def createEventList(self):
         """
@@ -951,7 +1080,9 @@ class SimCore:
         """
         creates the short term logger onto and the normal logger
         """
-        event_listInstance = self.central.short_term_logger_class(Label.ShortTermLogger.value + "0")
+        event_listInstance = self.central.short_term_logger_class(
+            Label.ShortTermLogger.value + "0"
+        )
         event_listInstance.has_for_event_short_term_logger = []
         event_listInstance = self.central.logger_class(Label.Logger.value + "1")
         event_listInstance.has_for_event_of_logger = []

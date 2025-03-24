@@ -8,32 +8,32 @@ class RepairService:
     main class of the repair service, abstract
     """
 
-    def __init__(self,simCore):
+    def __init__(self, simCore):
         """
 
         :param simCore:
         """
-        self.simCore=simCore
+        self.simCore = simCore
 
-        self.service_onto=None
-        self.serviceController=None
+        self.service_onto = None
+        self.serviceController = None
 
     @abstractmethod
     def initServiceMachine(self):
         pass
 
-    def addRepairServiceController(self,serviceController):
+    def addRepairServiceController(self, serviceController):
         """
         adds a repair service controller to a repair service
 
         :param serviceController:
         :return:
         """
-        self.serviceController=serviceController
-        serviceController.repair_service=self
+        self.serviceController = serviceController
+        serviceController.repair_service = self
 
     @abstractmethod
-    def getFreeServiceOperator(self,service_onto):
+    def getFreeServiceOperator(self, service_onto):
         """
         get free service operator
 
@@ -43,7 +43,7 @@ class RepairService:
         pass
 
     @abstractmethod
-    def createService(self,number_of_repair):
+    def createService(self, number_of_repair):
         """
 
 
@@ -61,7 +61,7 @@ class RepairService:
         pass
 
     @abstractmethod
-    def addDefectToService(self,object_onto):
+    def addDefectToService(self, object_onto):
         """
         add defect onto to service onto, abstract method
         :param object_onto: onto
@@ -70,7 +70,7 @@ class RepairService:
         pass
 
     @abstractmethod
-    def repair(self,event_onto):
+    def repair(self, event_onto):
         """
         add repair
         :param event_onto: onto
@@ -87,4 +87,3 @@ class RepairService:
         :return:
         """
         pass
-

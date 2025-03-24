@@ -1,7 +1,9 @@
 from flask import json, request
 
 from ontologysim.Flask.Actions.APIAction import APIAction
-from ontologysim.ProductionSimulation.init.API.IntitializerProducttypeAPI import InitializerProducttypeAPI
+from ontologysim.ProductionSimulation.init.API.IntitializerProducttypeAPI import (
+    InitializerProducttypeAPI,
+)
 
 import os
 from os import listdir
@@ -15,16 +17,19 @@ class SimulationLoadAction(APIAction):
     parent class for simulation load, define default path
     """
 
-    def __init__(self,action, flaskApp):
+    def __init__(self, action, flaskApp):
         """
 
         :param action:
         :param flaskApp:
         """
         super().__init__(action, flaskApp)
-        self.path="/ontologysim/Flask/Assets/DefaultFiles"
+        self.path = "/ontologysim/Flask/Assets/DefaultFiles"
 
-        self.fullPath = PathTest.check_dir_path_current_dir_given(self.path,os.path.dirname(__file__))
+        self.fullPath = PathTest.check_dir_path_current_dir_given(
+            self.path, os.path.dirname(__file__)
+        )
+
 
 class FileLoadAction(SimulationLoadAction):
     """
@@ -39,9 +44,10 @@ class FileLoadAction(SimulationLoadAction):
         """
         self.action()
 
-        onlyfiles = [f for f in listdir(self.fullPath) if isfile(join(self.fullPath, f))]
+        onlyfiles = [
+            f for f in listdir(self.fullPath) if isfile(join(self.fullPath, f))
+        ]
 
-        self.response=self.response200OK(json.dumps({"files":onlyfiles}))
+        self.response = self.response200OK(json.dumps({"files": onlyfiles}))
 
         return self.response
-

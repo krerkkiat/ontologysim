@@ -7,14 +7,15 @@ current_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentfra
 parent_dir = os.path.dirname(current_dir)
 parent_parent_dir = os.path.dirname(parent_dir)
 parent_parent_parent_dir = os.path.dirname(parent_parent_dir)
-sys.path.insert(0,current_dir)
+sys.path.insert(0, current_dir)
 sys.path.insert(0, parent_dir)
 sys.path.insert(0, parent_parent_dir)
 sys.path.insert(0, parent_parent_parent_dir)
 
 from ontologysim.ProductionSimulation.database.DataBase import DataBase
-from ontologysim.ProductionSimulation.database.models import SimulationRun,Base
+from ontologysim.ProductionSimulation.database.models import SimulationRun, Base
 from pytz import timezone
+
 
 class DataSeeder(object):
     """
@@ -22,10 +23,10 @@ class DataSeeder(object):
     """
 
     def __init__(self):
-        """
-
-        """
-        self.db = DataBase("sqlite:///ontologysim/ProductionSimulation/database/SimulationRun.db")
+        """ """
+        self.db = DataBase(
+            "sqlite:///ontologysim/ProductionSimulation/database/SimulationRun.db"
+        )
         Base.metadata.create_all(self.db.db_engine)
 
     def addSimulationRun(self):
@@ -33,14 +34,12 @@ class DataSeeder(object):
         create simulation run
         :return:
         """
-        UTC = timezone('UTC')
+        UTC = timezone("UTC")
         for i in range(10):
             simulationRun = SimulationRun(start=datetime.datetime.now(UTC))
             self.db.session.add(simulationRun)
 
         self.db.session.commit()
-
-
 
     def dropAllData(self):
         """
@@ -51,11 +50,10 @@ class DataSeeder(object):
         self.db.session.execute("DELETE FROM SimulationRun")
 
 
-
 dataSeeder = DataSeeder()
 
-#dataSeeder.addSimulationRun()
-#print(dataSeeder.db.session.query(SimulationRun).all())
-#dataSeeder.dropAllData()
+# dataSeeder.addSimulationRun()
+# print(dataSeeder.db.session.query(SimulationRun).all())
+# dataSeeder.dropAllData()
 
 print(dataSeeder.db.session.query(SimulationRun).all())

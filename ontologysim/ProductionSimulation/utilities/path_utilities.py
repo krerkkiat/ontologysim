@@ -8,6 +8,7 @@ class PathTest:
     """
     Tests the given paths
     """
+
     current_main_dir = ""
 
     @classmethod
@@ -38,7 +39,6 @@ class PathTest:
 
         return full_path
 
-
     @classmethod
     def check_file_path(cls, path):
         """
@@ -48,15 +48,15 @@ class PathTest:
         :return: full_path
         """
         current_dir = PathTest.current_main_dir
-        return cls.check_file_path_current_dir_given(path,current_dir)
+        return cls.check_file_path_current_dir_given(path, current_dir)
 
     @classmethod
-    def check_file_path_libary(cls,path):
+    def check_file_path_libary(cls, path):
         current_dir = str(pathlib.Path(__file__).parent.resolve())
-        return cls.check_file_path_current_dir_given(path,current_dir)
+        return cls.check_file_path_current_dir_given(path, current_dir)
 
     @classmethod
-    def check_dir_path_current_dir_given(cls,path,current_dir):
+    def check_dir_path_current_dir_given(cls, path, current_dir):
         """
 
         :param path:
@@ -92,7 +92,7 @@ class PathTest:
         :return: full_path
         """
         current_dir = PathTest.current_main_dir
-        return cls.check_dir_path_current_dir_given(path,current_dir)
+        return cls.check_dir_path_current_dir_given(path, current_dir)
 
     @classmethod
     def create_new_folder(self, path, folder_name):

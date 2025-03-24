@@ -19,8 +19,10 @@ class Position:
         :return: onto
         """
 
-        positionInstance = self.simCore.central.position_class(Label.Position.value + str(self.simCore.position_id),
-                                                               namespace=self.simCore.onto)
+        positionInstance = self.simCore.central.position_class(
+            Label.Position.value + str(self.simCore.position_id),
+            namespace=self.simCore.onto,
+        )
         positionInstance.blockedSpace = 0
         self.simCore.position_id += 1
 
@@ -36,9 +38,13 @@ class Position:
         """
 
         response_dict = {}
-        if (id == "all"):
-            id_list = [queue_onto.name for queue_onto in
-                       self.simCore.onto.search(type=self.simCore.central.position_class)]
+        if id == "all":
+            id_list = [
+                queue_onto.name
+                for queue_onto in self.simCore.onto.search(
+                    type=self.simCore.central.position_class
+                )
+            ]
         else:
             id_list = [id]
 
@@ -46,11 +52,15 @@ class Position:
             position_onto = self.simCore.onto[id]
 
             response_dict[position_onto.name] = {}
-            response_dict[position_onto.name]['blockedSpace'] = position_onto.blockedSpace
+            response_dict[position_onto.name]["blockedSpace"] = (
+                position_onto.blockedSpace
+            )
 
-            response_dict[position_onto.name]['product_name'] = ""
+            response_dict[position_onto.name]["product_name"] = ""
 
-            if(len(position_onto.has_for_product)!=0):
-                response_dict[position_onto.name]['product_name'] = position_onto.has_for_product[0].name
+            if len(position_onto.has_for_product) != 0:
+                response_dict[position_onto.name]["product_name"] = (
+                    position_onto.has_for_product[0].name
+                )
 
         return response_dict

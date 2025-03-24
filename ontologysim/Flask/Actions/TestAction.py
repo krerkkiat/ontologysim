@@ -17,6 +17,6 @@ class TestAction(APIAction):
         """
         self.action()
 
-        self.response=self.response200OK(json.dumps({"message":"OK"}))
+        self.response = self.response200OK(json.dumps({"message": "OK"}))
 
         return self.response

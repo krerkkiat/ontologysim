@@ -13,11 +13,11 @@ from sqlalchemy_utils import database_exists, create_database
 from ontologysim.ProductionSimulation.database.models.Base import Base
 from ontologysim.ProductionSimulation.utilities.path_utilities import PathTest
 
-SQLITE = 'sqlite'
+SQLITE = "sqlite"
 
 # Table Names
-USERS = 'users'
-ADDRESSES = 'addresses'
+USERS = "users"
+ADDRESSES = "addresses"
 
 
 class DataBase:
@@ -25,7 +25,9 @@ class DataBase:
     database object for creating methadata and session
     """
 
-    def __init__(self, dataBaseURL, username='', password='', dbname='',createDB=False):
+    def __init__(
+        self, dataBaseURL, username="", password="", dbname="", createDB=False
+    ):
         """
         create session and metadata
         :param dataBaseURL:
@@ -37,28 +39,31 @@ class DataBase:
         self.db_engine = None
         self.metadata = None
         self.session = None
-        if(createDB):
+        if createDB:
             dataBaseURL = dataBaseURL.replace("sqlite://", "")
             dataBaseURL = PathTest.check_dir_path(dataBaseURL)
-            if os.name == 'nt':
-                dataBaseURL = "sqlite:////"+os.path.normpath(os.path.join(*(os.path.abspath(dataBaseURL).split(os.path.sep)[1:])))
+            if os.name == "nt":
+                dataBaseURL = "sqlite:////" + os.path.normpath(
+                    os.path.join(*(os.path.abspath(dataBaseURL).split(os.path.sep)[1:]))
+                )
             else:
-                dataBaseURL="sqlite:///"+dataBaseURL
+                dataBaseURL = "sqlite:///" + dataBaseURL
             engine = db.create_engine(dataBaseURL)
             if not database_exists(engine.url):
                 create_database(engine.url)
 
-
         if dataBaseURL != "":
-            dataBaseURL = dataBaseURL.replace("sqlite://","")
+            dataBaseURL = dataBaseURL.replace("sqlite://", "")
 
             dataBaseURL = PathTest.check_file_path(dataBaseURL)
 
-            if os.name == 'nt':
-                dataBaseURL = "sqlite:////"+os.path.normpath(os.path.join(*(os.path.abspath(dataBaseURL).split(os.path.sep)[1:])))
+            if os.name == "nt":
+                dataBaseURL = "sqlite:////" + os.path.normpath(
+                    os.path.join(*(os.path.abspath(dataBaseURL).split(os.path.sep)[1:]))
+                )
 
             else:
-                dataBaseURL="sqlite:///"+dataBaseURL
+                dataBaseURL = "sqlite:///" + dataBaseURL
             self.db_engine = db.create_engine(dataBaseURL)
             self.metadata = MetaData()
             self.metadata.reflect(bind=self.db_engine)
@@ -90,14 +95,14 @@ class DataBase:
             print("Error occurred during Table creation!")
             print(e)
 
-
-    def execute_query(self, query=''):
+    def execute_query(self, query=""):
         """
         possible to execute query
         :param query:
         :return:
         """
-        if query == '': return
+        if query == "":
+            return
         print(query)
         with self.db_engine.connect() as connection:
             try:
@@ -134,7 +139,7 @@ class DataBase:
         print all user data
         :return:
         """
-        result = self.db_engine.execute('SELECT * FROM user')
+        result = self.db_engine.execute("SELECT * FROM user")
 
         for row in result:
             print(row)
@@ -149,7 +154,7 @@ class DataBase:
         print("user")
         with self.db_engine.connect() as connection:
             try:
-                result = connection.execute('SELECT * FROM user')
+                result = connection.execute("SELECT * FROM user")
                 print(result)
                 for row in result:
                     print(row)

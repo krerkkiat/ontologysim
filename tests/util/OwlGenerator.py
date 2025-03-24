@@ -2,17 +2,15 @@ import configparser
 
 from tests.util.Generator import Generator
 
+
 class OwlGenerator(Generator):
     """
     Owl generator
     """
 
     def __init__(self):
-        """
-
-        """
+        """ """
         super().__init__(None)
-
 
     def createConfigDict(self):
         """
@@ -22,10 +20,9 @@ class OwlGenerator(Generator):
         """
 
         owl_config = configparser.ConfigParser()
-        owl_config['OWL'] = self.addOWL()
+        owl_config["OWL"] = self.addOWL()
 
         return owl_config
-
 
     def addOWL(self):
         """
@@ -34,9 +31,7 @@ class OwlGenerator(Generator):
         :return: dict
         """
         config = {}
-        path= "/usr/bin/java"
+        path = "/usr/bin/java"
         config["java_path"] = path
         config["owl_save_path"] = []
         return config
-
-
