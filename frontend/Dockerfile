@@ -1,5 +1,5 @@
 # pull official base image
-FROM node:16.13.2-alpine3.14 AS builder
+FROM node:22.14.0-alpine3.20 AS builder
 
 # set working directory
 WORKDIR /app
@@ -12,10 +12,6 @@ ENV PATH /app/node_modules/.bin:$PATH
 COPY package.json ./
 COPY package-lock.json ./
 
-RUN npm cache clean --force
-RUN npm install --save-dev  --unsafe-perm node-sass -g
-RUN npm rebuild node-sass
-RUN npm install react-scripts@4.0.3 -g --silent
 RUN npm install
 
 # add app

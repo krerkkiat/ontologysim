@@ -1,14 +1,14 @@
 
-import React from 'react'
+import React, { useState } from 'react'
 
-import DefaultTable from "../DefaultTable.js"
+import DefaultTable from "../DefaultTable"
 import { useSelector } from "react-redux"
 
-// product table (events)
-function ProductTable() {
+// queue table (events)
+function QueueTable() {
 
-
-    const filterData = React.useMemo( ()=>  "product")
+    
+    const filterData = React.useMemo( ()=>  "postion")
 
     const filterColumns = React.useMemo(
         () => [
@@ -47,6 +47,7 @@ function ProductTable() {
                         id: 'position_info' ,
                         type: 'includesValue'                     
                       }
+               
         ],
         []
     )
@@ -107,11 +108,11 @@ function ProductTable() {
     )
 
     return (
-        <div className="mt-3"  >
-            <DefaultTable name={"product"} columns={columns}  filter={filterColumns} filterColumn={filterData} />
+        <div className="mt-3">
+            <DefaultTable style={{ marginTop: "10px" }} name={"queue"} columns={columns} filter={filterColumns} filterColumn={filterData} />
         </div>
     )
 
 }
 
-export default ProductTable;
+export default QueueTable;

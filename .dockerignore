@@ -8,3 +8,6 @@ docs
 .idea
 .gitignore
 dist
+# Frontend's ones
+node_modules
+build

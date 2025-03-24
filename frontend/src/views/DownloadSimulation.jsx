@@ -13,6 +13,9 @@ import { useEffect, useState } from "react";
 
 import { refreshKPIs, getKpiList } from "../actions/kpiAction";
 
+import FileSaver from "file-saver";
+import JSZip from "jszip";
+
 /**
  * all about downloading simulation
  * @param {*} props
@@ -35,7 +38,6 @@ function DownloadSimulation(props) {
     getOWLDownload()
       .then((res) => {
         var data = res.data.file;
-        var FileSaver = require("file-saver");
         var blob = new Blob([res.data.file], {
           type: "text/plain;charset=utf-8",
         });
@@ -46,8 +48,6 @@ function DownloadSimulation(props) {
   }
 
   function generate7Zip(data) {
-    var JSZip = require("jszip");
-    var FileSaver = require("file-saver");
     var zip = new JSZip();
     zip.folder("kpi");
 

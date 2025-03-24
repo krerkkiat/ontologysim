@@ -1,7 +1,7 @@
 
 import React from 'react'
 
-import DefaultTable from "../DefaultTable.js"
+import DefaultTable from "../DefaultTable"
 import { useSelector } from "react-redux"
 
 // order release table (events)

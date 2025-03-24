@@ -7,10 +7,10 @@ import LogoName from '../assets/icons/ontologysimOverview.svg'
 
 import Footer from "../components/homepage/footer"
 
-import KPIImage from "../assets/image/kpi.PNG"
+import KPIImage from "../assets/image/kpi.PNG?url"
 import OntologyStructureImage from "../assets/image/ontologyStructure.png"
 import SoftwareStructureImage from "../assets/image/softwareStructure.png"
-import OntologyVisualizationImage from "../assets/image/ontologyVisualization.PNG"
+import OntologyVisualizationImage from "../assets/image/ontologyVisualization.PNG?url"
 
 import {FaReact,FaPython} from "react-icons/fa"
 import useWindowDimensions from '../components/useWindowDimensions';

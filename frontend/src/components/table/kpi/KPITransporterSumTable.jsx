@@ -1,19 +1,20 @@
 import React from 'react'
 
-import DefaultTimeTable from "../DefaultTimeTable.js"
+import DefaultTableKPI from "../DefaultTableKPI"
 import { useSelector } from "react-redux"
 
-//transporter time kpi table
-function KPITransporterTimeTable(props) {
+//transporter summery kpi table
+function KPITransporterSumTable(props) {
+    
 
     const columns = React.useMemo(
         () => [
             {
-                Header: 'Time',
+                Header: 'Name',
                 columns: [
                     {
-                        Header: 'Time',
-                        accessor: 'time',
+                        Header: 'Name',
+                        accessor: 'name',
                     }
                 ],
             },
@@ -69,12 +70,10 @@ function KPITransporterTimeTable(props) {
   )
     return (
         <div className="mt-1 "> 
-              <h6 className="mb-0 text-left" style={{ fontSize: "15px" }}> All-Average
-                        </h6>
-            <DefaultTimeTable style={{marginRight:0,paddingRight:0}} columns={columns} data={props.data} /> 
+            <DefaultTableKPI style={{marginRight:0,paddingRight:0}} columns={columns} data={props.data} /> 
         </div>
     )
 
 }
 
-export default KPITransporterTimeTable;
+export default KPITransporterSumTable;

@@ -1,14 +1,14 @@
 
 import React from 'react'
 
-import DefaultTable from "../DefaultTable.js"
+import DefaultTable from "../DefaultTable"
 import { useSelector } from "react-redux"
 
-// machine table (events)
-function MachineTable() {
+// product table (events)
+function ProductTable() {
 
 
-    const filterData = React.useMemo( ()=>  "machine")
+    const filterData = React.useMemo( ()=>  "product")
 
     const filterColumns = React.useMemo(
         () => [
@@ -46,24 +46,17 @@ function MachineTable() {
                       {                        
                         id: 'position_info' ,
                         type: 'includesValue'                     
-                      },
-                      {                        
-                        id: 'machine'  ,
-                        type: 'includesValue'                     
-                      },                     
-                      {
-                        id: 'process_id',
-                        type: 'includesValue'                       
                       }
         ],
         []
     )
 
-
     const columns = React.useMemo(
-        () => [{ Header: 'Basic',columns: [
+        () => [
+            {
+                Header: 'Basic',
+                columns: [
                     {
-                
                         Header: 'Name',
                         accessor: 'name',
                     },
@@ -97,25 +90,16 @@ function MachineTable() {
                 columns: [
                     {
                         Header: 'Product',
-                        accessor: 'product'                      
-                      },
-                      {
+                        accessor: 'product',
+                    },
+                    {
                         Header: 'Postion',
-                        accessor: 'position'                       
-                      },
-                      {
+                        accessor: 'position',
+                    },
+                    {
                         Header: 'Postion info',
-                        accessor: 'position_info'                      
-                      },
-                      {
-                        Header: 'Machine',
-                        accessor: 'machine'                       
-                      },                     
-                      {
-                        Header: 'Process id',
-                        accessor: 'process_id',                       
-                      },
-                  
+                        accessor: 'position_info',
+                    },
                 ],
             },
         ],
@@ -123,11 +107,11 @@ function MachineTable() {
     )
 
     return (
-        <div className="mt-3">
-            <DefaultTable style={{ marginTop: "10px" }} name="machine" columns={columns} filter={filterColumns} filterColumn={filterData} />
+        <div className="mt-3"  >
+            <DefaultTable name={"product"} columns={columns}  filter={filterColumns} filterColumn={filterData} />
         </div>
     )
 
 }
 
-export default MachineTable;
+export default ProductTable;

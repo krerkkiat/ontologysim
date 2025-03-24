@@ -1,6 +1,6 @@
 import React from 'react'
 
-import DefaultTimeTable from "../DefaultTimeTable.js"
+import DefaultTimeTable from "../DefaultTimeTable"
 import { useSelector } from "react-redux"
 
 //product time kpi table

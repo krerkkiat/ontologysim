@@ -1,6 +1,6 @@
 import React from 'react'
 
-import DefaultTableKPI from "../DefaultTableKPI.js"
+import DefaultTableKPI from "../DefaultTableKPI"
 import { useSelector } from "react-redux"
 
 //machine summary kpi table

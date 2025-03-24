@@ -18,7 +18,7 @@ import SimKPI from "../components/kpi/SimKPI";
 import QueueKPI from "../components/kpi/QueueKPI";
 import NoData from "../components/kpi/NoData";
 
-const queryString = require("query-string");
+import queryString from "query-string";
 
 /**
  * view all kpi data from simulation

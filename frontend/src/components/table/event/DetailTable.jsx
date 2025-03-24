@@ -1,7 +1,7 @@
 
 import React from 'react'
 
-import DefaultTable from "../DefaultTable.js"
+import DefaultTable from "../DefaultTable"
 import { useDispatch, useSelector } from "react-redux"
 import BTable from "react-bootstrap/Table";
 

@@ -1,14 +1,14 @@
 
-import React, { useState } from 'react'
+import React from 'react'
 
-import DefaultTable from "../DefaultTable.js"
+import DefaultTable from "../DefaultTable"
 import { useSelector } from "react-redux"
 
-// queue table (events)
-function QueueTable() {
+// machine table (events)
+function MachineTable() {
 
-    
-    const filterData = React.useMemo( ()=>  "postion")
+
+    const filterData = React.useMemo( ()=>  "machine")
 
     const filterColumns = React.useMemo(
         () => [
@@ -46,18 +46,24 @@ function QueueTable() {
                       {                        
                         id: 'position_info' ,
                         type: 'includesValue'                     
+                      },
+                      {                        
+                        id: 'machine'  ,
+                        type: 'includesValue'                     
+                      },                     
+                      {
+                        id: 'process_id',
+                        type: 'includesValue'                       
                       }
-               
         ],
         []
     )
 
+
     const columns = React.useMemo(
-        () => [
-            {
-                Header: 'Basic',
-                columns: [
+        () => [{ Header: 'Basic',columns: [
                     {
+                
                         Header: 'Name',
                         accessor: 'name',
                     },
@@ -91,16 +97,25 @@ function QueueTable() {
                 columns: [
                     {
                         Header: 'Product',
-                        accessor: 'product',
-                    },
-                    {
+                        accessor: 'product'                      
+                      },
+                      {
                         Header: 'Postion',
-                        accessor: 'position',
-                    },
-                    {
+                        accessor: 'position'                       
+                      },
+                      {
                         Header: 'Postion info',
-                        accessor: 'position_info',
-                    },
+                        accessor: 'position_info'                      
+                      },
+                      {
+                        Header: 'Machine',
+                        accessor: 'machine'                       
+                      },                     
+                      {
+                        Header: 'Process id',
+                        accessor: 'process_id',                       
+                      },
+                  
                 ],
             },
         ],
@@ -109,10 +124,10 @@ function QueueTable() {
 
     return (
         <div className="mt-3">
-            <DefaultTable style={{ marginTop: "10px" }} name={"queue"} columns={columns} filter={filterColumns} filterColumn={filterData} />
+            <DefaultTable style={{ marginTop: "10px" }} name="machine" columns={columns} filter={filterColumns} filterColumn={filterData} />
         </div>
     )
 
 }
 
-export default QueueTable;
+export default MachineTable;
