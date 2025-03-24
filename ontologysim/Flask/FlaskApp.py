@@ -1,3 +1,4 @@
+import os
 
 from flask import Flask
 
@@ -53,7 +54,7 @@ class FlaskAppWrapper(object):
 
 
         #self.app.config.from_mapping(app_config.__dict__)
-        self.app.static_folder = self.app.root_path + "/Flask/static"
+        self.app.static_folder = os.path.abspath(os.path.dirname(__file__) + "/static")
         self.app.static_url_path = "static"
 
         if self.app.config["DATABASE"]:
