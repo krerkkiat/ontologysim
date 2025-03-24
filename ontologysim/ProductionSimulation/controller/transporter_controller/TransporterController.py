@@ -74,7 +74,7 @@ class TransporterController:
                 queue_onto = element[-2]
 
                 if type == type_on:
-                    if queue_onto != None:
+                    if queue_onto is not None:
                         if (
                             queue_onto.name
                             == self.transport.simCore.central.end_queue_list[0].name
@@ -300,7 +300,7 @@ class TransporterController:
                     position_onto = None
                     # raise Exception("Deadlock queue not found (NJF Controller)")
 
-            if position_onto != None and product_onto != None:
+            if position_onto is not None and product_onto is not None:
                 time = self.transport.simCore.queue.create_change(
                     product_onto,
                     position_onto,

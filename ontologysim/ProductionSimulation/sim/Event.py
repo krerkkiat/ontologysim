@@ -54,7 +54,7 @@ class Event:
             eventName = self.event_storage.pop(0)
 
             eventInstance = self.simCore.onto[eventName]
-            if eventInstance == None:
+            if eventInstance is None:
                 eventInstance = self.simCore.central.event_class(
                     Label.Event.value + str(self.simCore.event_id)
                 )
@@ -168,7 +168,7 @@ class Event:
                     next_event = event
 
         # print(next_event.time,next_event.type)
-        if next_event != None:
+        if next_event is not None:
             return next_event, next_event.type
         else:
             return None, None
@@ -319,7 +319,7 @@ class Event:
             logger_event_label = Label.LoggerEvent.value + event_label.replace(
                 Label.Event.value, ""
             )
-            if self.first_run == True:
+            if self.first_run is True:
                 eventInstance = self.simCore.central.event_of_logger_class(
                     logger_event_label
                 )
@@ -336,7 +336,7 @@ class Event:
             eventInstance.time_diff_logger = event_onto.time_diff
             eventInstance.type_logger = event_onto.type
             eventInstance.additional_type_logger = event_onto.additional_type
-            if self.first_run == False:
+            if self.first_run is False:
                 if old_event_instance_type in self.property_dict_logger.keys():
                     for prop_name in self.property_dict_logger[old_event_instance_type]:
                         self.removeProperties_EventLogger(prop_name, eventInstance)

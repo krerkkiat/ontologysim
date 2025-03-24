@@ -110,7 +110,7 @@ class OrderReleaseController:
                     task_list[0][0], number_of_products, time
                 )
 
-            elif self.min_next_task != None and createNewEvaluationEvent:
+            elif self.min_next_task is not None and createNewEvaluationEvent:
                 event_onto = self.orderRelease.simCore.event.createEvent(
                     self.min_next_task.start_time, Evaluate_Enum.OrderRelease, 0
                 )
@@ -133,7 +133,7 @@ class OrderReleaseController:
         time = self.orderRelease.simCore.getCurrentTimestep()
         # print("number free position",number_free_position)
 
-        if self.min_next_task != None:
+        if self.min_next_task is not None:
             if self.min_next_task.start_time > time:
                 createNewEvaluationEvent = True
             else:
@@ -159,7 +159,7 @@ class OrderReleaseController:
             for task in self.orderRelease.simCore.central.task_list:
                 if task.todo_number > 0 and task.task_type == "logging":
                     if task.start_time > time and not createNewEvaluationEvent:
-                        if self.min_next_task == None:
+                        if self.min_next_task is None:
                             self.min_next_task = task
                         elif self.min_next_task.start_time > task.start_time:
                             self.min_next_task = task
@@ -176,10 +176,10 @@ class OrderReleaseController:
             #             self.orderRelease.simCore.central.task_list if
             #             task.todo_number > 0 and task.task_type == "logging"]
 
-            if self.orderRelease.simCore.logger.start_logging == False:
+            if self.orderRelease.simCore.logger.start_logging is False:
                 self.orderRelease.simCore.logger.setStartLogger(time)
 
-            if len(task_list) == 0 and self.min_next_task == None:
+            if len(task_list) == 0 and self.min_next_task is None:
                 self.orderRelease.simCore.central.simInstance.allLoggingTasksFinished = True
             elif len(task_list) > 0:
                 self.min_next_task = None

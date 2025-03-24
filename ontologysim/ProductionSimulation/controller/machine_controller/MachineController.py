@@ -133,7 +133,7 @@ class MachineController:
                         )
                         if len(position_onto_list) > 0:
                             position_onto = position_onto_list.__getitem__(0)
-                    if position_onto == None:
+                    if position_onto is None:
                         raise Exception(
                             str(queue)
                             + ", "

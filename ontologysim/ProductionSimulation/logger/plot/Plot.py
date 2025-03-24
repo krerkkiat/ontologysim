@@ -143,20 +143,20 @@ class Plot:
                 pass
             else:
                 if setting["kpi"] in self.number_time_kpis:
-                    if number_time_axis == None and number_of_axis == 0:
+                    if number_time_axis is None and number_of_axis == 0:
                         number_time_axis = self.fig.add_subplot(111)
                         number_time_axis.grid()
-                    elif number_time_axis == None:
+                    elif number_time_axis is None:
                         number_time_axis = percentage_axis.twinx()
                     self.logger_data[-1]["axis"] = number_time_axis
                     self.logger_data[-1]["y_type"] = "time"
 
                 elif setting["kpi"] in self.percentage_kpis:
-                    if percentage_axis == None and number_of_axis == 0:
+                    if percentage_axis is None and number_of_axis == 0:
                         percentage_axis = self.fig.add_subplot(111)
                         percentage_axis.grid()
 
-                    elif percentage_axis == None:
+                    elif percentage_axis is None:
                         percentage_axis = number_time_axis.twinx()
                     self.logger_data[-1]["axis"] = percentage_axis
                     self.logger_data[-1]["y_type"] = "percentage"

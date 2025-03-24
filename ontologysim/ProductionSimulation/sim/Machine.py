@@ -102,7 +102,7 @@ class Machine:
                 if process_id == set_up["end"]:
                     end_process = process
 
-            assert start_process != None or end_process != None
+            assert start_process is not None or end_process is not None
 
             setUpInstance.has_for_start_process.append(start_process)
             setUpInstance.has_for_end_process.append(end_process)
@@ -134,7 +134,7 @@ class Machine:
         for queue_input_id in queue_input_id_list:
             queueInstance = self.simCore.onto[Label.Queue.value + str(queue_input_id)]
 
-            if queueInstance == None:
+            if queueInstance is None:
                 raise Exception("queue id is not defined " + str(queue_input_id))
             queueInstance.is_a = [self.simCore.central.inputqueue_class]
             machineInstance.has_for_input_queue.append(queueInstance)
@@ -142,7 +142,7 @@ class Machine:
         for queue_output_id in queue_output_id_list:
             queueInstance = self.simCore.onto[Label.Queue.value + str(queue_output_id)]
 
-            if queueInstance == None:
+            if queueInstance is None:
                 raise Exception("queue id is not defined " + str(queue_input_id))
             queueInstance.is_a = [self.simCore.central.outputqueue_class]
             machineInstance.has_for_output_queue.append(queueInstance)
@@ -152,7 +152,7 @@ class Machine:
                 Label.Queue.value + str(queue_standard_id)
             ]
 
-            if queueInstance == None:
+            if queueInstance is None:
                 raise Exception("queue id is not defined " + str(queue_input_id))
             queueInstance.is_a = [
                 self.simCore.central.inputqueue_class,
@@ -174,7 +174,7 @@ class Machine:
         queueInstance = self.simCore.onto[
             Label.Queue.value + str(queue_process_id_list[0])
         ]
-        if queueInstance == None:
+        if queueInstance is None:
             raise Exception("queue id is not defined " + str(queue_process_id_list))
         machineInstance.has_for_queue_process.append(queueInstance)
         queueInstance.is_a = [self.simCore.central.queue_class]
@@ -284,7 +284,7 @@ class Machine:
         for set_up in set_up_list:
             distribution = set_up.has_for_set_up_distribution.__getitem__(0)
 
-        if distribution != None:
+        if distribution is not None:
             time_diff = self.simCore.distribution.getTimefromOnto(distribution)
             time = time + time_diff
             event_onto = self.simCore.event.createEvent(
@@ -400,7 +400,7 @@ class Machine:
         product_onto_list = event_onto.has_for_product_event
         process_onto = event_onto.has_for_process_event.__getitem__(0)
 
-        if process_onto.is_prodprocess_of_process[0].combine_process == False:
+        if process_onto.is_prodprocess_of_process[0].combine_process is False:
             self.simCore.logger.evaluatedInformations(
                 [
                     {

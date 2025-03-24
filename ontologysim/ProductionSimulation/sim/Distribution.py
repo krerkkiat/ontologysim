@@ -158,7 +158,7 @@ class Distribution:
             distributionInstance.max_value = max
             distributionInstance.min_value = min
 
-        if distributionInstance == None:
+        if distributionInstance is None:
             raise Exception("normal error")
         distributionInstance.distribution_type = distribution_dict["type"]
         distributionInstance.seed = self.transform_name_to_int(onto_name)

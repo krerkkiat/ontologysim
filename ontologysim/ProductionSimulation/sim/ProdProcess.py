@@ -47,7 +47,7 @@ class ProdProcess:
                         dict_adjusted, prod_processInstance.name
                     )
                     break
-            if distributionInstance == None:
+            if distributionInstance is None:
                 distributionInstance = self.simCore.distribution.createDistribution(
                     process_config["default"], prod_processInstance.name
                 )

@@ -22,8 +22,8 @@ class KPIAction(APIAction):
         """
         self.action()
 
-        if self.flaskApp.simCore != None:
-            if self.flaskApp.simCore != None:
+        if self.flaskApp.simCore is not None:
+            if self.flaskApp.simCore is not None:
                 time = self.flaskApp.simCore.getCurrentTimestep()
                 machineSummary = self.flaskApp.simCore.logger.machineLogger.finale_evaluate_summary_api(
                     time

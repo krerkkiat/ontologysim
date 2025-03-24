@@ -1,4 +1,5 @@
 import logging
+import sys
 
 from owlready2 import *
 
@@ -179,7 +180,7 @@ class SimCore:
             sys.exit()
 
         # self.event.getNumberOfEvents()
-        if event_onto == None:
+        if event_onto is None:
             self.run = False
             return
 
@@ -237,7 +238,7 @@ class SimCore:
 
         self.logger.plot.update_plot(self.getCurrentTimestep())
 
-        if self.end == True:
+        if self.end is True:
             self.run = False
 
         return event_list

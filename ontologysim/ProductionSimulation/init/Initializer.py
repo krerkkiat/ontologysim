@@ -282,14 +282,14 @@ class Initializer:
 
         self.s.prod_process.ini_dict(process_config_list)
         for queue_dict in queue_dict_list:
-            if self.s.onto[Label.Queue.value + str(queue_dict["queue_id"])] != None:
+            if self.s.onto[Label.Queue.value + str(queue_dict["queue_id"])] is not None:
                 raise Exception("queue id not unique " + str(queue_dict["queue_id"]))
             self.s.queue.createQueue(queue_dict, Label.Queue.value)
 
         for queue_process_dict in queue_process_dict_list:
             if (
                 self.s.onto[Label.Queue.value + str(queue_process_dict["queue_id"])]
-                != None
+                is not None
             ):
                 raise Exception(
                     "queue id not unique " + str(queue_process_dict["queue_id"])
@@ -299,7 +299,7 @@ class Initializer:
         for machine_dict in machine_dict_list:
             if (
                 self.s.onto[Label.Machine.value + str(machine_dict["machine_id"])]
-                != None
+                is not None
             ):
                 raise Exception(
                     "machine id not unique " + str(machine_dict["machien_id"])
@@ -684,7 +684,7 @@ class Initializer:
 
         self.s.logger.create_output()
 
-        if self.s.data_base != None:
+        if self.s.data_base is not None:
             self.s.data_base.close()
 
         print()

@@ -71,7 +71,7 @@ class LoggerGenerator(Generator):
         :return: dict
         """
         config = {}
-        if kpiConfig["log_time"] == True:
+        if kpiConfig["log_time"] is True:
             config["plot"] = True if self.randomDistribution.random() > 0.7 else False
         else:
             config["plot"] = False

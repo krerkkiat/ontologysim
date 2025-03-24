@@ -294,7 +294,7 @@ class Logger:
         :param dict_list: [dict{},..]
         :return:
         """
-        if self.start_logging == True:
+        if self.start_logging is True:
             for dict_element in dict_list:
                 event_type = dict_element["type"]
 

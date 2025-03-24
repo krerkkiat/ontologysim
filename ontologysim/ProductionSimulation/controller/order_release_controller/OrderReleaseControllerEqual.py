@@ -53,11 +53,11 @@ class OrderReleaseControllerEqual(OrderReleaseController):
                     task_list[0][0], number_of_products, time
                 )
 
-                if self.min_next_task != None:
+                if self.min_next_task is not None:
                     if self.min_next_task.start_time < time:
                         self.min_next_task = None
 
-            elif self.min_next_task != None and createNewEvaluationEvent:
+            elif self.min_next_task is not None and createNewEvaluationEvent:
                 event_onto = self.orderRelease.simCore.event.createEvent(
                     self.min_next_task.start_time, Evaluate_Enum.OrderRelease, 0
                 )

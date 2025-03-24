@@ -149,7 +149,7 @@ class EventUtilities:
             task_name = event_onto.has_for_task_event.__getitem__(0).name
             number_of_parts = event_onto.number_of_products
 
-        if event_onto.additional_type == None:
+        if event_onto.additional_type is None:
             additional_type = ""
         else:
             additional_type = event_onto.additional_type
@@ -371,7 +371,7 @@ class EventUtilities:
             task_name = event_onto.has_for_task_event_of_logger.__getitem__(0).name
             number_of_parts = event_onto.number_of_products_logger
 
-        if event_onto.additional_type_logger == None:
+        if event_onto.additional_type_logger is None:
             additional_type = ""
         else:
             additional_type = event_onto.additional_type_logger

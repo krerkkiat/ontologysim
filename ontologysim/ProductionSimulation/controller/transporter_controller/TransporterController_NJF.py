@@ -121,7 +121,7 @@ class TransporterController_NJF(TransporterController.TransporterController):
                                         break
         # Deadlock detection
         if len(event_list) == 0:
-            if self.transport.getFreePosition(transport_onto) == None:
+            if self.transport.getFreePosition(transport_onto) is None:
                 currentTime = self.transport.simCore.getCurrentTimestep()
                 for queue in queue_list:
                     for position in queue.has_for_position:
@@ -261,7 +261,7 @@ class TransporterController_NJF(TransporterController.TransporterController):
             type = element[-1]
             queue_onto = element[-2]
             if type == type_on:
-                if queue_onto != None:
+                if queue_onto is not None:
                     if (
                         queue_onto.name
                         == self.transport.simCore.central.end_queue_list[0].name
@@ -383,7 +383,7 @@ class TransporterController_NJF(TransporterController.TransporterController):
                 else:
                     raise Exception("Deadlock queue not found (NJF Controller)")
 
-            if position_onto != None and product_onto != None:
+            if position_onto is not None and product_onto is not None:
                 time = self.transport.simCore.queue.create_change(
                     product_onto,
                     position_onto,

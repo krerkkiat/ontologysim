@@ -22,7 +22,7 @@ class ProductionDict:
         response_dict[Label.Transporter.name] = simCore.transport.transformToDict("all")
 
         for key, value in response_dict[Label.Transporter.name].items():
-            if stateStorage != None:
+            if stateStorage is not None:
                 if key in stateStorage.transporter.keys():
                     response_dict[Label.Transporter.name][key]["state"] = (
                         stateStorage.transporter[key]
@@ -52,7 +52,7 @@ class ProductionDict:
         response_dict[Label.Machine.name] = simCore.machine.transformToDict("all")
 
         for key, value in response_dict[Label.Machine.name].items():
-            if stateStorage != None:
+            if stateStorage is not None:
                 if key in stateStorage.machine.keys():
                     response_dict[Label.Machine.name][key]["state"] = (
                         stateStorage.machine[key]
