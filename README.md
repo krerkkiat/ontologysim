@@ -23,7 +23,7 @@ pip
 A stable version of Production simulation is periodically updated on pyPi and installed as follows:
 
 ````bash
-pip install ontologysim
+pip install 'ontologysim@git+https://github.com/krerkkiat/ontologysim.git'
 ````
 
 github
@@ -32,7 +32,7 @@ github
 A stable version of Production simulation is periodically updated on the master and installed as follows:
 
 ````bash
-git clone https://github.com/larsKiefer/ontologysim
+git clone https://github.com/krerkkiat/ontologysim.git
 cd ontologysim
 pip install -e .
 ````
@@ -47,12 +47,13 @@ Go to the ``/example/Main.py`` and run this python file.
 Flask
 ==============
 
-To start the Flask server, create an empty database file at ``ontologysim/ProductionSimulation/database/SimulationRun.db`` (with ``touch`` command or ``New-Item`` command), then run
+To start the Flask server, create an empty database file at ``ontologysim/ProductionSimulation/database/SimulationRun.db`` (with the ``touch`` command or the ``New-Item`` command), then run
 
 ````bash
-py ontologysim/Flask/FlaskMain.py
+python -m ontologysim serve
 ````
 
+You can then visit `http://localhost:5000/api/docs` for the API documentation.
 
 Problem handling
 ==================

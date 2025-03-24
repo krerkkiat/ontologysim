@@ -201,12 +201,12 @@ class FlaskAppWrapper(object):
 
         self.app.register_blueprint(swaggerui_blueprint)
 
-    def run(self):
+    def run(self, host="0.0.0.0", port=5000, debug=True, use_debugger=True, use_reloader=True):
         """
 
         starting flask server
         """
-        self.app.run(debug=True, host="0.0.0.0", use_debugger=True, use_reloader=True)
+        self.app.run(host=host, port=port, debug=debug, use_debugger=use_debugger, use_reloader=use_reloader)
 
     def add_endpoint_get(self, endpoint=None, endpoint_name=None, handler=None):
         """

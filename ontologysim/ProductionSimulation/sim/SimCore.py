@@ -125,8 +125,7 @@ class SimCore:
 
         :param path:
         """
-        pass
-        # self.onto.save(file=PathTest.check_dir_path(path), format="rdfxml")
+        self.onto.save(file=path, format="rdfxml")
 
     def createSimInstance(self):
         """
