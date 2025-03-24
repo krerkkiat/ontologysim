@@ -34,7 +34,7 @@ A stable version of Production simulation is periodically updated on the master 
 ````bash
 git clone https://github.com/larsKiefer/ontologysim
 cd ontologysim
-pip3 install -r requirements.txt
+pip install -e .
 ````
 
 
@@ -47,7 +47,7 @@ Go to the ``/example/Main.py`` and run this python file.
 Flask
 ==============
 
-to start the Flask server run:
+To start the Flask server, create an empty database file at ``ontologysim/ProductionSimulation/database/SimulationRun.db`` (with ``touch`` command or ``New-Item`` command), then run
 
 ````bash
 py ontologysim/Flask/FlaskMain.py

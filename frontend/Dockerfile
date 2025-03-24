@@ -1,5 +1,5 @@
 # pull official base image
-FROM node:16.13.2-alpine3.14
+FROM node:16.13.2-alpine3.14 as builder
 
 # set working directory
 WORKDIR /app
@@ -21,5 +21,10 @@ RUN npm install
 # add app
 COPY . ./
 
-# start app
-CMD ["npm", "start"]
+# Build the app
+RUN npm run build
+
+# The final image is just the built app with a static web server.
+# In this case, static-web-server, you could use Nginx, Apache, etc.
+FROM ghcr.io/static-web-server/static-web-server:2-alpine
+COPY --from=builder /app/build /var/public/

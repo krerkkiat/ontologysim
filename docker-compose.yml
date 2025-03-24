@@ -1,7 +1,7 @@
 version: "3.7"
 
 services:
-  ontologysim:
+  ontologysim_api:
     container_name: onto_be
     build:
       context: .
@@ -10,3 +10,11 @@ services:
       - '.:/app'
     ports:
       - "5000:5000"
+
+  frontend:
+    container_name: onto_fe
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"

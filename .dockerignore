@@ -1,4 +1,7 @@
+# Ignore virtual environments.
 venv
+.venv
+.venv-wsl
 doc
 docs
 .git
