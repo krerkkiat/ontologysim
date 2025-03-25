@@ -239,6 +239,8 @@ class Initializer:
         """
         """ -------------------------------------------SimCore initialization-------------------------------------------------"""
 
+        # NOTE(KC): No idea why we are saving the ontology. Originally, the method is empty (having just pass)
+        # with the actual saving procedure commented out.
         self.s.save_ontology()
         self.s.createOWLStructure()
         self.s.central.init_class()
