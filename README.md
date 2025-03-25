@@ -29,12 +29,13 @@ pip install 'ontologysim@git+https://github.com/krerkkiat/ontologysim.git'
 github
 -----------
 
-A stable version of Production simulation is periodically updated on the master and installed as follows:
+An unstable version of Production simulation is periodically updated on the main branch and
+can be installed as follows:
 
 ````bash
 git clone https://github.com/krerkkiat/ontologysim.git
 cd ontologysim
-pip install -e .
+uv sync
 ````
 
 

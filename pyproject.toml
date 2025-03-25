@@ -1,0 +1,95 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ontologysim"
+authors = [
+    {name = "Lars Kiefer", email = "lars.kiefer@alumni.kit.edu"},
+    {name = "Marvin Carl May"}
+]
+description = ""
+readme = "README.md"
+requires-python = ">=3.9"
+keywords = ["ontology", "manufacturing", "simulation"]
+license = { file = "LICENSE" }
+version = "1.0.6"
+classifiers = [
+    "Natural Language :: English",
+    "Topic :: Scientific/Engineering",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12"
+]
+dependencies = [
+    'importlib-metadata; python_version>="3.9"',
+    "rdflib == 7.0.0",
+    "numpy ~= 1.26.1",
+    "pandas ~= 2.1.2",
+    "requests == 2.31.0",
+    "Cython == 3.0.5",
+    "pyodbc == 5.0.1",
+    "owlready2 == 0.44",
+    "matplotlib ~= 3.8.1",
+    "flask",
+    "redis",
+    "flask_cors",
+    "flask_swagger_ui",
+    "SQLAlchemy",
+    "flask_sqlalchemy",
+    "Deprecated",
+    "recommonmark",
+    "python-decouple == 3.8",
+    "jwt",
+    "pyjwt",
+    "bcrypt",
+    "sqlalchemy_utils",
+]
+
+[project.optional-dependencies]
+dev = ["mypy", "ruff", "tox", "pytest", "pytest-cov"]
+doc = ["sphinx_rtd_theme", "sphinx-markdown-tables"]
+
+[project.urls]
+Homepage = "https://github.com/krerkkiat/ontologysim"
+Repository = "https://github.com/krerkkiat/ontologysim.git"
+Issues = "https://github.com/krerkkiat/ontologysim/issues"
+
+[tool.setuptools.packages.find]
+include = ["ontologysim*"]
+
+[tool.setuptools.package-data]
+"*" = ["*.ini"]
+
+[tool.ruff]
+src = ["ontologysim"]
+fix = false
+show-fixes = true
+output-format = "full"
+
+[tool.ruff.lint]
+select = [
+    "B",   # flake8-bugbear
+    "E",   # pycodestyle error
+    "F",   # pyflakes
+    "I",   # isort
+    "RUF", # ruff-specific rules
+    "UP",  # pyupgrade
+    "W",   # pycodestyle warning
+    "T10", # flake8-debugger e.g. breakpoint() is presence
+]
+ignore = [
+    "E501"  # Line too long
+]
+
+[tool.ruff.lint.isort]
+# So the imports in tests/ still sort the same way.
+known-first-party = ["ontologysim"]
+
+[tool.mypy]
+files = ["ontologysim"]
+show_error_codes = true
+pretty = true
+strict = true
