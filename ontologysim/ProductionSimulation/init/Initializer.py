@@ -261,7 +261,7 @@ class Initializer:
         process_list = sim_conf.configs["Process"]["settings"]
 
         for process_config in process_list:
-            if not "merged" in process_config.keys():
+            if "merged" not in process_config.keys():
                 self.s.process.createProcess(process_config)
             else:
                 self.s.merge_process.createProcess(process_config)

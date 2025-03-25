@@ -74,7 +74,7 @@ class Plot:
         number_of_axis = 0
 
         plt.ion()
-        matplotlib.use("TkAgg")
+        # matplotlib.use("TkAgg")
         self.fig = plt.figure(figsize=(5, 4), dpi=100)
         self.fig.suptitle("KPI plot", fontsize=16)
 
