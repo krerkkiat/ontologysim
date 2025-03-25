@@ -28,11 +28,6 @@ def main() -> None:
 
 
         from ontologysim.Flask.FlaskApp import FlaskAppWrapper
-        # if not set as path variable
-        # owlready2.owlready2.JAVA_EXE = java path
-
-        # path to example
-
         from ontologysim.ProductionSimulation.init.Initializer import Initializer
 
         init = Initializer(current_dir)

@@ -31,7 +31,5 @@ class OwlGenerator(Generator):
         :return: dict
         """
         config = {}
-        path = "/usr/bin/java"
-        config["java_path"] = path
         config["owl_save_path"] = []
         return config
