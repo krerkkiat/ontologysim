@@ -63,8 +63,7 @@ Owlready2.0
 ---------------
 **Java Path**
 
-* to use owlready correctly, your java path needs to be set in the ``owl_config.ini`` 
-    * [owl introduction](../configs/owl/owl_config)
+Please add the ``bin`` folder of the JRE (or JDK) to the ``PATH`` environment variable.
 
 **Java Memory**
 

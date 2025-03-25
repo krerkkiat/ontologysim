@@ -4,6 +4,11 @@ import pathlib
 import sys
 
 
+# FIXME(KC): Remove this if possible. So far it seems to only be used for
+# - Load users' custom classes from the example folder. We want to use importlib.import_module instead.
+# - Locate the built-in data files. The base folder can be derived from __file__ instead.
+#
+# The difficulty is that, this class is used everywhere.
 class PathTest:
     """
     Tests the given paths

@@ -51,6 +51,8 @@ class Init(object):
                         helper = float(self.config[sec][opt])
                     except ValueError:
                         try:
+                            # FIXME(KC): If we are evaluating the string into a Python's value,
+                            # we might as well use TOML or another data format.
                             helper = ast.literal_eval(self.config[sec][opt])
                         except ValueError:
                             helper = str(self.config[sec][opt])

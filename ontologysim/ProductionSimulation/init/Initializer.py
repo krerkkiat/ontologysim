@@ -92,6 +92,11 @@ from ontologysim.ProductionSimulation.logger.EventLogger import EventLogger
 
 # add new lines here add new lines of code
 try:
+    # FIXME(KC): We do not really want the user to edit this file
+    # when they are adding a custom class. It is worse when they install this library
+    # via pypi and have to edit this file in the site-packages.
+    #
+    # Dynamic module import with importlib.import_module could be a solution?
     from example.controller.MachineController_FIFO2 import MachineController_FIFO2
 except:
     pass
@@ -786,6 +791,12 @@ class Initializer:
             transport_controller_dict[transporter_controller_string["type"]], add
         )
 
+        # FIXME(KC): Instead of trying to find all possible sub-classes. Let the user specify
+        # the module for us to load along with the name. Then we check if the loaded name
+        # is a class and whether or not it is a sub-class of MachineController.
+        #
+        # Similarly, the same concept should be applied to other classes (e.g.
+        # TransporterController, etc.).
         machine_controller_dict = SubClassUtility.get_all_subclasses_dict(
             MachineController.MachineController
         )
