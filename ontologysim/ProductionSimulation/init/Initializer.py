@@ -55,9 +55,6 @@ from ontologysim.ProductionSimulation.sim.RepairService.RepairServiceTransporter
 )
 from ontologysim.ProductionSimulation.utilities import import_class
 from ontologysim.ProductionSimulation.utilities.path_utilities import sanitize_path
-from ontologysim.ProductionSimulation.utilities.sub_class_utilities import (
-    SubClassUtility,
-)
 
 from ontologysim.ProductionSimulation.sim.Enum import Label
 
@@ -91,17 +88,6 @@ from ontologysim.ProductionSimulation.utilities import init_utilities
 import datetime
 
 from ontologysim.ProductionSimulation.logger.EventLogger import EventLogger
-
-# add new lines here add new lines of code
-try:
-    # FIXME(KC): We do not really want the user to edit this file
-    # when they are adding a custom class. It is worse when they install this library
-    # via pypi and have to edit this file in the site-packages.
-    #
-    # Dynamic module import with importlib.import_module could be a solution?
-    from example.controller.MachineController_FIFO2 import MachineController_FIFO2
-except:
-    pass
 
 
 class Initializer:
@@ -501,16 +487,11 @@ class Initializer:
 
         :param python_class:
         """
-        if (
-            python_class in SubClassUtility.get_all_subclasses(ServiceControllerMachine)
-            or python_class == ServiceControllerMachine
-        ):
-            service_controller = python_class()
-            self.s.repair_service_machine.addRepairServiceController(service_controller)
-        else:
-            raise Exception(
-                str(python_class) + ": is not a subclass of MachineController"
-            )
+        if not issubclass(python_class, ServiceControllerMachine):
+            raise TypeError(f"'{python_class}' is not a subclass of ServiceControllerMachine.")
+
+        service_controller = python_class()
+        self.s.repair_service_machine.addRepairServiceController(service_controller)
 
     def setServiceControllerTransporter(self, python_class):
         """
@@ -519,19 +500,12 @@ class Initializer:
 
         :param python_class:
         """
-        if (
-            python_class
-            in SubClassUtility.get_all_subclasses(ServiceControllerTransporter)
-            or python_class == ServiceControllerTransporter
-        ):
-            service_controller = python_class()
-            self.s.repair_service_transporter.addRepairServiceController(
-                service_controller
-            )
-        else:
-            raise Exception(
-                str(python_class) + ": is not a subclass of MachineController"
-            )
+        if not issubclass(python_class, ServiceControllerTransporter):
+            raise TypeError(f"'{python_class}' is not a subclass of ServiceControllerTransporter.")
+        service_controller = python_class()
+        self.s.repair_service_transporter.addRepairServiceController(
+            service_controller
+        )
 
     def setMachineController(self, python_class, controller_dict={}):
         """
@@ -754,13 +728,6 @@ class Initializer:
 
         transporter_controller_class = import_class(transporter_controller_string["type"], TransporterController.TransporterController)
         self.setTransporterController(transporter_controller_class, hybrid_controller_configs)
-
-        # FIXME(KC): Instead of trying to find all possible sub-classes. Let the user specify
-        # the module for us to load along with the name. Then we check if the loaded name
-        # is a class and whether or not it is a sub-class of MachineController.
-        #
-        # Similarly, the same concept should be applied to other classes (e.g.
-        # TransporterController, etc.).
 
         hybrid_controller_configs = {}
         if len(machine_controller_string["add"]) > 0:

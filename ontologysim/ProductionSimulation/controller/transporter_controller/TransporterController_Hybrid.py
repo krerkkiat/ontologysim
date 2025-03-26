@@ -4,9 +4,6 @@ from ontologysim.ProductionSimulation.controller.transporter_controller.Transpor
     TransporterController,
 )
 from ontologysim.ProductionSimulation.sim.Enum import Queue_Enum, Label, Evaluate_Enum
-from ontologysim.ProductionSimulation.utilities.sub_class_utilities import (
-    SubClassUtility,
-)
 from ontologysim.ProductionSimulation.controller.transporter_controller.TransporterController_Enum import (
     Queue_Selection,
 )

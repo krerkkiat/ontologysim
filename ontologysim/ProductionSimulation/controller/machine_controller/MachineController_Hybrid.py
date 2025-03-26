@@ -8,9 +8,6 @@ from ontologysim.ProductionSimulation.controller.machine_controller.MachineContr
 )
 from ontologysim.ProductionSimulation.sim.Enum import Label, Queue_Enum, Evaluate_Enum
 from ontologysim.ProductionSimulation.sim.Machine import Machine
-from ontologysim.ProductionSimulation.utilities.sub_class_utilities import (
-    SubClassUtility,
-)
 
 
 class MachineController_Hybrid(MachineController):
