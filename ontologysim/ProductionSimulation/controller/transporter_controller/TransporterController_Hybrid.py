@@ -1,6 +1,6 @@
 import operator
 
-from ontologysim.ProductionSimulation.controller.transporter_controller import (
+from ontologysim.ProductionSimulation.controller.transporter_controller.TransporterController import (
     TransporterController,
 )
 from ontologysim.ProductionSimulation.sim.Enum import Queue_Enum, Label, Evaluate_Enum
@@ -12,7 +12,7 @@ from ontologysim.ProductionSimulation.controller.transporter_controller.Transpor
 )
 
 
-class TransporterController_Hybrid(TransporterController.TransporterController):
+class TransporterController_Hybrid(TransporterController):
     """
     Combines multiple transporter controller strategies
     """
@@ -31,23 +31,15 @@ class TransporterController_Hybrid(TransporterController.TransporterController):
         :param controller_dict: {Klass:int [0:1]}
         """
         for python_class, v in controller_dict.items():
-            if (
-                python_class
-                in SubClassUtility.get_all_subclasses(
-                    TransporterController.TransporterController
-                )
-                or python_class == TransporterController
-            ):
-                if v > 1 or v < 0:
-                    raise Exception(str(v) + " out of range")
-                self.controller_parameter_dict[python_class.__name__] = v
-                python_instance = python_class()
-                python_instance.transport = self.transport
-                self.controller_instance_dict[python_class.__name__] = python_instance
-            else:
-                raise Exception(
-                    str(python_class) + " not subclass of MachineController"
-                )
+            if not issubclass(python_class, TransporterController):
+                raise TypeError(f"'{python_class}' is not a subclass of TransporterController.")
+
+            if v > 1 or v < 0:
+                raise ValueError(str(v) + " out of range")
+            self.controller_parameter_dict[python_class.__name__] = v
+            python_instance = python_class()
+            python_instance.transport = self.transport
+            self.controller_instance_dict[python_class.__name__] = python_instance
 
     def combine_products(self, transport_onto):
         """

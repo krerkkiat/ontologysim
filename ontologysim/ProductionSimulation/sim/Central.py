@@ -1,3 +1,5 @@
+import re
+
 from owlready2 import *
 
 from ontologysim.ProductionSimulation.sim.Enum import Label
@@ -160,14 +162,14 @@ class Central:
             queue
             for queue in self.queue_list
             if len(queue.is_transp_queue_of) == 0
-            and not (Label.EndQueue.value in queue.name)
+            and (Label.EndQueue.value not in queue.name)
         ]
 
         self.queue_list_not_transport_end_process = [
             queue
             for queue in self.queue_list
             if len(queue.is_transp_queue_of) == 0
-            and not (Label.EndQueue.value in queue.name)
+            and (Label.EndQueue.value not in queue.name)
             and len(queue.is_for_queue_process_of) == 0
         ]
         self.machine_list = [

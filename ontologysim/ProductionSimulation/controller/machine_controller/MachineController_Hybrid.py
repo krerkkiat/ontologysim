@@ -30,20 +30,15 @@ class MachineController_Hybrid(MachineController):
         :param controller_dict: {Python class:int [0:1]}
         """
         for python_class, v in controller_dict.items():
-            if (
-                python_class in SubClassUtility.get_all_subclasses(MachineController)
-                or python_class == MachineController
-            ):
-                if v > 1 or v < 0:
-                    raise Exception(str(v) + " out of range")
-                self.controller_parameter_dict[python_class.__name__] = v
-                python_instance = python_class()
-                python_instance.machine = self.machine
-                self.controller_instance_dict[python_class.__name__] = python_instance
-            else:
-                raise Exception(
-                    str(python_class) + " not subclass of MachineController"
-                )
+            if not issubclass(python_class, MachineController):
+                raise TypeError(f"'{python_class}' is not a subclass of MachineController.")
+
+            if v > 1 or v < 0:
+                raise ValueError(str(v) + " out of range")
+            self.controller_parameter_dict[python_class.__name__] = v
+            python_instance = python_class()
+            python_instance.machine = self.machine
+            self.controller_instance_dict[python_class.__name__] = python_instance
 
     def sort_products(self, machine_onto):
         """

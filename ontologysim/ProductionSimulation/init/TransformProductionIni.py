@@ -18,7 +18,7 @@ class TransformProductionIni:
         """
         self.simCore = simCore
 
-    def transform_ini(self, production_ini={}):
+    def transform_ini(self, production_ini):
         """
         main method, which transform the config-file
 
@@ -28,8 +28,8 @@ class TransformProductionIni:
         output_ini = {}
         type = production_ini["Type"]["type"]
 
-        if str(type) != "lvl1" and str(type) != "lvl2" and str(type) != "lvl3":
-            raise Exception("type not defined", type)
+        if type != "lvl1" and type != "lvl2" and type != "lvl3":
+            raise ValueError(f"Unknown level of configuration: '{type}'. Possible values are 'lvl1', 'lvl2', and 'lvl3'.")
 
         defaultValuesConfig = {}
         default_value_path = Path(__file__).with_name("defaultValue.ini")
@@ -294,7 +294,7 @@ class TransformProductionIni:
             return old_start_queue_ini_dict
         elif type == "lvl1":
             for setting in old_start_queue_ini_dict["settings"]:
-                if not "queue_id" in setting.keys():
+                if "queue_id" not in setting.keys():
                     raise Exception(str(setting) + " not correct defined")
             return old_start_queue_ini_dict
         elif type == "lvl3":
@@ -314,7 +314,7 @@ class TransformProductionIni:
             return old_end_queue_ini_dict
         elif type == "lvl1":
             for setting in old_end_queue_ini_dict["settings"]:
-                if not "queue_id" in setting.keys():
+                if "queue_id" not in setting.keys():
                     raise Exception(str(setting) + " not correct defined")
             return old_end_queue_ini_dict
         elif type == "lvl3":

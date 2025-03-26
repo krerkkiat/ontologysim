@@ -1,6 +1,7 @@
 from ontologysim.ProductionSimulation.sim.Enum import Label
 
-
+# NOTE(KC): Is this ProductProcess or ProductionProcess?
+# Why would its name is the only one that got shorten when the other are not?
 class ProdProcess:
     def __init__(self, simCore):
         """ """

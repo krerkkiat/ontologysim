@@ -53,6 +53,7 @@ from ontologysim.ProductionSimulation.sim.RepairService.RepairServiceMachine imp
 from ontologysim.ProductionSimulation.sim.RepairService.RepairServiceTransporter import (
     RepairServiceTransporter,
 )
+from ontologysim.ProductionSimulation.utilities import import_class
 from ontologysim.ProductionSimulation.utilities.path_utilities import sanitize_path
 from ontologysim.ProductionSimulation.utilities.sub_class_utilities import (
     SubClassUtility,
@@ -117,7 +118,7 @@ class Initializer:
         """
         logging.basicConfig(filename="run.log", level=logging.DEBUG)
 
-        self.s = None
+        self.s: SimCore | None = None
 
     def initSimCore(self):
         """
@@ -539,18 +540,12 @@ class Initializer:
 
         :param python_class:
         """
-        if (
-            python_class
-            in SubClassUtility.get_all_subclasses(MachineController.MachineController)
-            or python_class == MachineController.MachineController
-        ):
-            m_controller = python_class()
-            self.s.machine.addMachineController(m_controller)
-            self.s.machine.machineController.addControllerDict(controller_dict)
-        else:
-            raise Exception(
-                str(python_class) + ": is not a subclass of MachineController"
-            )
+        if not issubclass(python_class, MachineController.MachineController):
+            raise TypeError(f"'{python_class}' is not a subclass of MachineController.")
+
+        m_controller = python_class()
+        self.s.machine.addMachineController(m_controller)
+        self.s.machine.machineController.addControllerDict(controller_dict)
 
     def setOrderReleaseController(self, python_class):
         """
@@ -559,17 +554,11 @@ class Initializer:
 
         :param python_class:
         """
-        if (
-            python_class
-            in SubClassUtility.get_all_subclasses(
-                OrderReleaseController.OrderReleaseController
-            )
-            or python_class == OrderReleaseController.OrderReleaseController
-        ):
-            order_release_controller = python_class()
-            self.s.order_release.addOrderReleaseController(order_release_controller)
-        else:
-            raise Exception(str(python_class) + " not found")
+        if not issubclass(python_class, OrderReleaseController.OrderReleaseController):
+            raise TypeError(f"'{python_class}' is not a subclass of OrderReleaseController.")
+
+        order_release_controller = python_class()
+        self.s.order_release.addOrderReleaseController(order_release_controller)
 
     def setTransporterController(self, python_class, controller_dict={}):
         """
@@ -579,19 +568,12 @@ class Initializer:
         :param python_class:
         :param controller_dict: dict
         """
+        if not issubclass(python_class, TransporterController.TransporterController):
+            raise TypeError(f"'{python_class}' is not a subclass of TransporterController.")
 
-        if (
-            python_class
-            in SubClassUtility.get_all_subclasses(
-                TransporterController.TransporterController
-            )
-            or python_class == TransporterController.TransporterController
-        ):
-            transportController = python_class()
-            self.s.transport.addTransportController(transportController)
-            self.s.transport.transportController.addControllerDict(controller_dict)
-        else:
-            raise Exception(str(python_class) + " not found")
+        transportController = python_class()
+        self.s.transport.addTransportController(transportController)
+        self.s.transport.transportController.addControllerDict(controller_dict)
 
     def setFillLevel(self, fill_level):
         """
@@ -740,6 +722,7 @@ class Initializer:
         :param path:
         """
 
+        # NOTE(KC): They are not strings.
         machine_controller_string = contoller_conf.configs["Controller"]["machine"]
         transporter_controller_string = contoller_conf.configs["Controller"][
             "transporter"
@@ -754,43 +737,23 @@ class Initializer:
             "service_transporter"
         ]
 
-        order_release_controller_dict = SubClassUtility.get_all_subclasses_dict(
-            OrderReleaseController.OrderReleaseController
-        )
-
-        self.setOrderReleaseController(
-            order_release_controller_dict[order_release_controller_string["type"]]
-        )
+        order_release_controller_class = import_class(order_release_controller_string["type"], OrderReleaseController.OrderReleaseController)
+        self.setOrderReleaseController(order_release_controller_class)
 
         self.setFillLevel(order_release_controller_string["fillLevel"])
 
-        service_machine_controller_dict = SubClassUtility.get_all_subclasses_dict(
-            ServiceControllerMachine
-        )
-        self.setServiceControllerMachine(
-            service_machine_controller_dict[service_machine_controller_string["type"]]
-        )
+        service_machine_controller_class = import_class(service_machine_controller_string["type"], ServiceControllerMachine)
+        self.setServiceControllerMachine(service_machine_controller_class)
 
-        service_transporter_controller_dict = SubClassUtility.get_all_subclasses_dict(
-            ServiceControllerTransporter
-        )
-        self.setServiceControllerTransporter(
-            service_transporter_controller_dict[
-                service_transporter_controller_string["type"]
-            ]
-        )
+        service_transporter_controller_class = import_class(service_transporter_controller_string["type"], ServiceControllerTransporter)
+        self.setServiceControllerTransporter(service_transporter_controller_class)
 
-        transport_controller_dict = SubClassUtility.get_all_subclasses_dict(
-            TransporterController.TransporterController
-        )
-        add = {}
+        hybrid_controller_configs = {}
         if len(transporter_controller_string["add"]) > 0:
-            for k, v in transporter_controller_string["add"].items():
-                add[transport_controller_dict[k]] = v
+            hybrid_controller_configs = self._parse_hybrid_controller_config(transporter_controller_string["add"], TransporterController.TransporterController)
 
-        self.setTransporterController(
-            transport_controller_dict[transporter_controller_string["type"]], add
-        )
+        transporter_controller_class = import_class(transporter_controller_string["type"], TransporterController.TransporterController)
+        self.setTransporterController(transporter_controller_class, hybrid_controller_configs)
 
         # FIXME(KC): Instead of trying to find all possible sub-classes. Let the user specify
         # the module for us to load along with the name. Then we check if the loaded name
@@ -798,16 +761,20 @@ class Initializer:
         #
         # Similarly, the same concept should be applied to other classes (e.g.
         # TransporterController, etc.).
-        machine_controller_dict = SubClassUtility.get_all_subclasses_dict(
-            MachineController.MachineController
-        )
-        add = {}
+
+        hybrid_controller_configs = {}
         if len(machine_controller_string["add"]) > 0:
-            for k, v in machine_controller_string["add"].items():
-                add[machine_controller_dict[k]] = v
-        self.setMachineController(
-            machine_controller_dict[machine_controller_string["type"]], add
-        )
+            hybrid_controller_configs = self._parse_hybrid_controller_config(machine_controller_string["add"], MachineController.MachineController)
+
+        machine_controller_class = import_class(machine_controller_string["type"], MachineController.MachineController)
+        self.setMachineController(machine_controller_class, hybrid_controller_configs)
+
+    def _parse_hybrid_controller_config(self, configs: dict[str, float], parent: type) -> dict[type, float]:
+        hybrid_controllers = {}
+        for class_name, portion in configs.items():
+            transporter_controller_class = import_class(class_name, parent)
+            hybrid_controllers[transporter_controller_class] = portion
+        return hybrid_controllers
 
     def test_production_config(self):
         """

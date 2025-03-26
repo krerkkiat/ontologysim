@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 
 from flask import Flask
 
@@ -33,7 +34,7 @@ from ontologysim.Flask.instance.config import config_dict
 from ontologysim.ProductionSimulation.database.DataBase import DataBase
 
 
-class FlaskAppWrapper(object):
+class FlaskAppWrapper:
     """
 
     wrapper object with handels database connection
@@ -258,3 +259,27 @@ def action():
     """
     pass
     # Execute anything
+
+
+def create_app() -> FlaskAppWrapper:
+    from ontologysim.ProductionSimulation.init.Initializer import Initializer
+
+    init = Initializer()
+
+    production_config_path = Path(__file__).parent / "Assets" / "DefaultFiles" / "production_config_lvl3.ini"
+    owl_config_path = Path(__file__).parent / "Assets" / "DefaultFiles" / "owl_config.ini"
+    controller_config_path = Path(__file__).parent / "Assets" / "DefaultFiles" / "controller_config.ini"
+    logger_config_path = Path(__file__).parent / "Assets" / "DefaultFiles" / "logger_config_lvl3.ini"
+
+    app = FlaskAppWrapper(
+        "wrap",
+        init,
+        {
+            "production": production_config_path,
+            "owl": owl_config_path,
+            "controller": controller_config_path,
+            "logger": logger_config_path,
+        },
+    )
+    app.addSwaggerUI()
+    return app
