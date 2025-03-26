@@ -11,7 +11,7 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
 from sqlalchemy_utils import database_exists, create_database
 from ontologysim.ProductionSimulation.database.models.Base import Base
-from ontologysim.ProductionSimulation.utilities.path_utilities import PathTest
+from ontologysim.ProductionSimulation.utilities.path_utilities import sanitize_path
 
 SQLITE = "sqlite"
 
@@ -39,31 +39,28 @@ class DataBase:
         self.db_engine = None
         self.metadata = None
         self.session = None
+
+        dataBaseURL = dataBaseURL.strip()
+
+        # Check if the database file is within the current working directory.
+        # The other URI type will be allowed.
+        # NOTE(KC): Adding engine+sqlite will by-pass this.
+        if dataBaseURL.startswith("sqlite:///"):
+            database_filepath = dataBaseURL.replace("sqlite:///", "")
+
+            try:
+                database_filepath = sanitize_path(os.getcwd(), database_filepath)
+            except ValueError as e:
+                raise ValueError("The database file is not within the current working directory.") from e
+
+            dataBaseURL = "sqlite:///" + str(database_filepath)
+
         if createDB:
-            dataBaseURL = dataBaseURL.replace("sqlite://", "")
-            dataBaseURL = PathTest.check_dir_path(dataBaseURL)
-            if os.name == "nt":
-                dataBaseURL = "sqlite:////" + os.path.normpath(
-                    os.path.join(*(os.path.abspath(dataBaseURL).split(os.path.sep)[1:]))
-                )
-            else:
-                dataBaseURL = "sqlite:///" + dataBaseURL
             engine = db.create_engine(dataBaseURL)
             if not database_exists(engine.url):
                 create_database(engine.url)
 
         if dataBaseURL != "":
-            dataBaseURL = dataBaseURL.replace("sqlite://", "")
-
-            dataBaseURL = PathTest.check_file_path(dataBaseURL)
-
-            if os.name == "nt":
-                dataBaseURL = "sqlite:////" + os.path.normpath(
-                    os.path.join(*(os.path.abspath(dataBaseURL).split(os.path.sep)[1:]))
-                )
-
-            else:
-                dataBaseURL = "sqlite:///" + dataBaseURL
             self.db_engine = db.create_engine(dataBaseURL)
             self.metadata = MetaData()
             self.metadata.reflect(bind=self.db_engine)

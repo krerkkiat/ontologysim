@@ -1,6 +1,8 @@
 import copy
 import csv
 import math
+import os
+from pathlib import Path
 
 from ontologysim.ProductionSimulation.database.models.SimulationKPI import (
     SimulationTimeKPI,
@@ -14,7 +16,7 @@ from ontologysim.ProductionSimulation.sim.Enum import (
     OrderRelease_Enum,
     Label,
 )
-from ontologysim.ProductionSimulation.utilities.path_utilities import PathTest
+from ontologysim.ProductionSimulation.utilities.path_utilities import sanitize_path
 
 
 class SimLogger(SubLogger.SubLogger):
@@ -252,11 +254,12 @@ class SimLogger(SubLogger.SubLogger):
         :return:
         """
         if not self.isNotLogging():
-            path_sim = PathTest.create_new_folder(path, Folder_name.sim.value)
+            path_sim = sanitize_path(os.getcwd(), Path(path) / Folder_name.sim.value)
+            path_sim.mkdir(exist_ok=True)
 
             if self.isSummaryLogging():
                 with open(
-                    PathTest.check_dir_path(path + "/" + summarized_name + ".csv"),
+                    sanitize_path(os.getcwd(), Path(path) / f"{summarized_name}.csv"),
                     "w",
                     newline="",
                 ) as order_logger:
@@ -267,9 +270,7 @@ class SimLogger(SubLogger.SubLogger):
 
             if self.isTimeLogging():
                 with open(
-                    PathTest.check_dir_path(
-                        path_sim + "/sim0" + "_" + summarized_name + ".csv"
-                    ),
+                    sanitize_path(os.getcwd(), path_sim / f"sim0_{summarized_name}.csv"),
                     "w",
                     newline="",
                 ) as sim_logger:

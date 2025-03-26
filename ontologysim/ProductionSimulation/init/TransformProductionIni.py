@@ -1,5 +1,6 @@
+from pathlib import Path
+
 from ontologysim.ProductionSimulation.utilities import init_utilities
-from ontologysim.ProductionSimulation.utilities.path_utilities import PathTest
 
 
 class TransformProductionIni:
@@ -31,9 +32,7 @@ class TransformProductionIni:
             raise Exception("type not defined", type)
 
         defaultValuesConfig = {}
-        default_value_path = PathTest.check_file_path_libary(
-            "/ProductionSimulation/init/defaultValue.ini"
-        )
+        default_value_path = Path(__file__).with_name("defaultValue.ini")
 
         defaultValuesConf = init_utilities.Init(default_value_path)
         defaultValuesConf.read_ini_file()

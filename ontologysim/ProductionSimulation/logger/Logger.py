@@ -1,6 +1,7 @@
 import ast
 import math
 import shutil
+from pathlib import Path
 
 from ontologysim.ProductionSimulation.database.models.SimulationFacts import (
     SimulationFacts,
@@ -35,7 +36,7 @@ from ontologysim.ProductionSimulation.sim.Enum import (
     OrderRelease_Enum,
     Evaluate_Enum,
 )
-from ontologysim.ProductionSimulation.utilities.path_utilities import PathTest
+from ontologysim.ProductionSimulation.utilities.path_utilities import sanitize_path
 import datetime
 import os
 
@@ -370,7 +371,9 @@ class Logger:
         :return:
         """
         if self.save_config["csv"]:
-            path = PathTest.check_dir_path(self.output_path)
+            path = sanitize_path(os.getcwd(), self.output_path)
+            path.mkdir(exist_ok=True)
+
             if self.create_new_folder_name:
                 number_of_machines = len(
                     self.simCore.onto.search(type=self.simCore.central.machine_class)
@@ -389,17 +392,15 @@ class Logger:
                     + str(number_of_transporter)
                 )
 
-                newpath = path + folder_name + "/"
-                if not os.path.exists(newpath):
-                    os.makedirs(newpath)
-                path = PathTest.check_dir_path(newpath)
+                newpath = sanitize_path(os.getcwd(), path / folder_name)
+                newpath.mkdir(exist_ok=True)
+                path = sanitize_path(os.getcwd(), newpath)
 
                 if self.kpi_configs["log_events"]:
                     folder_name = Folder_name.events.value
-                    newpath = path + folder_name + "/"
-                    if not os.path.exists(newpath):
-                        os.makedirs(newpath)
-                    event_path = PathTest.check_dir_path(newpath)
+                    newpath = sanitize_path(os.getcwd(), path + folder_name)
+                    newpath.mkdir(exist_ok=True)
+                    event_path = sanitize_path(os.getcwd(), newpath)
                     self.simCore.event_logger.path_csv = event_path + "all_events.csv"
             else:
                 event_path = path
@@ -421,9 +422,7 @@ class Logger:
 
             else:
                 with open(
-                    PathTest.check_file_path(
-                        "/ontologysim/ProductionSimulation/database/defaultUser.json"
-                    ),
+                    Path(__file__).parent.parent / "database" / "defaultUser.json",
                     "r",
                 ) as f:
                     userJSON = ast.literal_eval(f.read())
@@ -469,8 +468,7 @@ class Logger:
         """
 
         if self.ini_config["addini"]:
-            ini_dir = self.ini_config["path"]
-            ini_dir = PathTest.check_dir_path(ini_dir)
+            ini_dir = sanitize_path(os.getcwd(), self.ini_config["path"])
             onlyfiles = [
                 f
                 for f in os.listdir(ini_dir)
@@ -478,12 +476,12 @@ class Logger:
             ]
 
             folder_name = "_ini"
-            newpath_queue = path + folder_name + "/"
+            newpath_queue = path / folder_name
             if not os.path.exists(newpath_queue):
                 os.makedirs(newpath_queue)
-            path_folder = PathTest.check_dir_path(newpath_queue)
+            path_folder = sanitize_path(os.getcwd(), newpath_queue)
             for file in onlyfiles:
-                shutil.copy(ini_dir + file, path_folder + file)
+                shutil.copy(ini_dir / file, path_folder / file)
 
     def setDataBase(self, dataBase):
         """

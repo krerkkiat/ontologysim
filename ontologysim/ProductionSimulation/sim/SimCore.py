@@ -12,7 +12,7 @@ from ontologysim.ProductionSimulation.sim.Enum import (
     OrderRelease_Enum,
     Product_Enum,
 )
-from ontologysim.ProductionSimulation.utilities.path_utilities import PathTest
+from ontologysim.ProductionSimulation.utilities.path_utilities import sanitize_path
 
 
 class SimCore:
@@ -119,7 +119,7 @@ class SimCore:
         """
         self.save_time = save_time
 
-    def save_ontology(self, path="./example/owl/test.owl"):
+    def save_ontology(self, path):
         """
         saves the ontology to owl-file
 

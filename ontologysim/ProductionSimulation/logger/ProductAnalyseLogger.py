@@ -1,6 +1,8 @@
 import copy
 import csv
 import math
+import os
+from pathlib import Path
 
 from ontologysim.ProductionSimulation.database.models.ProductKPI import (
     ProductKPI,
@@ -21,7 +23,7 @@ from ontologysim.ProductionSimulation.sim.Enum import (
     OrderRelease_Enum,
 )
 from ontologysim.ProductionSimulation.utilities import init_utilities
-from ontologysim.ProductionSimulation.utilities.path_utilities import PathTest
+from ontologysim.ProductionSimulation.utilities.path_utilities import sanitize_path
 
 
 class ProductAnalyseLogger(SubLogger.SubLogger):
@@ -880,8 +882,7 @@ class ProductAnalyseLogger(SubLogger.SubLogger):
         :return:
         """
         if self.type_product != Logger_Type_Enum.Not.value:
-            with open(
-                PathTest.check_dir_path(path + "/all_" + summarized_name + ".csv"),
+            with open(sanitize_path(os.getcwd(), Path(path) / f"all_{summarized_name}.csv"),
                 "w",
                 newline="",
             ) as order_logger:
@@ -892,7 +893,7 @@ class ProductAnalyseLogger(SubLogger.SubLogger):
 
         if self.isSummaryLogging():
             with open(
-                PathTest.check_dir_path(path + "/" + summarized_name + ".csv"),
+                sanitize_path(os.getcwd(), Path(path) / f"{summarized_name}.csv"),
                 "w",
                 newline="",
             ) as order_logger:
@@ -902,14 +903,13 @@ class ProductAnalyseLogger(SubLogger.SubLogger):
                 wr.writerows(erg_list)
 
         if self.isTimeLogging():
-            path_products = PathTest.create_new_folder(path, folder_name)
+            path_products = sanitize_path(os.getcwd(), Path(path) / folder_name)
+            path_products.mkdir(exist_ok=True)
 
             for k, v in self.time_kpis.items():
                 if k != "time":
                     with open(
-                        PathTest.check_dir_path(
-                            path_products + "/" + str(k) + "_logger" + ".csv"
-                        ),
+                        sanitize_path(os.getcwd(), path_products / f"{k}_logger.csv"),
                         "w",
                         newline="",
                     ) as product_time_logger:
@@ -1053,8 +1053,7 @@ class ProductAnalyseLogger(SubLogger.SubLogger):
     def test_object_name_all(self):
         object_list = list(self.summarized_kpis.keys())
 
-        ini_path = "/ontologysim/ProductionSimulation/logger/plot/y_lookup_tabel.ini"
-        config_path = PathTest.check_file_path(ini_path)
+        config_path = Path(__file__).parent / "plot" / "y_lookup_tabel.ini"
 
         # Read from Configuration File
         lookup_conf = init_utilities.Init(config_path)

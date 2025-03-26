@@ -1,12 +1,12 @@
 import math
 from random import random
+from pathlib import Path
 
 import matplotlib
 import matplotlib.pyplot as plt
 from matplotlib.figure import Figure
 
 from ontologysim.ProductionSimulation.utilities import init_utilities
-from ontologysim.ProductionSimulation.utilities.path_utilities import PathTest
 
 
 class Plot:
@@ -32,9 +32,7 @@ class Plot:
         self.number_kpis = []
         self.percentage_kpis = []
 
-        self.y_lookup_tabel = (
-            "/ontologysim/ProductionSimulation/logger/plot/y_lookup_tabel.ini"
-        )
+        self.y_lookup_tabel = Path(__file__).with_name("y_lookup_tabel.ini")
 
     def initPlot(self, plot_config):
         """
@@ -55,7 +53,7 @@ class Plot:
         else:
             return
 
-        axis_config_path = PathTest.check_file_path_libary(self.y_lookup_tabel)
+        axis_config_path = self.y_lookup_tabel
 
         # Read from Configuration File
         axis_conf = init_utilities.Init(axis_config_path)

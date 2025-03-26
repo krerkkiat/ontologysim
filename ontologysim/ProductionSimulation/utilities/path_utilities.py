@@ -1,12 +1,22 @@
 import os
 import inspect
-import pathlib
+from pathlib import Path
 import sys
 
+
+def sanitize_path(root_dir: Path | str, p: Path | str) -> Path:
+    """Return path relative to the root_dir.
+
+    Raise ValueError when path is not relative to the root_dir.
+    """
+    if isinstance(root_dir, str):
+        root_dir = Path(root_dir)
+    return Path(root_dir).joinpath(p).resolve().relative_to(root_dir.resolve())
 
 # FIXME(KC): Remove this if possible. So far it seems to only be used for
 # - Load users' custom classes from the example folder. We want to use importlib.import_module instead.
 # - Locate the built-in data files. The base folder can be derived from __file__ instead.
+# - Path isolation?
 #
 # The difficulty is that, this class is used everywhere.
 class PathTest:

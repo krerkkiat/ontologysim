@@ -1,9 +1,11 @@
 import csv
 import math
+import os
+from pathlib import Path
 
 from ontologysim.ProductionSimulation.logger.Enum_Logger import Logger_Type_Enum
 from ontologysim.ProductionSimulation.utilities import init_utilities
-from ontologysim.ProductionSimulation.utilities.path_utilities import PathTest
+from ontologysim.ProductionSimulation.utilities.path_utilities import sanitize_path
 
 
 class SubLogger:
@@ -273,8 +275,7 @@ class SubLogger:
         """
         object_list = list(self.summarized_kpis.keys())
 
-        ini_path = "/ontologysim/ProductionSimulation/logger/plot/y_lookup_tabel.ini"
-        config_path = PathTest.check_file_path(ini_path)
+        config_path = Path(__file__).parent / "plot" / "y_lookup_tabel.ini"
 
         # Read from Configuration File
         lookup_conf = init_utilities.Init(config_path)
@@ -416,14 +417,12 @@ class SubLogger:
         :return:
         """
         if self.isTimeLogging():
-            path_folder = PathTest.create_new_folder(path, folder_name)
+            path_folder = sanitize_path(os.getcwd(), Path(path) / folder_name)
+            path_folder.mkdir(exist_ok=True)
 
             for k, v in self.time_kpis.items():
                 if k != "time":
-                    with open(
-                        PathTest.check_dir_path(
-                            path_folder + "/" + str(k) + "_logger" + ".csv"
-                        ),
+                    with open(sanitize_path(os.getcwd(), path_folder / f"{k}_logger.csv"),
                         "w",
                         newline="",
                     ) as time_logger:
@@ -436,7 +435,7 @@ class SubLogger:
 
         if self.isSummaryLogging():
             with open(
-                PathTest.check_dir_path(path + "/" + summarized_name + ".csv"),
+                sanitize_path(os.getcwd(), Path(path) / f"{summarized_name}.csv"),
                 "w",
                 newline="",
             ) as sum_logger:

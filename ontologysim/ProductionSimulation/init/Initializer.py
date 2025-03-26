@@ -2,6 +2,7 @@ import inspect
 import logging
 import os
 import sys
+from pathlib import Path
 
 
 from owlready2 import get_ontology
@@ -52,7 +53,7 @@ from ontologysim.ProductionSimulation.sim.RepairService.RepairServiceMachine imp
 from ontologysim.ProductionSimulation.sim.RepairService.RepairServiceTransporter import (
     RepairServiceTransporter,
 )
-from ontologysim.ProductionSimulation.utilities.path_utilities import PathTest
+from ontologysim.ProductionSimulation.utilities.path_utilities import sanitize_path
 from ontologysim.ProductionSimulation.utilities.sub_class_utilities import (
     SubClassUtility,
 )
@@ -110,12 +111,10 @@ class Initializer:
     alternatively you can create your own controller
     """
 
-    def __init__(self, path_to_main_dir):
+    def __init__(self):
         """
         defines run.log
-        :param path_to_main_dir: string
         """
-        PathTest.current_main_dir = path_to_main_dir
         logging.basicConfig(filename="run.log", level=logging.DEBUG)
 
         self.s = None
@@ -198,8 +197,8 @@ class Initializer:
         :param sim_config_path:
         :param owl_config_path:
         """
-        sim_config_path = PathTest.check_file_path(sim_config_path)
-        owl_config_path = PathTest.check_file_path(owl_config_path)
+        sim_config_path = sanitize_path(os.getcwd(), sim_config_path)
+        owl_config_path = sanitize_path(os.getcwd(), owl_config_path)
 
         """ -------------------------------------------Production initialization-------------------------------------------------"""
         # Read from Configuration File
@@ -219,7 +218,7 @@ class Initializer:
                 and save_dict["type"] == "production_without_task_defect"
             ):
                 self.s.createWorld()
-                save_path = PathTest.check_dir_path(save_dict["path"])
+                save_path = sanitize_path(os.getcwd(), save_dict["path"])
                 self.s.onto.save(file=save_path, format="rdfxml")
 
     def transformProductionPath(self, sim_config_path):
@@ -244,9 +243,11 @@ class Initializer:
         """
         """ -------------------------------------------SimCore initialization-------------------------------------------------"""
 
+        owl_folder = Path("owl")
+        owl_folder.mkdir(exist_ok=True)
         # NOTE(KC): No idea why we are saving the ontology. Originally, the method is empty (having just pass)
         # with the actual saving procedure commented out.
-        self.s.save_ontology()
+        self.s.save_ontology(str(owl_folder / "test.owl"))
         self.s.createOWLStructure()
         self.s.central.init_class()
         self.s.createSimInstance()
@@ -364,7 +365,7 @@ class Initializer:
         product_type_dict_list = sim_conf.configs["ProductType"]["settings"]
         for product_type_dict in product_type_dict_list:
             pass
-            # path = PathTest.check_file_path(product_type_dict['path'])
+            # path = sanitize_path(os.getcwd(), product_type_dict["path"])
             # self.s.product_type.loadPetriNet(path)
 
         self.s.location.init_distance_dict()
@@ -426,7 +427,7 @@ class Initializer:
         :param sim_config_path:
         :return:
         """
-        sim_config_path = PathTest.check_file_path(sim_config_path)
+        sim_config_path = sanitize_path(os.getcwd(), sim_config_path)
 
         sim_conf = self.transformProductionPath(sim_config_path)
         self.addTask(sim_conf)
@@ -437,7 +438,7 @@ class Initializer:
         :param defect_config_path:
         :return:
         """
-        sim_config_path = PathTest.check_file_path(defect_config_path)
+        sim_config_path = sanitize_path(os.getcwd(), defect_config_path)
         sim_conf = self.transformProductionPath(sim_config_path)
         self.addDefect(sim_conf)
 
@@ -606,7 +607,7 @@ class Initializer:
 
         :param owl_path: .owl file
         """
-        path = PathTest.check_file_path(owl_path)
+        path = sanitize_path(os.getcwd(), owl_path)
         self.s.onto = get_ontology(path).load()
         self.s.central.init_class()
         self.s.central.simInstance = self.s.central.sim_class(Label.SimCore.value + "0")
@@ -627,7 +628,7 @@ class Initializer:
         :param log_config_path: string
         :return:
         """
-        log_config_path = PathTest.check_file_path(log_config_path)
+        log_config_path = sanitize_path(os.getcwd(), log_config_path)
 
         # Read from Configuration File
         log_conf = init_utilities.Init(log_config_path)
@@ -656,7 +657,7 @@ class Initializer:
         :param log_config_path: string
         :return:
         """
-        log_config_path = PathTest.check_file_path(log_config_path)
+        log_config_path = sanitize_path(os.getcwd(), log_config_path)
 
         # Read from Configuration File
         log_conf = init_utilities.Init(log_config_path)
@@ -725,7 +726,7 @@ class Initializer:
         :param path: string
         :return:
         """
-        controller_config_path = PathTest.check_file_path(path)
+        controller_config_path = sanitize_path(os.getcwd(), path)
 
         # Read from Configuration File
         controller_conf = init_utilities.Init(controller_config_path)

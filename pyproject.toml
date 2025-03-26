@@ -12,7 +12,7 @@ description = ""
 readme = "README.md"
 requires-python = ">=3.9"
 keywords = ["ontology", "manufacturing", "simulation"]
-license = { file = "LICENSE" }
+license-files = ["LICEN[CS]E*"]
 version = "1.0.6"
 classifiers = [
     "Natural Language :: English",

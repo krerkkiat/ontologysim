@@ -1,8 +1,9 @@
 import csv
 import datetime
 import os
+from pathlib import Path
 
-from ontologysim.ProductionSimulation.utilities.path_utilities import PathTest
+from ontologysim.ProductionSimulation.utilities.path_utilities import sanitize_path
 
 
 class TimeAnalyse:
@@ -41,8 +42,7 @@ class TimeAnalyse:
         """
         saves the time_dict to an csv, the path is predefined
         """
-        path = "/ontologysim/example/analyse/time_analyse.csv"
-        path = PathTest.check_dir_path(path)
+        path = sanitize_path(os.getcwd(), Path("analyse") / "time_analyse.csv")
 
         with open(path, "w", newline="") as order_logger:
             wr = csv.writer(

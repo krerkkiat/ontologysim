@@ -13,7 +13,7 @@ from ontologysim.ProductionSimulation.sim.Enum import (
 )
 
 from ontologysim.ProductionSimulation.utilities import init_utilities
-from ontologysim.ProductionSimulation.utilities.path_utilities import PathTest
+from ontologysim.ProductionSimulation.utilities.path_utilities import sanitize_path
 
 
 class EventLogger:
