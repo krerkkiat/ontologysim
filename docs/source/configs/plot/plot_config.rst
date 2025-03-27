@@ -16,8 +16,6 @@ defines the log-folder and the location, where the plot's should be saved
 
    * - Key
      - Value
-   * - path_dir
-     - bool: True or False, defines if all events should be saved
    * - save_dir
      - relative path, where the log files should be changed
    * - file_type
@@ -28,8 +26,7 @@ defines the log-folder and the location, where the plot's should be saved
 .. code-block:: JSON
 
     [Log]
-    path_dir="/example/log/11292020_07-19-15_5_3"
-    save_dir="/example/log/11292020_07-19-15_5_3/plot"
+    save_dir="plot/"
     #supported: formats eps, pdf, pgf, png, ps, raw, rgba, svg, svgz
     file_type=['png','svg','pdf']
 
@@ -168,8 +165,7 @@ this file is available in ``example/config/plot_log.ini``
 .. code-block:: JSON
 
     [Log]
-    path_dir="/example/log/11292020_07-19-15_5_3"
-    save_dir="/example/log/11292020_07-19-15_5_3/plot"
+    save_dir="plot/"
     #supported: formats eps, pdf, pgf, png, ps, raw, rgba, svg, svgz
     file_type=['png','svg','pdf']
 

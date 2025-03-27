@@ -147,7 +147,9 @@ class Logger:
 
         self.create_new_folder_name = True
         # default
-        self.output_path = "ontologysim/example/log/"
+        # NOTE(KC): This self.output_path will get replaced with something else after
+        # self.createPath is called.
+        self.output_path = "log/"
         self.time_intervall = 100
 
         self.start_time_logging = 0

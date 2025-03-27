@@ -1,3 +1,4 @@
+include ontologysim/VERSION
 include *.cfg
 include *.ini
 include *.txt

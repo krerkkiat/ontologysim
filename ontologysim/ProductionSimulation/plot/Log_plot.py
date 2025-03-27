@@ -1,6 +1,7 @@
 import inspect
 import os
 import sys
+import importlib.resources
 
 import matplotlib
 import matplotlib.pyplot as plt
@@ -8,12 +9,7 @@ import numpy as np
 import pandas as pd
 
 from ontologysim.ProductionSimulation.logger.Enum_Logger import Folder_name
-from ontologysim.ProductionSimulation.utilities import Init, PathTest
-
-current_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
-parent_dir = os.path.dirname(current_dir)
-sys.path.insert(0, parent_dir)
-
+from ontologysim.ProductionSimulation.utilities import Init, sanitize_path
 
 class Plot:
     """
@@ -21,20 +17,19 @@ class Plot:
     the class needs an extra plot ini
     """
 
-    def __init__(self, config_path):
-        config_path = PathTest.check_file_path(config_path)
+    def __init__(self, log_dir, config_path):
+        config_path = sanitize_path(os.getcwd(), config_path)
         # Read from Configuration File
         plot_conf = Init(config_path)
         plot_conf.read_ini_file()
 
         self.file_type_list = plot_conf.configs["Log"]["file_type"]
 
-        self.log_dir = PathTest.check_dir_path(plot_conf.configs["Log"]["path_dir"])
+        self.log_dir = log_dir
         save_dir = plot_conf.configs["Log"]["save_dir"]
-        head_tail = os.path.split(save_dir)
 
-        save_dir = PathTest.check_dir_path(head_tail[0])
-        save_dir = PathTest.create_new_folder(save_dir + "/", head_tail[1])
+        save_dir = sanitize_path(os.getcwd(), log_dir / save_dir)
+        save_dir.mkdir(exist_ok=True)
 
         self.save_dir = save_dir
 
@@ -48,45 +43,20 @@ class Plot:
         self.scatter_plot_x = plot_conf.configs["ScatterPlot"]["x_data"]
         self.scatter_plot_y = plot_conf.configs["ScatterPlot"]["y_data"]
 
-        if self.color_qualitative == "Accent":
-            self.colorMap = matplotlib.cm.Accent.colors
-        elif self.color_qualitative == "Pastel1":
-            self.colorMap = matplotlib.cm.Pastel1.colors
-        elif self.color_qualitative == "Pastel2":
-            self.colorMap = matplotlib.cm.Pastel2.colors
-        elif self.color_qualitative == "Paired":
-            self.colorMap = matplotlib.cm.Paired.colors
-        elif self.color_qualitative == "Dark2":
-            self.colorMap = matplotlib.cm.Dark2.colors
-        elif self.color_qualitative == "Set1":
-            self.colorMap = matplotlib.cm.Set1.colors
-        elif self.color_qualitative == "Set2":
-            self.colorMap = matplotlib.cm.Set2.colors
-        elif self.color_qualitative == "Set3":
-            self.colorMap = matplotlib.cm.Set3.colors
-        elif self.color_qualitative == "tab10":
-            self.colorMap = matplotlib.cm.tab10.colors
-        elif self.color_qualitative == "tab20":
-            self.colorMap = matplotlib.cm.tab20.colors
-        elif self.color_qualitative == "tab20b":
-            self.colorMap = matplotlib.cm.tab20b.colors
-        elif self.color_qualitative == "tab20c":
-            self.colorMap = matplotlib.cm.tab20c.colors
-        else:
+        colormap  = matplotlib.colormaps.get(self.color_qualitative)
+        if colormap is None:
             self.colorMap = self.color_qualitative
+        else:
+            self.colorMap = colormap.colors
 
         # look up file to get information about the type (percentage, number..) of the kpi
-        self.y_lookup_tabel = (
-            "/ontologysim/ProductionSimulation/logger/plot/y_lookup_tabel.ini"
-        )
-        axis_config_path = PathTest.check_file_path_libary(self.y_lookup_tabel)
-
-        # Read from Configuration File
-        axis_conf = Init(axis_config_path)
-        axis_conf.read_ini_file()
-        self.number_kpis = axis_conf.configs["LookUp"]["number"]
-        self.time_kpis = axis_conf.configs["LookUp"]["time"]
-        self.percentage_kpis = axis_conf.configs["LookUp"]["percentage"]
+        with importlib.resources.path("ontologysim.ProductionSimulation.logger.plot", "y_lookup_tabel.ini") as axis_config_path:
+            # Read from Configuration File
+            axis_conf = Init(axis_config_path)
+            axis_conf.read_ini_file()
+            self.number_kpis = axis_conf.configs["LookUp"]["number"]
+            self.time_kpis = axis_conf.configs["LookUp"]["time"]
+            self.percentage_kpis = axis_conf.configs["LookUp"]["percentage"]
 
     def plot(self):
         """
@@ -121,14 +91,9 @@ class Plot:
 
             if self.save_dir != "":
                 for file_type in self.file_type_list:
+                    filename = "line_plot_{kpi}_{typ}.{ext}".format(kpi=setting_dict["kpi"], typ=setting_dict["type"], ext=file_type)
                     fig.savefig(
-                        self.save_dir
-                        + "line_plot_"
-                        + setting_dict["kpi"]
-                        + "_"
-                        + setting_dict["type"]
-                        + "."
-                        + file_type,
+                        sanitize_path(os.getcwd(), self.save_dir / filename),
                         format=file_type,
                     )
             plt.show()
@@ -156,7 +121,7 @@ class Plot:
         :param object_name: str, e.g. m_0
         :return:
         """
-        path = self.adaptLogPath(type) + object_name + "_logger.csv"
+        path = sanitize_path(os.getcwd(), self.adaptLogPath(type) / f"{object_name}_logger.csv")
 
         data = pd.read_csv(path, sep=";")
 
@@ -170,17 +135,17 @@ class Plot:
         :return:
         """
         if type == "machine":
-            path = self.log_dir + "/" + Folder_name.machine.value + "/"
+            path = sanitize_path(os.getcwd(), self.log_dir / Folder_name.machine.value)
         elif type == "queue":
-            path = self.log_dir + "/" + Folder_name.queue.value + "/"
+            path = sanitize_path(os.getcwd(), self.log_dir / Folder_name.queue.value)
         elif type == "transporter":
-            path = self.log_dir + "/" + Folder_name.transporter.value + "/"
+            path = sanitize_path(os.getcwd(), self.log_dir / Folder_name.transporter.value)
         elif type == "sim":
-            path = self.log_dir + "/" + Folder_name.sim.value + "/"
+            path = sanitize_path(os.getcwd(), self.log_dir / Folder_name.sim.value)
         elif type == "transporter_distribution":
-            path = self.log_dir + "/" + Folder_name.transporter_distribution.value + "/"
+            path = sanitize_path(os.getcwd(), self.log_dir / Folder_name.transporter_distribution.value)
         elif type == "product":
-            path = self.log_dir + "/" + Folder_name.product.value + "/"
+            path = sanitize_path(os.getcwd(), self.log_dir / Folder_name.product.value)
         else:
             raise Exception(type + " not defined")
         return path
@@ -211,13 +176,9 @@ class Plot:
             plt.tight_layout(rect=[0, 0.03, 1, 0.95])
             if self.save_dir != "":
                 for file_type in self.file_type_list:
+                    filename = "multiple_line_plot_{kpi}_{typ}.{ext}".format(kpi=setting_dict["kpi"], typ=setting_dict["type"], ext=file_type)
                     fig.savefig(
-                        self.save_dir
-                        + "multiple_line_plot_"
-                        + setting_dict["kpi"]
-                        + "_"
-                        + setting_dict["type"]
-                        + file_type,
+                        sanitize_path(os.getcwd(), self.save_dir / filename),
                         format=file_type,
                     )
 
@@ -238,7 +199,7 @@ class Plot:
             object_list = setting_dict["object_name"]
 
         else:
-            path = PathTest.check_dir_path(self.adaptLogPath(setting_dict["type"]))
+            path = sanitize_path(os.getcwd(), self.adaptLogPath(setting_dict["type"]))
             onlyfiles = [
                 f for f in os.listdir(path) if os.path.isfile(os.path.join(path, f))
             ]
@@ -363,21 +324,17 @@ class Plot:
 
             if self.save_dir != "":
                 for file_type in self.file_type_list:
+                    filename = "scatter_plot{x_kpi} {x_typ}_{x_obj_name}__{y_kpi}_{y_typ}_{y_obj_name}.{ext}".format(
+                        x_kpi=setting_dict_x["kpi"],
+                        x_typ=setting_dict_x["type"],
+                        x_obj_name=setting_dict_x["object_name"],
+                        y_kpi=setting_dict_y["kpi"],
+                        y_typ=setting_dict_y["type"],
+                        y_obj_name=setting_dict_y["object_name"],
+                        ext=file_type,
+                    )
                     fig.savefig(
-                        self.save_dir
-                        + "scatter_plot"
-                        + setting_dict_x["kpi"]
-                        + " "
-                        + setting_dict_x["type"]
-                        + "_"
-                        + setting_dict_x["object_name"]
-                        + "__"
-                        + setting_dict_y["kpi"]
-                        + "_"
-                        + setting_dict_y["type"]
-                        + "_"
-                        + setting_dict_y["object_name"]
-                        + file_type,
+                        sanitize_path(os.getcwd(), self.save_dir / filename),
                         format=file_type,
                     )
 

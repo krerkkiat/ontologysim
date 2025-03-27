@@ -2,9 +2,16 @@ import os
 import inspect
 import sys
 import argparse
+from pathlib import Path
 
-def run_simulation(production_config, controller_config, owl_config, logger_config) -> None:
+def run_simulation(production_config: str, controller_config: str, owl_config: str, logger_config: str, plot_config:str | None=None) -> None:
     from ontologysim.ProductionSimulation.init.Initializer import Initializer
+    from ontologysim.ProductionSimulation.plot.Log_plot import Plot
+
+    if plot_config is not None:
+        plot_config_path = Path(plot_config)
+        if not plot_config_path.exists():
+            raise ValueError(f"'{plot_config_path}' does nto exist.")
 
     init = Initializer()
     init.initSimCore()
@@ -32,6 +39,10 @@ def run_simulation(production_config, controller_config, owl_config, logger_conf
 
     # TimeAnalyse.save_dict_to_csv()
 
+    if plot_config is not None:
+        plot = Plot(init.s.logger.output_path, plot_config)
+        plot.plot()
+
     init.s.destroyOnto()
 
 
@@ -44,6 +55,11 @@ def main() -> None:
     run_command_parser.add_argument("controller_config", metavar="CONTROLLER_CONFIG")
     run_command_parser.add_argument("owl_config", metavar="OWL_CONFIG")
     run_command_parser.add_argument("logger_config", metavar="LOGGER_CONFIG")
+    run_command_parser.add_argument("--plot-config")
+
+    plot_command_parser = subparsers.add_parser("plot", help="Plot the figures using the data from the log folder.")
+    plot_command_parser.add_argument("plot_config", metavar="PLOT_CONFIG")
+    plot_command_parser.add_argument("log_folder", metavar="LOG_FOLDER")
 
     serve_command_parser = subparsers.add_parser("serve", help="Run the development server.")
     serve_command_parser.add_argument("--bind", "-b", default="0.0.0.0")
@@ -57,7 +73,17 @@ def main() -> None:
     args = parser.parse_args()
 
     if args.command == "run":
-        run_simulation(args.production_config, args.controller_config, args.owl_config, args.logger_config)
+        run_simulation(args.production_config, args.controller_config, args.owl_config, args.logger_config, plot_config=args.plot_config)
+    elif args.command == "plot":
+        from ontologysim.ProductionSimulation.plot.Log_plot import Plot
+
+        log_folder_path = Path(args.log_folder)
+        if not log_folder_path.exists():
+            print("[error]: '{args.log_folder}' does not exist.")
+            sys.exit(1)
+
+        plot = Plot(log_folder_path, args.plot_config)
+        plot.plot()
     elif args.command == "serve":
         from ontologysim.Flask.FlaskApp import create_app
 

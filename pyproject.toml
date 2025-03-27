@@ -13,7 +13,7 @@ readme = "README.md"
 requires-python = ">=3.9"
 keywords = ["ontology", "manufacturing", "simulation"]
 license-files = ["LICEN[CS]E*"]
-version = "1.0.6"
+dynamic = ["version"]
 classifiers = [
     "Natural Language :: English",
     "Topic :: Scientific/Engineering",
@@ -63,6 +63,9 @@ Issues = "https://github.com/krerkkiat/ontologysim/issues"
 
 [tool.setuptools.packages.find]
 include = ["ontologysim*"]
+
+[tool.setuptools.dynamic]
+version = { file = "ontologysim/VERSION" }
 
 [tool.setuptools.package-data]
 "*" = ["*.ini"]
