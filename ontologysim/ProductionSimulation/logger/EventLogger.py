@@ -12,9 +12,6 @@ from ontologysim.ProductionSimulation.sim.Enum import (
     OrderRelease_Enum,
 )
 
-from ontologysim.ProductionSimulation.utilities import init_utilities
-from ontologysim.ProductionSimulation.utilities.path_utilities import sanitize_path
-
 
 class EventLogger:
     """

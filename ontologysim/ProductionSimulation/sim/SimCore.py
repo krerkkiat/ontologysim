@@ -12,7 +12,7 @@ from ontologysim.ProductionSimulation.sim.Enum import (
     OrderRelease_Enum,
     Product_Enum,
 )
-from ontologysim.ProductionSimulation.utilities.path_utilities import sanitize_path
+from ontologysim.ProductionSimulation.utilities import sanitize_path
 
 
 class SimCore:

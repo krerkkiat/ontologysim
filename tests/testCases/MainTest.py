@@ -13,7 +13,7 @@ sys.path.insert(0, parent_dir)
 sys.path.insert(0, parent_parent_dir)
 
 
-from ontologysim.ProductionSimulation.utilities import init_utilities
+from ontologysim.ProductionSimulation.utilities import Init
 
 
 class MainTest(unittest.TestCase):
@@ -110,7 +110,7 @@ class MainTest(unittest.TestCase):
         ]
 
         for file in onlyfiles:
-            init = init_utilities.Init(parent_parent_dir + defaultTestPath + file)
+            init = Init(parent_parent_dir + defaultTestPath + file)
             init.read_ini_file()
             init.identifyType()
             for type in init.type:
@@ -184,7 +184,7 @@ class MainTest(unittest.TestCase):
         ]
 
         for file in onlyfiles:
-            init = init_utilities.Init(parent_parent_dir + defaultTestPath + file)
+            init = Init(parent_parent_dir + defaultTestPath + file)
             init.read_ini_file()
             init.identifyType()
             for type in init.type:

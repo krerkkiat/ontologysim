@@ -6,7 +6,7 @@ import matplotlib
 import matplotlib.pyplot as plt
 from matplotlib.figure import Figure
 
-from ontologysim.ProductionSimulation.utilities import init_utilities
+from ontologysim.ProductionSimulation.utilities import Init
 
 
 class Plot:
@@ -56,7 +56,7 @@ class Plot:
         axis_config_path = self.y_lookup_tabel
 
         # Read from Configuration File
-        axis_conf = init_utilities.Init(axis_config_path)
+        axis_conf = Init(axis_config_path)
         axis_conf.read_ini_file()
 
         number_kpis = axis_conf.configs["LookUp"]["number"]

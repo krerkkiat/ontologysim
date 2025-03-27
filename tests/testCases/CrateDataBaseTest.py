@@ -12,10 +12,7 @@ parent_dir = os.path.dirname(current_dir)
 parent_parent_dir = os.path.dirname(parent_dir)
 sys.path.insert(0, parent_dir)
 sys.path.insert(0, parent_parent_dir)
-from ontologysim.ProductionSimulation.utilities.path_utilities import PathTest
-
-
-from ontologysim.ProductionSimulation.utilities import init_utilities
+from ontologysim.ProductionSimulation.utilities import PathTest
 
 
 class CreateDataBaseTest(unittest.TestCase):

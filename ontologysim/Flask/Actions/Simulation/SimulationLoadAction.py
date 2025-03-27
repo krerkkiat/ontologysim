@@ -9,7 +9,7 @@ import os
 from os import listdir
 from os.path import isfile, join
 
-from ontologysim.ProductionSimulation.utilities.path_utilities import PathTest
+from ontologysim.ProductionSimulation.utilities import PathTest
 
 
 class SimulationLoadAction(APIAction):

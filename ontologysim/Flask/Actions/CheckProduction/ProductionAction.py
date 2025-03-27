@@ -16,7 +16,7 @@ from ontologysim.ProductionSimulation.init.Initializer import Initializer
 from ontologysim.ProductionSimulation.init.TransformProductionIni import (
     TransformProductionIni,
 )
-from ontologysim.ProductionSimulation.utilities import init_utilities
+from ontologysim.ProductionSimulation.utilities import IniString
 
 
 class ProductionAction(APIAction):
@@ -51,7 +51,7 @@ class ProductionAction(APIAction):
 
             simCore = initializer.s
             try:
-                sim_conf = init_utilities.IniString(productionData)
+                sim_conf = IniString(productionData)
 
                 sim_conf.read_ini_file()
 

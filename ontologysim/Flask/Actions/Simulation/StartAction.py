@@ -7,7 +7,7 @@ from ontologysim.ProductionSimulation.init.TransformLoggerIni import TransformLo
 from ontologysim.ProductionSimulation.init.TransformProductionIni import (
     TransformProductionIni,
 )
-from ontologysim.ProductionSimulation.utilities import init_utilities
+from ontologysim.ProductionSimulation.utilities import IniString
 
 current_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 parent_dir = os.path.dirname(current_dir)
@@ -125,7 +125,7 @@ class StartAction(APIAction):
         iniConfDict = {}
         for file in requestDict["files"]:
             # print(file)
-            conf = init_utilities.IniString(file["content"])
+            conf = IniString(file["content"])
             conf.read_ini_file()
             conf.identifyType()
             for type in conf.type:

@@ -29,7 +29,7 @@ from ontologysim.ProductionSimulation.sim.ProductTypeNet.Process import (
     MergeProcess,
 )
 from ontologysim.ProductionSimulation.sim.ProductTypeNet.State import State
-from ontologysim.ProductionSimulation.utilities.event_utilities import EventUtilities
+from ontologysim.ProductionSimulation.utilities import EventUtilities
 
 from ontologysim.ProductionSimulation.controller.machine_controller import (
     MachineController_FIFO,
@@ -53,8 +53,7 @@ from ontologysim.ProductionSimulation.sim.RepairService.RepairServiceMachine imp
 from ontologysim.ProductionSimulation.sim.RepairService.RepairServiceTransporter import (
     RepairServiceTransporter,
 )
-from ontologysim.ProductionSimulation.utilities import import_class
-from ontologysim.ProductionSimulation.utilities.path_utilities import sanitize_path
+from ontologysim.ProductionSimulation.utilities import import_class, sanitize_path, Init
 
 from ontologysim.ProductionSimulation.sim.Enum import Label
 
@@ -84,7 +83,6 @@ from ontologysim.ProductionSimulation.controller.transporter_controller import (
     TransporterController,
     TransporterController_Hybrid,
 )
-from ontologysim.ProductionSimulation.utilities import init_utilities
 import datetime
 
 from ontologysim.ProductionSimulation.logger.EventLogger import EventLogger
@@ -193,7 +191,7 @@ class Initializer:
 
         """ -------------------------------------------OWL initialization-------------------------------------------------"""
         # Read from Configuration File
-        owl_conf = init_utilities.Init(owl_config_path)
+        owl_conf = Init(owl_config_path)
         owl_conf.read_ini_file()
 
         self.initProductionComponents(sim_conf)
@@ -215,7 +213,7 @@ class Initializer:
         :return: Init object
         """
 
-        sim_conf = init_utilities.Init(sim_config_path)
+        sim_conf = Init(sim_config_path)
         sim_conf.read_ini_file()
         sim_conf.configs = TransformProductionIni(self.s).transform_ini(
             sim_conf.configs
@@ -587,7 +585,7 @@ class Initializer:
         log_config_path = sanitize_path(os.getcwd(), log_config_path)
 
         # Read from Configuration File
-        log_conf = init_utilities.Init(log_config_path)
+        log_conf = Init(log_config_path)
         log_conf.read_ini_file()
 
         log_conf = TransformLoggerIni(self.s).transform_ini(log_conf.configs)
@@ -616,7 +614,7 @@ class Initializer:
         log_config_path = sanitize_path(os.getcwd(), log_config_path)
 
         # Read from Configuration File
-        log_conf = init_utilities.Init(log_config_path)
+        log_conf = Init(log_config_path)
         log_conf.read_ini_file()
 
         log_conf = TransformLoggerIni(self.s).transform_ini(log_conf.configs)
@@ -685,7 +683,7 @@ class Initializer:
         controller_config_path = sanitize_path(os.getcwd(), path)
 
         # Read from Configuration File
-        controller_conf = init_utilities.Init(controller_config_path)
+        controller_conf = Init(controller_config_path)
         controller_conf.read_ini_file()
         self.loadController(controller_conf)
 

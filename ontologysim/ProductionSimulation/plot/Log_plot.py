@@ -8,8 +8,7 @@ import numpy as np
 import pandas as pd
 
 from ontologysim.ProductionSimulation.logger.Enum_Logger import Folder_name
-from ontologysim.ProductionSimulation.utilities import init_utilities
-from ontologysim.ProductionSimulation.utilities.path_utilities import PathTest
+from ontologysim.ProductionSimulation.utilities import Init, PathTest
 
 current_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 parent_dir = os.path.dirname(current_dir)
@@ -25,7 +24,7 @@ class Plot:
     def __init__(self, config_path):
         config_path = PathTest.check_file_path(config_path)
         # Read from Configuration File
-        plot_conf = init_utilities.Init(config_path)
+        plot_conf = Init(config_path)
         plot_conf.read_ini_file()
 
         self.file_type_list = plot_conf.configs["Log"]["file_type"]
@@ -83,7 +82,7 @@ class Plot:
         axis_config_path = PathTest.check_file_path_libary(self.y_lookup_tabel)
 
         # Read from Configuration File
-        axis_conf = init_utilities.Init(axis_config_path)
+        axis_conf = Init(axis_config_path)
         axis_conf.read_ini_file()
         self.number_kpis = axis_conf.configs["LookUp"]["number"]
         self.time_kpis = axis_conf.configs["LookUp"]["time"]

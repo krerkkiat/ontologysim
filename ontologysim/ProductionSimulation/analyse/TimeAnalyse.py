@@ -3,7 +3,7 @@ import datetime
 import os
 from pathlib import Path
 
-from ontologysim.ProductionSimulation.utilities.path_utilities import sanitize_path
+from ontologysim.ProductionSimulation.utilities import sanitize_path
 
 
 class TimeAnalyse:

@@ -5,7 +5,7 @@ from deprecated.sphinx import deprecated
 
 # every list entry is a product
 # every product gets the list of needed processes, the states are automatically added
-from ontologysim.ProductionSimulation.utilities.path_utilities import PathTest
+from ontologysim.ProductionSimulation.utilities import PathTest
 
 
 @deprecated(version="0.1.0", reason="pm4py excluded")

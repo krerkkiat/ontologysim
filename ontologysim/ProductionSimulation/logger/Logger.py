@@ -36,7 +36,7 @@ from ontologysim.ProductionSimulation.sim.Enum import (
     OrderRelease_Enum,
     Evaluate_Enum,
 )
-from ontologysim.ProductionSimulation.utilities.path_utilities import sanitize_path
+from ontologysim.ProductionSimulation.utilities import sanitize_path
 import datetime
 import os
 

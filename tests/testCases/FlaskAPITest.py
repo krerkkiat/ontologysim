@@ -4,7 +4,7 @@ import inspect
 import os
 import sys
 
-from ontologysim.ProductionSimulation.utilities.path_utilities import PathTest
+from ontologysim.ProductionSimulation.utilities import PathTest
 from tests.util.ProductionGenerator import ProductionGenerator
 
 current_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))

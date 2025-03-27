@@ -4,7 +4,7 @@ import os
 from abc import abstractmethod
 
 from ontologysim.ProductionSimulation.sim.Enum import Label, Machine_Enum
-from ontologysim.ProductionSimulation.utilities.path_utilities import PathTest
+from ontologysim.ProductionSimulation.utilities import PathTest
 
 
 class Logger:

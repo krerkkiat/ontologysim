@@ -22,8 +22,7 @@ from ontologysim.ProductionSimulation.sim.Enum import (
     Label,
     OrderRelease_Enum,
 )
-from ontologysim.ProductionSimulation.utilities import init_utilities
-from ontologysim.ProductionSimulation.utilities.path_utilities import sanitize_path
+from ontologysim.ProductionSimulation.utilities import Init, sanitize_path
 
 
 class ProductAnalyseLogger(SubLogger.SubLogger):
@@ -1056,7 +1055,7 @@ class ProductAnalyseLogger(SubLogger.SubLogger):
         config_path = Path(__file__).parent / "plot" / "y_lookup_tabel.ini"
 
         # Read from Configuration File
-        lookup_conf = init_utilities.Init(config_path)
+        lookup_conf = Init(config_path)
         lookup_conf.read_ini_file()
 
         self.time_kpis_look_up = lookup_conf.configs["LookUp"]["time"]

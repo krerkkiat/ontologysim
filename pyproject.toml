@@ -23,6 +23,12 @@ classifiers = [
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12"
 ]
+# We are not using
+# - redis
+# - python-decouple; they may be heading there, but the current codebase does not use it.
+#
+# Not sure as to why both jwt and pyjwt are needed.
+# Not sure why Cython is needed.
 dependencies = [
     'importlib-metadata; python_version>="3.9"',
     "rdflib == 7.0.0",
@@ -34,14 +40,12 @@ dependencies = [
     "owlready2 == 0.44",
     "matplotlib ~= 3.8.1",
     "flask",
-    "redis",
     "flask_cors",
     "flask_swagger_ui",
     "SQLAlchemy",
     "flask_sqlalchemy",
     "Deprecated",
     "recommonmark",
-    "python-decouple == 3.8",
     "jwt",
     "pyjwt",
     "bcrypt",

@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from ontologysim.ProductionSimulation.utilities import init_utilities
+from ontologysim.ProductionSimulation.utilities import Init
 
 
 class TransformProductionIni:
@@ -34,7 +34,7 @@ class TransformProductionIni:
         defaultValuesConfig = {}
         default_value_path = Path(__file__).with_name("defaultValue.ini")
 
-        defaultValuesConf = init_utilities.Init(default_value_path)
+        defaultValuesConf = Init(default_value_path)
         defaultValuesConf.read_ini_file()
         defaultValuesConfig = defaultValuesConf.configs
 

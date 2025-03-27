@@ -12,7 +12,7 @@ sys.path.insert(0, parent_parent_dir)
 sys.path.insert(0, parent_parent_parent_dir)
 
 
-from ontologysim.ProductionSimulation.utilities.path_utilities import PathTest
+from ontologysim.ProductionSimulation.utilities import PathTest
 
 from ontologysim.ProductionSimulation.database.DataBase import DataBase
 from ontologysim.ProductionSimulation.database.models.Base import Base
