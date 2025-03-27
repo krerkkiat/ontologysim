@@ -1,9 +1,7 @@
-from ontologysim.ProductionSimulation.controller.transporter_controller import (
-    TransporterController,
-)
 
+from . import TransporterController
 
-class TransporterController_EDD(TransporterController.TransporterController):
+class TransporterController_EDD(TransporterController):
     """
     sort products on transporter based on Earlist Deadline first, currently there is no due time elemented. Therefore the start of production is set as reference.
     SQF used

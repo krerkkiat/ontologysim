@@ -1,13 +1,8 @@
 import operator
 
-from ontologysim.ProductionSimulation.controller.transporter_controller.TransporterController import (
-    TransporterController,
-)
 from ontologysim.ProductionSimulation.sim.Enum import Queue_Enum, Label, Evaluate_Enum
-from ontologysim.ProductionSimulation.controller.transporter_controller.TransporterController_Enum import (
-    Queue_Selection,
-)
 
+from . import TransporterController, Queue_Selection
 
 class TransporterController_Hybrid(TransporterController):
     """

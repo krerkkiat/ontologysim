@@ -31,16 +31,24 @@ from ontologysim.ProductionSimulation.sim.ProductTypeNet.Process import (
 from ontologysim.ProductionSimulation.sim.ProductTypeNet.State import State
 from ontologysim.ProductionSimulation.utilities import EventUtilities
 
-from ontologysim.ProductionSimulation.controller.machine_controller import (
+from ontologysim.ProductionSimulation.controller import (
+    MachineController,
+    TransporterController,
     MachineController_FIFO,
     MachineController_LIFO,
     MachineController_Hybrid,
     MachineController,
     MachineController_EDD,
-)
-from ontologysim.ProductionSimulation.controller.service_controller.ServiceController import (
     ServiceControllerMachine,
     ServiceControllerTransporter,
+    TransporterController_LIFO,
+    TransporterController_NJF,
+    TransporterController_SQF,
+    TransporterController_EDD,
+    TransporterController_FIFO,
+    TransporterController_Hybrid,
+    OrderReleaseController,
+    OrderReleaseControllerEqual,
 )
 from ontologysim.ProductionSimulation.sim.Central import Central
 from ontologysim.ProductionSimulation.sim.Defect import Defect
@@ -61,28 +69,12 @@ from ontologysim.ProductionSimulation.sim.OrderRelease import (
     OrderRelease,
     OrderRelease_Enum,
 )
-from ontologysim.ProductionSimulation.controller.order_release_controller import (
-    OrderReleaseController,
-)
-from ontologysim.ProductionSimulation.controller.order_release_controller.OrderReleaseControllerEqual import (
-    OrderReleaseControllerEqual,
-)
 from ontologysim.ProductionSimulation.sim.ProductType import ProductType
 from ontologysim.ProductionSimulation.sim.Queue import Queue
 from ontologysim.ProductionSimulation.sim.SimCore import SimCore
 from ontologysim.ProductionSimulation.sim.Task import Task
 from ontologysim.ProductionSimulation.sim.Transporter import Transporter
 from ontologysim.ProductionSimulation.sim.Product import Product
-from ontologysim.ProductionSimulation.controller.transporter_controller import (
-    TransporterController_LIFO,
-    TransporterController_NJF,
-    TransporterController_SQF,
-    TransporterController_EDD,
-    TransporterController_Enum,
-    TransporterController_FIFO,
-    TransporterController,
-    TransporterController_Hybrid,
-)
 import datetime
 
 from ontologysim.ProductionSimulation.logger.EventLogger import EventLogger
@@ -512,7 +504,7 @@ class Initializer:
 
         :param python_class:
         """
-        if not issubclass(python_class, MachineController.MachineController):
+        if not issubclass(python_class, MachineController):
             raise TypeError(f"'{python_class}' is not a subclass of MachineController.")
 
         m_controller = python_class()
@@ -526,7 +518,7 @@ class Initializer:
 
         :param python_class:
         """
-        if not issubclass(python_class, OrderReleaseController.OrderReleaseController):
+        if not issubclass(python_class, OrderReleaseController):
             raise TypeError(f"'{python_class}' is not a subclass of OrderReleaseController.")
 
         order_release_controller = python_class()
@@ -540,7 +532,7 @@ class Initializer:
         :param python_class:
         :param controller_dict: dict
         """
-        if not issubclass(python_class, TransporterController.TransporterController):
+        if not issubclass(python_class, TransporterController):
             raise TypeError(f"'{python_class}' is not a subclass of TransporterController.")
 
         transportController = python_class()
@@ -709,7 +701,7 @@ class Initializer:
             "service_transporter"
         ]
 
-        order_release_controller_class = import_class(order_release_controller_string["type"], OrderReleaseController.OrderReleaseController)
+        order_release_controller_class = import_class(order_release_controller_string["type"], OrderReleaseController)
         self.setOrderReleaseController(order_release_controller_class)
 
         self.setFillLevel(order_release_controller_string["fillLevel"])
@@ -722,16 +714,16 @@ class Initializer:
 
         hybrid_controller_configs = {}
         if len(transporter_controller_string["add"]) > 0:
-            hybrid_controller_configs = self._parse_hybrid_controller_config(transporter_controller_string["add"], TransporterController.TransporterController)
+            hybrid_controller_configs = self._parse_hybrid_controller_config(transporter_controller_string["add"], TransporterController)
 
-        transporter_controller_class = import_class(transporter_controller_string["type"], TransporterController.TransporterController)
+        transporter_controller_class = import_class(transporter_controller_string["type"], TransporterController)
         self.setTransporterController(transporter_controller_class, hybrid_controller_configs)
 
         hybrid_controller_configs = {}
         if len(machine_controller_string["add"]) > 0:
-            hybrid_controller_configs = self._parse_hybrid_controller_config(machine_controller_string["add"], MachineController.MachineController)
+            hybrid_controller_configs = self._parse_hybrid_controller_config(machine_controller_string["add"], MachineController)
 
-        machine_controller_class = import_class(machine_controller_string["type"], MachineController.MachineController)
+        machine_controller_class = import_class(machine_controller_string["type"], MachineController)
         self.setMachineController(machine_controller_class, hybrid_controller_configs)
 
     def _parse_hybrid_controller_config(self, configs: dict[str, float], parent: type) -> dict[type, float]:

@@ -1,10 +1,12 @@
-from numpy.random import MT19937
-from numpy.random import RandomState
-
-
-from owlready2 import *
+import operator
+from collections import defaultdict
 from itertools import islice
-from ontologysim.ProductionSimulation.sim.Enum import Label, Queue_Enum, Evaluate_Enum
+
+from numpy.random import MT19937, RandomState
+from owlready2 import *
+
+from ontologysim.ProductionSimulation.analyse.TimeAnalyse import TimeAnalyse
+from ontologysim.ProductionSimulation.sim.Enum import Evaluate_Enum, Label, Queue_Enum
 from ontologysim.ProductionSimulation.sim.Machine import Machine
 
 
@@ -274,3 +276,180 @@ class MachineController:
                 position_onto = old_position_onto
 
         return position_onto
+
+class MachineController_LIFO(MachineController):
+    """
+    LIFO =Last in First out, maschine controller based on LIFO (shortest waiting time in queue)
+
+    """
+
+    def sort_products(self, machine_onto):
+        """
+        output of all products in the machine queue, scheduled after LIFO
+
+        :param machine_onto:
+        :return:
+        """
+        erg_queue = machine_onto.has_for_input_queue
+        erg = []
+        for queue in erg_queue:
+            position_list = queue.has_for_position
+            for position in position_list:
+                for product in position.has_for_product:
+                    if (
+                        product.blocked_for_machine == 0
+                        and product.has_for_product_state[0].state_name != "sink"
+                    ):
+                        event_list = position.is_position_event_of
+                        for event in event_list:
+                            if event.type == Queue_Enum.Change.value:
+                                erg.append([product, event.time])
+        erg.sort(key=lambda x: x[1])
+
+        res = defaultdict(list)
+        for v, k in erg:
+            res[v].append(k)
+
+        erg = [[k, v[-1]] for k, v in res.items()]
+        erg.sort(key=lambda x: x[1], reverse=True)
+        return erg
+
+class MachineController_Hybrid(MachineController):
+    """
+    the hybrid controller makes it possible to combine several machine controllers
+    """
+
+    def __init__(self):
+        self.machine = None  # add it over machine.addMachineController
+        self.controller_parameter_dict = {}  # key: python class name, value: 0 < weight <1
+        self.controller_instance_dict = {}  # key: python class name, value: python instance
+
+    def addControllerDict(self, controller_dict):
+        """
+        adding multiple controller
+
+        :param controller_dict: {Python class:int [0:1]}
+        """
+        for python_class, v in controller_dict.items():
+            if not issubclass(python_class, MachineController):
+                raise TypeError(f"'{python_class}' is not a subclass of MachineController.")
+
+            if v > 1 or v < 0:
+                raise ValueError(str(v) + " out of range")
+            self.controller_parameter_dict[python_class.__name__] = v
+            python_instance = python_class()
+            python_instance.machine = self.machine
+            self.controller_instance_dict[python_class.__name__] = python_instance
+
+    def sort_products(self, machine_onto):
+        """
+        uses all defined controllers in the dictionaries and determines an optimal sequence
+
+        :param machine_onto:
+        :return:
+        """
+        erg_dict = {}
+        product_dict = {}
+        product_dict_value = {}
+        erg_list = []
+        for k, v in self.controller_instance_dict.items():
+            if self.controller_parameter_dict[k] != 0:
+                erg_dict[k] = v.sort_products(machine_onto)
+
+                len_erg = len(erg_dict[k])
+
+                if len_erg > 0:
+                    value = 100 / len_erg
+                    increment = value / len_erg
+                    for erg in erg_dict[k]:
+                        product_onto = erg[0]
+                        if product_onto.name in product_dict.keys():
+                            product_dict[product_onto.name] += (
+                                value * self.controller_parameter_dict[k]
+                            )
+                        else:
+                            product_dict[product_onto.name] = (
+                                value * self.controller_parameter_dict[k]
+                            )
+
+                            product_dict_value[product_onto.name] = erg
+                        value -= increment
+
+        if len(product_dict) > 0:
+            sorted_products = sorted(
+                product_dict.items(), key=operator.itemgetter(1), reverse=True
+            )
+
+            for k, v in sorted_products:
+                erg_list.append(product_dict_value[k])
+
+        return erg_list
+
+
+class MachineController_FIFO(MachineController):
+    """
+    FIFO=First in First out, maschine controller based on FIFO (longest waiting time in queue)
+    """
+
+    def sort_products(self, machine_onto):
+        """
+        output of all products in the machine queue, scheduled after FIFO
+
+        :param machine_onto:
+        :return:
+        """
+
+        erg_queue = machine_onto.has_for_input_queue
+        erg = []
+        for queue in erg_queue:
+            position_list = queue.has_for_position
+            for position in position_list:
+                for product in position.has_for_product:
+                    if (
+                        product.blocked_for_machine == 0
+                        and product.has_for_product_state[0].state_name != "sink"
+                    ):
+                        event_list = position.is_position_event_of
+                        for event in event_list:
+                            if event.type == Queue_Enum.Change.value:
+                                erg.append([product, event.time])
+
+        erg.sort(key=lambda x: x[1])
+
+        res = defaultdict(list)
+        for v, k in erg:
+            res[v].append(k)
+
+        erg = [[k, v[-1]] for k, v in res.items()]
+
+        erg.sort(key=lambda x: x[1])
+
+        return erg
+
+
+class MachineController_EDD(MachineController):
+    """
+    EDD= Earlist Due Date, since there is currently no due date, the start time is used for the production of the part
+    """
+
+    def sort_products(self, machine_onto):
+        """
+        output of all products in the machine queue, scheduled after EDD
+
+        :param machine_onto:
+        :return:
+        """
+        erg_queue = machine_onto.has_for_input_queue
+        erg = []
+        for queue in erg_queue:
+            position_list = queue.has_for_position
+            for position in position_list:
+                for product in position.has_for_product:
+                    if (
+                        product.blocked_for_machine == 0
+                        and product.has_for_product_state[0].state_name != "sink"
+                    ):
+                        erg.append([product, product.start_of_production_time])
+        erg.sort(key=lambda x: x[1])
+
+        return erg

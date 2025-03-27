@@ -9,9 +9,19 @@ from collections import defaultdict
 from ontologysim.ProductionSimulation.analyse.TimeAnalyse import TimeAnalyse
 from ontologysim.ProductionSimulation.sim.Enum import Label, Queue_Enum, Evaluate_Enum
 from ontologysim.ProductionSimulation.sim.Machine import Machine
-from ontologysim.ProductionSimulation.controller.transporter_controller.TransporterController_Enum import (
-    Queue_Selection,
-)
+
+from enum import Enum
+
+
+class Queue_Selection(Enum):
+    """
+    Defines the two strategies for selecting the next station
+    SQF: Shortest Queue First
+    NJF: Earliest Job First (nearest queue)
+    """
+
+    SQF = "SQF"
+    NJF = "NJF"
 
 
 class TransporterController:

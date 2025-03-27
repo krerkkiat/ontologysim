@@ -1,12 +1,10 @@
 from collections import defaultdict
 
-from ontologysim.ProductionSimulation.controller.transporter_controller import (
-    TransporterController,
-)
 from ontologysim.ProductionSimulation.sim.Enum import Queue_Enum, Label
 
+from . import TransporterController
 
-class TransporterController_LIFO(TransporterController.TransporterController):
+class TransporterController_LIFO(TransporterController):
     """
     transporter controller for LIFO (last in first out) (shortest waiting time)
     based on SQF for selecting next queue

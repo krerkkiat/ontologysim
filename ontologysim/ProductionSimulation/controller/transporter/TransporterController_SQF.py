@@ -1,23 +1,22 @@
+import operator
 from collections import defaultdict
 
-from ontologysim.ProductionSimulation.controller.transporter_controller import (
-    TransporterController,
-)
 from ontologysim.ProductionSimulation.sim.Enum import Queue_Enum, Label
 
+from . import TransporterController
 
-class TransporterController_FIFO(TransporterController.TransporterController):
+class TransporterController_SQF(TransporterController):
     """
-    transporter controller based on FIFO (Firts in First out)
-    FIFO used
+    calculates the next product based on the shortest queue
+
     """
 
     def sort_products_on_transporter(self, transport_onto):
         """
-        sort products on transporter after FIFO
+        sort all products on transporter
 
         :param transport_onto:
-        :return: [product name,int]
+        :return: [[product_name,time (int)]]
         """
         event_list = []
 
@@ -43,29 +42,38 @@ class TransporterController_FIFO(TransporterController.TransporterController):
                         # for event in event_onto_list:
                         for event in event_onto_list:
                             if event.type == Queue_Enum.Change.value:
-                                event_list.append([product.name, event.time])
+                                event_list.append(
+                                    [product.name, event.time, queue.current_size]
+                                )
 
         event_list.sort(key=lambda x: x[1])
 
         res = defaultdict(list)
 
-        for v, k in event_list:
-            res[v].append(k)
-        products_on_transporter = [[k, v[-1]] for k, v in res.items()]
-        products_on_transporter.sort(key=lambda x: x[1])
+        for k, v, w in event_list:
+            res[k].append([v, w])
+
+        products_on_transporter = [[k, v[-1][0], v[-1][1]] for k, v in res.items()]
+
+        products_on_transporter = sorted(
+            products_on_transporter, key=operator.itemgetter(1)
+        )
+        products_on_transporter = sorted(
+            products_on_transporter, key=operator.itemgetter(2)
+        )
 
         return products_on_transporter
 
     def sort_products_not_on_transporter(self, transport_onto=None):
         """
-        sort products not on transporter after FIFO
+        sort all products not on transporter
 
         :param transport_onto:
-        :return: [product name,int]
+        :return: [[product_name,time (int)]]
         """
         event_list = []
-
-        for queue in self.transport.get_queue_transportation_allowed(transport_onto):
+        queue_list = self.transport.get_queue_transportation_allowed(transport_onto)
+        for queue in queue_list:
             for position in queue.has_for_position:
                 for product in position.has_for_product:
                     if (
@@ -83,16 +91,25 @@ class TransporterController_FIFO(TransporterController.TransporterController):
 
                         for event in event_onto_list:
                             if event.type == Queue_Enum.Change.value:
-                                event_list.append([product.name, event.time])
+                                event_list.append(
+                                    [product.name, event.time, queue.current_size]
+                                )
 
         event_list.sort(key=lambda x: x[1])
-        res = defaultdict(list)
-        for v, k in event_list:
-            res[v].append(k)
 
-        # TODO optimization add type directly
-        products_not_on_transporter = [[k, v[-1]] for k, v in res.items()]
-        products_not_on_transporter.sort(key=lambda x: x[1])
+        res = defaultdict(list)
+
+        for k, v, w in event_list:
+            res[k].append([v, w])
+
+        products_not_on_transporter = [[k, v[-1][0], v[-1][1]] for k, v in res.items()]
+
+        products_not_on_transporter = sorted(
+            products_not_on_transporter, key=operator.itemgetter(1)
+        )
+        products_not_on_transporter = sorted(
+            products_not_on_transporter, key=operator.itemgetter(2)
+        )
 
         return products_not_on_transporter
 
@@ -102,7 +119,6 @@ class TransporterController_FIFO(TransporterController.TransporterController):
 
         :param products_on_transporter:
         :param products_not_on_transporter:
-        :return:
         """
         type_on = "on"
         type_not_on = "not_on"
@@ -114,6 +130,7 @@ class TransporterController_FIFO(TransporterController.TransporterController):
         for x, y in zip(elements, type_list):
             x.append(y)
 
-        elements.sort(key=lambda x: x[1])
+        elements = sorted(elements, key=operator.itemgetter(1))
+        elements = sorted(elements, key=operator.itemgetter(2))
 
         return elements

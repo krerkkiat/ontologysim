@@ -12,25 +12,25 @@ Machine Controller
 .. toctree::
    :maxdepth: 4
 
-   controller/ProductionSimulation.controller.machine_controller
+   controller/machine
 
 Transporter Controller
 ------------------------
 .. toctree::
    :maxdepth: 3
 
-   controller/ProductionSimulation.controller.transporter_controller
+   controller/transporter
 
 Order Release Controller
 --------------------------
 .. toctree::
    :maxdepth: 2
 
-   controller/ProductionSimulation.controller.order_release_controller
+   controller/order_release
 
 Service Controller
 --------------------
 .. toctree::
    :maxdepth: 1
 
-   controller/ProductionSimulation.controller.service_controller
+   controller/service
