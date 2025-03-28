@@ -1,7 +1,7 @@
 from flask import Response, json, request
 
 from ontologysim.Flask.Actions.APIAction import APIAction
-from ontologysim.Flask.Actions.Simulation import StartAction
+from ontologysim.Flask.Actions.Simulation.StartAction import StartAction
 
 
 class RunSimulationAction(APIAction):
