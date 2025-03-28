@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from flask import json, request
 
 from ontologysim.Flask.Actions.APIAction import APIAction
@@ -24,11 +26,9 @@ class SimulationLoadAction(APIAction):
         :param flaskApp:
         """
         super().__init__(action, flaskApp)
-        self.path = "/ontologysim/Flask/Assets/DefaultFiles"
 
-        self.fullPath = PathTest.check_dir_path_current_dir_given(
-            self.path, os.path.dirname(__file__)
-        )
+        self.path = Path(__file__).parent.parent.parent / "Assets" / "DefaultFiles"
+        self.fullPath = self.path
 
 
 class FileLoadAction(SimulationLoadAction):

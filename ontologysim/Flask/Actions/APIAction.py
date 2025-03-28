@@ -2,7 +2,7 @@ import json
 from flask import Flask, Response, json, request
 
 
-class APIAction(object):
+class APIAction:
     """
 
     Main action class

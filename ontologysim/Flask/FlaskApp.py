@@ -202,7 +202,7 @@ class FlaskAppWrapper:
 
         self.app.register_blueprint(swaggerui_blueprint)
 
-    def run(self, host="0.0.0.0", port=5000, debug=True, use_debugger=True, use_reloader=True):
+    def run(self, host="0.0.0.0", port=5000, debug=True, use_debugger=True, use_reloader=False):
         """
 
         starting flask server
@@ -266,10 +266,10 @@ def create_app() -> FlaskAppWrapper:
 
     init = Initializer()
 
-    production_config_path = Path(__file__).parent / "Assets" / "DefaultFiles" / "production_config_lvl3.ini"
-    owl_config_path = Path(__file__).parent / "Assets" / "DefaultFiles" / "owl_config.ini"
-    controller_config_path = Path(__file__).parent / "Assets" / "DefaultFiles" / "controller_config.ini"
-    logger_config_path = Path(__file__).parent / "Assets" / "DefaultFiles" / "logger_config_lvl3.ini"
+    production_config_path = Path(".") / "production_config_lvl3.ini"
+    owl_config_path = Path(".") / "owl_config.ini"
+    controller_config_path = Path(".") / "controller_config.ini"
+    logger_config_path = Path(".") / "logger_config_lvl3.ini"
 
     app = FlaskAppWrapper(
         "wrap",

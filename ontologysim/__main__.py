@@ -3,6 +3,7 @@ import inspect
 import sys
 import argparse
 from pathlib import Path
+import shutil
 
 def run_simulation(production_config: str, controller_config: str, owl_config: str, logger_config: str, plot_config:str | None=None) -> None:
     from ontologysim.ProductionSimulation.init.Initializer import Initializer
@@ -86,6 +87,27 @@ def main() -> None:
         plot.plot()
     elif args.command == "serve":
         from ontologysim.Flask.FlaskApp import create_app
+
+        # FIXME(KC): If the reloader is on, this will be run again.
+        default_config_filenames = ["production_config_lvl3.ini", "owl_config.ini", "controller_config.ini", "logger_config_lvl3.ini"]
+        for filename in default_config_filenames:
+            if (Path(".") / filename).exists():
+                user_response = input(f"File '{filename}' already exist, it will be OVERWRITTEN. Do you want to continue? [y/N]")
+                if user_response.strip().lower() == "y":
+                    continue
+                else:
+                    print("Aborted")
+                    sys.exit(1)
+
+        # Copy over the default files.
+        default_config_files = [
+            Path(__file__).parent / "Flask" / "Assets" / "DefaultFiles" / "production_config_lvl3.ini",
+            Path(__file__).parent / "Flask" / "Assets" / "DefaultFiles" / "owl_config.ini",
+            Path(__file__).parent / "Flask" / "Assets" / "DefaultFiles" / "controller_config.ini",
+            Path(__file__).parent / "Flask" / "Assets" / "DefaultFiles" / "logger_config_lvl3.ini"
+        ]
+        for file_path in default_config_files:
+            shutil.copy(file_path, Path("."))
 
         app = create_app()
         app.run(args.bind, args.port)

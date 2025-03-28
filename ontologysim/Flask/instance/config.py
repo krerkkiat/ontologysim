@@ -6,13 +6,13 @@ Copyright (c) 2019 - present AppSeed.us
 import os
 
 
-class Config(object):
+class Config:
     # Set up the App SECRET_KEY
     SECRET_KEY = "S#perS3crEt_007"
 
     # This will create a file in <app> FOLDER
     SQLALCHEMY_DATABASE_URI = (
-        "sqlite:///ontologysim/ProductionSimulation/database/SimulationRun.db"
+        "sqlite:///./SimulationRun.db"
     )
 
 

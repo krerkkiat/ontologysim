@@ -48,13 +48,14 @@ Go to the ``/example/Main.py`` and run this python file.
 Flask
 ==============
 
-To start the Flask server, create an empty database file at ``ontologysim/ProductionSimulation/database/SimulationRun.db`` (with the ``touch`` command or the ``New-Item`` command), then run
-
 ````bash
+mkdir simulation-working-dir
+cd simulation-working-dir
 python -m ontologysim serve
 ````
 
-You can then visit `http://localhost:5000/api/docs` for the API documentation.
+You can then visit ``http://localhost:5000/api/docs`` for the API documentation. The result from the simulation will be store
+in the ``simulation-working-dir``.
 
 Problem handling
 ==================
