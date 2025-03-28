@@ -1,7 +1,7 @@
 import operator
+import typing as ty
 from collections import defaultdict
 from itertools import islice
-import typing as ty
 
 from numpy.random import MT19937, RandomState
 from owlready2 import *

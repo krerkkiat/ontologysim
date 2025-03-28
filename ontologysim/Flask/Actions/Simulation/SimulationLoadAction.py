@@ -1,3 +1,6 @@
+import os
+from os import listdir
+from os.path import isfile, join
 from pathlib import Path
 
 from flask import json, request
@@ -6,11 +9,6 @@ from ontologysim.Flask.Actions.APIAction import APIAction
 from ontologysim.ProductionSimulation.init.API.IntitializerProducttypeAPI import (
     InitializerProducttypeAPI,
 )
-
-import os
-from os import listdir
-from os.path import isfile, join
-
 from ontologysim.ProductionSimulation.utilities import PathTest
 
 

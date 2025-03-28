@@ -1,83 +1,60 @@
-import inspect
+import datetime
 import logging
 import os
-import sys
 from pathlib import Path
-
 
 from owlready2 import get_ontology
 
-
-current_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
-parent_dir = os.path.dirname(current_dir)
-sys.path.insert(0, parent_dir)
-
 from ontologysim.Flask.Actions.UtilMethods.StateStorage import StateStorage
+from ontologysim.ProductionSimulation.controller import (
+    MachineController,
+    OrderReleaseController,
+    ServiceControllerMachine,
+    ServiceControllerTransporter,
+    TransporterController,
+)
 from ontologysim.ProductionSimulation.database.DataBase import DataBase
-from ontologysim.ProductionSimulation.sim.Position import Position
-
+from ontologysim.ProductionSimulation.init.TransformLoggerIni import TransformLoggerIni
 from ontologysim.ProductionSimulation.init.TransformProductionIni import (
     TransformProductionIni,
 )
-from ontologysim.ProductionSimulation.init.TransformLoggerIni import TransformLoggerIni
-
+from ontologysim.ProductionSimulation.logger.EventLogger import EventLogger
 from ontologysim.ProductionSimulation.logger.Logger import Logger
-from ontologysim.ProductionSimulation.sim.Machine import Machine
-from ontologysim.ProductionSimulation.sim.ProdProcess import ProdProcess
-from ontologysim.ProductionSimulation.sim.ProductTypeNet.Process import (
-    Process,
-    MergeProcess,
-)
-from ontologysim.ProductionSimulation.sim.ProductTypeNet.State import State
-from ontologysim.ProductionSimulation.utilities import EventUtilities
-
-from ontologysim.ProductionSimulation.controller import (
-    MachineController,
-    TransporterController,
-    MachineController_FIFO,
-    MachineController_LIFO,
-    MachineController_Hybrid,
-    MachineController,
-    MachineController_EDD,
-    ServiceControllerMachine,
-    ServiceControllerTransporter,
-    TransporterController_LIFO,
-    TransporterController_NJF,
-    TransporterController_SQF,
-    TransporterController_EDD,
-    TransporterController_FIFO,
-    TransporterController_Hybrid,
-    OrderReleaseController,
-    OrderReleaseControllerEqual,
-)
 from ontologysim.ProductionSimulation.sim.Central import Central
 from ontologysim.ProductionSimulation.sim.Defect import Defect
 from ontologysim.ProductionSimulation.sim.Distribution import Distribution
+from ontologysim.ProductionSimulation.sim.Enum import Label
 from ontologysim.ProductionSimulation.sim.Event import Event
 from ontologysim.ProductionSimulation.sim.Location import Location
+from ontologysim.ProductionSimulation.sim.Machine import Machine
+from ontologysim.ProductionSimulation.sim.OrderRelease import (
+    OrderRelease,
+)
+from ontologysim.ProductionSimulation.sim.Position import Position
+from ontologysim.ProductionSimulation.sim.ProdProcess import ProdProcess
+from ontologysim.ProductionSimulation.sim.Product import Product
+from ontologysim.ProductionSimulation.sim.ProductType import ProductType
+from ontologysim.ProductionSimulation.sim.ProductTypeNet.Process import (
+    MergeProcess,
+    Process,
+)
+from ontologysim.ProductionSimulation.sim.ProductTypeNet.State import State
+from ontologysim.ProductionSimulation.sim.Queue import Queue
 from ontologysim.ProductionSimulation.sim.RepairService.RepairServiceMachine import (
     RepairServiceMachine,
 )
 from ontologysim.ProductionSimulation.sim.RepairService.RepairServiceTransporter import (
     RepairServiceTransporter,
 )
-from ontologysim.ProductionSimulation.utilities import import_class, sanitize_path, Init
-
-from ontologysim.ProductionSimulation.sim.Enum import Label
-
-from ontologysim.ProductionSimulation.sim.OrderRelease import (
-    OrderRelease,
-    OrderRelease_Enum,
-)
-from ontologysim.ProductionSimulation.sim.ProductType import ProductType
-from ontologysim.ProductionSimulation.sim.Queue import Queue
 from ontologysim.ProductionSimulation.sim.SimCore import SimCore
 from ontologysim.ProductionSimulation.sim.Task import Task
 from ontologysim.ProductionSimulation.sim.Transporter import Transporter
-from ontologysim.ProductionSimulation.sim.Product import Product
-import datetime
-
-from ontologysim.ProductionSimulation.logger.EventLogger import EventLogger
+from ontologysim.ProductionSimulation.utilities import (
+    EventUtilities,
+    Init,
+    import_class,
+    sanitize_path,
+)
 
 
 class Initializer:

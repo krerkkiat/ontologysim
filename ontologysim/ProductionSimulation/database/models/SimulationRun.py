@@ -1,13 +1,14 @@
 from sqlalchemy import Column, DateTime, ForeignKey, Integer
-from sqlalchemy.orm import relationship, backref
+from sqlalchemy.orm import backref, relationship
+
 from ontologysim.ProductionSimulation.database.models.Base import Base
 from ontologysim.ProductionSimulation.database.models.MachineKPI import (
     MachineKPI,
     MachineTimeKPI,
 )
 from ontologysim.ProductionSimulation.database.models.ProductKPI import (
-    ProductKPI,
     AllProducts,
+    ProductKPI,
     ProductTimeKPI,
 )
 from ontologysim.ProductionSimulation.database.models.QueueKPI import (
@@ -15,16 +16,16 @@ from ontologysim.ProductionSimulation.database.models.QueueKPI import (
     QueueTimeKPI,
 )
 from ontologysim.ProductionSimulation.database.models.SimulationKPI import (
-    SimulationTimeKPI,
     SimulationKPI,
+    SimulationTimeKPI,
 )
 from ontologysim.ProductionSimulation.database.models.TransporterDistribution import (
     TransporterDistributionKPI,
     TransporterDistributionTimeKPI,
 )
 from ontologysim.ProductionSimulation.database.models.TransporterKPI import (
-    TransporterTimeKPI,
     TransporterKPI,
+    TransporterTimeKPI,
 )
 from ontologysim.ProductionSimulation.database.models.TransporterLocation import (
     TransporterLocationKPI,

@@ -1,6 +1,6 @@
 import math
-from random import random
 from pathlib import Path
+from random import random
 
 import matplotlib
 import matplotlib.pyplot as plt
@@ -109,11 +109,7 @@ class Plot:
                 }
             )
             listEmpty = False
-            if (
-                not setting["kpi"] in self.logger_data[-1]["sub_logger"].kpi_list
-                and not setting["kpi"]
-                in self.logger_data[-1]["sub_logger"].basic_kpi_list
-            ):
+            if (setting["kpi"] not in self.logger_data[-1]["sub_logger"].kpi_list) and (setting["kpi"] not in self.logger_data[-1]["sub_logger"].basic_kpi_list):
                 listEmpty = True
                 raise Warning(
                     "kpi not found "
@@ -124,7 +120,7 @@ class Plot:
                     + str(setting["type"])
                 )
 
-            if not setting["object_name"] in list(
+            if setting["object_name"] not in list(
                 self.logger_data[-1]["sub_logger"].time_kpis.keys()
             ):
                 listEmpty = True

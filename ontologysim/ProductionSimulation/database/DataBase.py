@@ -2,14 +2,23 @@ import os
 import sys
 
 import sqlalchemy as db
-from sqlalchemy import Table, Column, Integer, String, MetaData, ForeignKey
-from sqlalchemy import inspect, insert
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import (
+    Column,
+    ForeignKey,
+    Integer,
+    MetaData,
+    String,
+    Table,
+    create_engine,
+    insert,
+    inspect,
+)
 
 # Global Variables
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy import create_engine
-from sqlalchemy_utils import database_exists, create_database
+from sqlalchemy_utils import create_database, database_exists
+
 from ontologysim.ProductionSimulation.database.models.Base import Base
 from ontologysim.ProductionSimulation.utilities import sanitize_path
 

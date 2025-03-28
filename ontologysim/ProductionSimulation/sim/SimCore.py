@@ -4,13 +4,13 @@ import sys
 from owlready2 import *
 
 from ontologysim.ProductionSimulation.sim.Enum import (
-    Machine_Enum,
-    Label,
     Evaluate_Enum,
-    Queue_Enum,
-    Transporter_Enum,
+    Label,
+    Machine_Enum,
     OrderRelease_Enum,
     Product_Enum,
+    Queue_Enum,
+    Transporter_Enum,
 )
 from ontologysim.ProductionSimulation.utilities import sanitize_path
 

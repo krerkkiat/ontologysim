@@ -1,15 +1,12 @@
 import math
+import time
 
-from numpy.random import MT19937
-from numpy.random import RandomState
-
-
+import numpy as np
+from numpy.random import MT19937, RandomState
 from owlready2 import *
 
 from ontologysim.ProductionSimulation.sim.Enum import Label
 from ontologysim.ProductionSimulation.sim.Machine import Machine
-import time
-import numpy as np
 
 
 class Distribution:

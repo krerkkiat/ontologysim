@@ -1,14 +1,14 @@
+import copy
 import math
 
 from ontologysim.ProductionSimulation.database.models.MachineKPI import (
+    MachineKPI,
     MachineTimeKPI,
     MachineTimeKPIValue,
-    MachineKPI,
 )
-from ontologysim.ProductionSimulation.logger.Enum_Logger import Logger_Enum
 from ontologysim.ProductionSimulation.logger import SubLogger
+from ontologysim.ProductionSimulation.logger.Enum_Logger import Logger_Enum
 from ontologysim.ProductionSimulation.sim.Enum import Machine_Enum, Queue_Enum
-import copy
 
 
 class MachineLogger(SubLogger.SubLogger):

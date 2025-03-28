@@ -1,10 +1,10 @@
-import configparser
 import ast
+import configparser
 import logging
 from enum import Enum
 
 
-class Init(object):
+class Init:
     """
     transforms the ini into a dict
     """

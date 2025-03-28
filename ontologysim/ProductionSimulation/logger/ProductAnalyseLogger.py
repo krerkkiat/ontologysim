@@ -5,22 +5,22 @@ import os
 from pathlib import Path
 
 from ontologysim.ProductionSimulation.database.models.ProductKPI import (
-    ProductKPI,
     AllProducts,
+    ProductKPI,
     ProductTimeKPI,
     ProductTimeKPIValue,
 )
+from ontologysim.ProductionSimulation.logger import SubLogger
 from ontologysim.ProductionSimulation.logger.Enum_Logger import (
     Logger_Enum,
     Logger_Type_Enum,
 )
-from ontologysim.ProductionSimulation.logger import SubLogger
 from ontologysim.ProductionSimulation.sim.Enum import (
-    Machine_Enum,
-    Queue_Enum,
     Evaluate_Enum,
     Label,
+    Machine_Enum,
     OrderRelease_Enum,
+    Queue_Enum,
 )
 from ontologysim.ProductionSimulation.utilities import Init, sanitize_path
 
@@ -1029,7 +1029,7 @@ class ProductAnalyseLogger(SubLogger.SubLogger):
     def getProductList(self):
         erg_list = []
         header = ["product_name"]
-        first_product = list(self.product_kpis.keys())[0]
+        first_product = next(iter(self.product_kpis.keys()))
         header.extend([str(k) for k, v in self.product_kpis[first_product].items()])
         header.remove("WIP")
         erg_list.append(header)

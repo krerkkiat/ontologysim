@@ -17,7 +17,7 @@ from ontologysim.ProductionSimulation.database.models import SimulationRun, Base
 from pytz import timezone
 
 
-class DataSeeder(object):
+class DataSeeder:
     """
     data seeder, only an test area for data seeding
     """

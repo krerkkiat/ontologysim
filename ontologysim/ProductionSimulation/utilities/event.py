@@ -2,9 +2,9 @@ import owlready2
 
 from ontologysim.ProductionSimulation.sim.Enum import (
     Machine_Enum,
+    OrderRelease_Enum,
     Queue_Enum,
     Transporter_Enum,
-    OrderRelease_Enum,
 )
 
 

@@ -1,14 +1,14 @@
 from ontologysim.ProductionSimulation.sim.Enum import (
     Evaluate_Enum,
     Machine_Enum,
-    Queue_Enum,
-    Transporter_Enum,
     OrderRelease_Enum,
     Product_Enum,
+    Queue_Enum,
+    Transporter_Enum,
 )
 
 
-class StateStorage(object):
+class StateStorage:
     """
 
     saves all states (current event) in a dictionary

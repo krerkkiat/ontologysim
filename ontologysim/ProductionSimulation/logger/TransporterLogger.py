@@ -3,13 +3,13 @@ import math
 import sys
 
 from ontologysim.ProductionSimulation.database.models.TransporterKPI import (
+    TransporterKPI,
     TransporterTimeKPI,
     TransporterTimeKPIValue,
-    TransporterKPI,
 )
-from ontologysim.ProductionSimulation.logger.Enum_Logger import Logger_Enum
 from ontologysim.ProductionSimulation.logger import SubLogger
-from ontologysim.ProductionSimulation.sim.Enum import Transporter_Enum, Queue_Enum
+from ontologysim.ProductionSimulation.logger.Enum_Logger import Logger_Enum
+from ontologysim.ProductionSimulation.sim.Enum import Queue_Enum, Transporter_Enum
 
 
 class TransporterLogger(SubLogger.SubLogger):

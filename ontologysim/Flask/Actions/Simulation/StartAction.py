@@ -1,21 +1,12 @@
-import inspect
-import os
-import sys
+from flask import json, request
 
+from ontologysim.Flask.Actions.APIAction import APIAction
 from ontologysim.Flask.Actions.UtilMethods.ProductionDict import ProductionDict
 from ontologysim.ProductionSimulation.init.TransformLoggerIni import TransformLoggerIni
 from ontologysim.ProductionSimulation.init.TransformProductionIni import (
     TransformProductionIni,
 )
 from ontologysim.ProductionSimulation.utilities import IniString
-
-current_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
-parent_dir = os.path.dirname(current_dir)
-sys.path.insert(0, parent_dir)
-
-from flask import json, request
-
-from ontologysim.Flask.Actions.APIAction import APIAction
 
 
 class StartAction(APIAction):

@@ -2,12 +2,12 @@ import copy
 import math
 
 from ontologysim.ProductionSimulation.database.models.TransporterLocation import (
+    TransporterLocationKPI,
     TransporterLocationTimeKPI,
     TransporterLocationTimeKPIValue,
-    TransporterLocationKPI,
 )
-from ontologysim.ProductionSimulation.logger.Enum_Logger import Logger_Enum
 from ontologysim.ProductionSimulation.logger import SubLogger
+from ontologysim.ProductionSimulation.logger.Enum_Logger import Logger_Enum
 
 
 class TransporterLocationLogger(SubLogger.SubLogger):

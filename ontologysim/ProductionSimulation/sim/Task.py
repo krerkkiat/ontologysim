@@ -1,6 +1,6 @@
 from owlready2 import *
 
-from ontologysim.ProductionSimulation.sim.Enum import Label, Evaluate_Enum
+from ontologysim.ProductionSimulation.sim.Enum import Evaluate_Enum, Label
 
 
 class Task:

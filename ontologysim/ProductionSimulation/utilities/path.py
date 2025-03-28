@@ -1,7 +1,7 @@
-import os
 import inspect
-from pathlib import Path
+import os
 import sys
+from pathlib import Path
 
 
 def sanitize_path(root_dir: Path | str, p: Path | str) -> Path:
@@ -19,6 +19,11 @@ def sanitize_path(root_dir: Path | str, p: Path | str) -> Path:
 # - Path isolation?
 #
 # The difficulty is that, this class is used everywhere.
+#
+# Current modules that are using this
+# - The deprecated logger (ontologysim.ProductionSimulation.logger.depreciated_logger). Or maybe these are not
+#   actually deprecated...
+# - ontologysim.Flask
 class PathTest:
     """
     Tests the given paths
@@ -67,7 +72,7 @@ class PathTest:
 
     @classmethod
     def check_file_path_libary(cls, path):
-        current_dir = str(pathlib.Path(__file__).parent.resolve())
+        current_dir = str(Path(__file__).parent.resolve())
         return cls.check_file_path_current_dir_given(path, current_dir)
 
     @classmethod

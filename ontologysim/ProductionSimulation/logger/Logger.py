@@ -425,7 +425,6 @@ class Logger:
             else:
                 with open(
                     Path(__file__).parent.parent / "database" / "defaultUser.json",
-                    "r",
                 ) as f:
                     userJSON = ast.literal_eval(f.read())
                 user = (

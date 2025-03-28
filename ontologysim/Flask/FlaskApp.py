@@ -2,9 +2,11 @@ import os
 from pathlib import Path
 
 from flask import Flask
-
+from flask_cors import CORS
 from flask_swagger_ui import get_swaggerui_blueprint
 
+from ontologysim.Flask.Actions.CheckProduction.ProductionAction import ProductionAction
+from ontologysim.Flask.Actions.CheckProductType.ProcessAction import ProcessAction
 from ontologysim.Flask.Actions.CommentIdAction import ComponentIdAction
 from ontologysim.Flask.Actions.ComponentAction import ComponentAction
 from ontologysim.Flask.Actions.DataBase.ConnectDataBaseAction import (
@@ -13,14 +15,12 @@ from ontologysim.Flask.Actions.DataBase.ConnectDataBaseAction import (
 from ontologysim.Flask.Actions.DataBase.GetSimulationRunAction import (
     GetSimulationRunAction,
 )
-from ontologysim.Flask.Actions.Simulation.EventAction import EventAction
 from ontologysim.Flask.Actions.GetIdsAction import GetIdsAction
+from ontologysim.Flask.Actions.ResetBEAction import ResetBEAction
+from ontologysim.Flask.Actions.Simulation.EventAction import EventAction
 from ontologysim.Flask.Actions.Simulation.KPIAction import KPIAction
-from ontologysim.Flask.Actions.CheckProductType.ProcessAction import ProcessAction
-from ontologysim.Flask.Actions.CheckProduction.ProductionAction import ProductionAction
 from ontologysim.Flask.Actions.Simulation.KPIListAction import KPIListAction
 from ontologysim.Flask.Actions.Simulation.OwlDonwloadAction import OwlDownloadAction
-from ontologysim.Flask.Actions.ResetBEAction import ResetBEAction
 from ontologysim.Flask.Actions.Simulation.RunSimulationAction import RunSimulationAction
 from ontologysim.Flask.Actions.Simulation.SimulationLoadAction import FileLoadAction
 from ontologysim.Flask.Actions.Simulation.StartAction import StartAction
@@ -28,8 +28,6 @@ from ontologysim.Flask.Actions.Simulation.StartUntilTimeAction import (
     StartUntilTimeAction,
 )
 from ontologysim.Flask.Actions.TestAction import TestAction
-from flask_cors import CORS
-
 from ontologysim.Flask.instance.config import config_dict
 from ontologysim.ProductionSimulation.database.DataBase import DataBase
 

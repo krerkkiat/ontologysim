@@ -1,16 +1,16 @@
 import logging
+import math
+import time
 
 from owlready2 import *
 
 from ontologysim.ProductionSimulation.analyse.TimeAnalyse import TimeAnalyse
 from ontologysim.ProductionSimulation.sim.Enum import (
     Label,
-    Transporter_Enum,
     Machine_Enum,
+    Transporter_Enum,
 )
 from ontologysim.ProductionSimulation.sim.Machine import Machine
-import time
-import math
 
 
 class Event:

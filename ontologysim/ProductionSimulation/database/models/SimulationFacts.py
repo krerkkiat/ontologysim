@@ -2,17 +2,18 @@ from sqlalchemy import (
     Boolean,
     Column,
     DateTime,
+    Float,
     ForeignKey,
     Integer,
     String,
     Text,
-    Float,
     TypeDecorator,
 )
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import relationship, backref
+from sqlalchemy.orm import backref, relationship
 
 from ontologysim.ProductionSimulation.database.models.Base import Base
+
 # from ontologysim.ProductionSimulation.database.models.MachineKPI import MachineKPI, MachineTimeKPI
 
 

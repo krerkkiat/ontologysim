@@ -1,6 +1,7 @@
+from flask import Flask, Response, json, request
+
 from ontologysim.Flask.Actions.APIAction import APIAction
 from ontologysim.ProductionSimulation.utilities import PathTest
-from flask import Flask, Response, json, request
 
 
 class OwlDownloadAction(APIAction):

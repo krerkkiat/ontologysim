@@ -1,8 +1,9 @@
 from collections import defaultdict
 
-from ontologysim.ProductionSimulation.sim.Enum import Queue_Enum, Label
+from ontologysim.ProductionSimulation.sim.Enum import Label, Queue_Enum
 
 from . import TransporterController
+
 
 class TransporterController_LIFO(TransporterController):
     """

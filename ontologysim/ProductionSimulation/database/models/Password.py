@@ -1,8 +1,8 @@
 import bcrypt
-from sqlalchemy import TypeDecorator, Text
+from sqlalchemy import Text, TypeDecorator
 
 
-class PasswordHash(object):
+class PasswordHash:
     def __init__(self, hash_):
         assert len(hash_) == 60, "bcrypt hash should be 60 chars."
         assert hash_.count("$"), 'bcrypt hash should have 3x "$".'

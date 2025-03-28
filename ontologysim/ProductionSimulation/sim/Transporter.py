@@ -1,7 +1,7 @@
 from ontologysim.ProductionSimulation.sim.Enum import (
+    Evaluate_Enum,
     Label,
     Transporter_Enum,
-    Evaluate_Enum,
 )
 
 

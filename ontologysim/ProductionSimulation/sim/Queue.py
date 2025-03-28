@@ -1,8 +1,8 @@
 from ontologysim.ProductionSimulation.sim.Enum import (
     Label,
-    Queue_Enum,
     Machine_Enum,
     Product_Enum,
+    Queue_Enum,
 )
 
 

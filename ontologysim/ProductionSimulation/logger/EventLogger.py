@@ -2,14 +2,15 @@ import csv
 import math
 import os
 import sys
+
 import owlready2
 
 from ontologysim.ProductionSimulation.sim.Enum import (
     Label,
     Machine_Enum,
+    OrderRelease_Enum,
     Queue_Enum,
     Transporter_Enum,
-    OrderRelease_Enum,
 )
 
 

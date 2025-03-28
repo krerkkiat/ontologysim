@@ -1,4 +1,4 @@
-from ontologysim.ProductionSimulation.sim.Enum import Label, Evaluate_Enum, Machine_Enum
+from ontologysim.ProductionSimulation.sim.Enum import Evaluate_Enum, Label, Machine_Enum
 
 
 class Machine:

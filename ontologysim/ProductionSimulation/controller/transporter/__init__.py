@@ -1,16 +1,13 @@
 import operator
-
-from numpy.random import MT19937
-from numpy.random import RandomState
-
-from owlready2 import *
 from collections import defaultdict
+from enum import Enum
+
+from numpy.random import MT19937, RandomState
+from owlready2 import *
 
 from ontologysim.ProductionSimulation.analyse.TimeAnalyse import TimeAnalyse
-from ontologysim.ProductionSimulation.sim.Enum import Label, Queue_Enum, Evaluate_Enum
+from ontologysim.ProductionSimulation.sim.Enum import Evaluate_Enum, Label, Queue_Enum
 from ontologysim.ProductionSimulation.sim.Machine import Machine
-
-from enum import Enum
 
 
 class Queue_Selection(Enum):

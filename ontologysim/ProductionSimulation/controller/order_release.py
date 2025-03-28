@@ -5,7 +5,6 @@ from ontologysim.ProductionSimulation.sim.Enum import (
     Label,
     OrderRelease_Enum,
 )
-from ontologysim.ProductionSimulation.sim.Machine import Machine
 
 
 class OrderReleaseController:

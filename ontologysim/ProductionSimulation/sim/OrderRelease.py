@@ -1,8 +1,8 @@
 from owlready2 import *
 
 from ontologysim.ProductionSimulation.sim.Enum import (
-    Label,
     Evaluate_Enum,
+    Label,
     OrderRelease_Enum,
 )
 

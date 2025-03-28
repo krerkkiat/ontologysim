@@ -1,6 +1,5 @@
-import os
 import inspect
-
+import os
 import sys
 from functools import reduce
 

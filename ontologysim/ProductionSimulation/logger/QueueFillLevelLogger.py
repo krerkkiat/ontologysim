@@ -2,12 +2,12 @@ import copy
 import math
 
 from ontologysim.ProductionSimulation.database.models.QueueKPI import (
+    QueueKPI,
     QueueTimeKPI,
     QueueTimeKPIValue,
-    QueueKPI,
 )
-from ontologysim.ProductionSimulation.logger.Enum_Logger import Logger_Enum
 from ontologysim.ProductionSimulation.logger import SubLogger
+from ontologysim.ProductionSimulation.logger.Enum_Logger import Logger_Enum
 from ontologysim.ProductionSimulation.sim.Enum import Label
 
 
@@ -48,7 +48,7 @@ class QueueFillLevelLogger(SubLogger.SubLogger):
         queue_list = [
             queue
             for queue in self.logger.simCore.central.queue_list
-            if not Label.EndQueue.value in queue.name
+            if Label.EndQueue.value not in queue.name
         ]
 
         self.last_time_intervall = (
@@ -119,7 +119,7 @@ class QueueFillLevelLogger(SubLogger.SubLogger):
         old_current_size = dict_element["old_queue_current_size"]
         current_size = dict_element["queue_current_size"]
 
-        if not Label.EndQueue.value in queue_onto_name:
+        if Label.EndQueue.value not in queue_onto_name:
             if self.isTimeLogging():
                 if (
                     len(self.time_kpis["time"])
@@ -199,7 +199,7 @@ class QueueFillLevelLogger(SubLogger.SubLogger):
         queue_list = [
             queue
             for queue in self.logger.simCore.central.queue_list
-            if not Label.EndQueue.value in queue.name
+            if Label.EndQueue.value not in queue.name
         ]
 
         self.evaluate(time + self.logger.time_intervall)
@@ -227,7 +227,7 @@ class QueueFillLevelLogger(SubLogger.SubLogger):
         queue_list = [
             queue
             for queue in self.logger.simCore.central.queue_list
-            if not Label.EndQueue.value in queue.name
+            if Label.EndQueue.value not in queue.name
         ]
 
         summarized_data = copy.deepcopy(self.summarized_kpis)
