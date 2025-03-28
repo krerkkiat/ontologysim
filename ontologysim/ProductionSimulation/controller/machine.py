@@ -1,6 +1,7 @@
 import operator
 from collections import defaultdict
 from itertools import islice
+import typing as ty
 
 from numpy.random import MT19937, RandomState
 from owlready2 import *
@@ -213,14 +214,7 @@ class MachineController:
 
         return product_list
 
-    def sort_products(self, machine_onto):
-        """
-        output of all products in the machine queue
-        in the machine controller class, the output is randomly scheduled
-
-        :param machine_onto:
-        :return: [[product_onto,time (int)]]
-        """
+    def _get_products(self, machine_onto) -> list[list[ty.Any, float]]:
         erg_queue = machine_onto.has_for_input_queue
         erg = []
         for queue in erg_queue:
@@ -235,6 +229,20 @@ class MachineController:
                         for event in event_list:
                             if event.type == Queue_Enum.Change.value:
                                 erg.append([product, event.time])
+
+        return erg
+
+    def sort_products(self, machine_onto):
+        """
+        output of all products in the machine queue
+        in the machine controller class, the output is randomly scheduled
+
+        :param machine_onto:
+        :return: [[product_onto,time (int)]]
+        """
+        erg = self._get_products(machine_onto)
+
+        # NOTE(KC): So ... we are not actually randomizing? The seed is set to 1.
         random_state = RandomState(MT19937(1))
 
         random_state.shuffle(erg)
@@ -290,20 +298,7 @@ class MachineController_LIFO(MachineController):
         :param machine_onto:
         :return:
         """
-        erg_queue = machine_onto.has_for_input_queue
-        erg = []
-        for queue in erg_queue:
-            position_list = queue.has_for_position
-            for position in position_list:
-                for product in position.has_for_product:
-                    if (
-                        product.blocked_for_machine == 0
-                        and product.has_for_product_state[0].state_name != "sink"
-                    ):
-                        event_list = position.is_position_event_of
-                        for event in event_list:
-                            if event.type == Queue_Enum.Change.value:
-                                erg.append([product, event.time])
+        erg = self._get_products(machine_onto)
         erg.sort(key=lambda x: x[1])
 
         res = defaultdict(list)
@@ -399,21 +394,7 @@ class MachineController_FIFO(MachineController):
         :return:
         """
 
-        erg_queue = machine_onto.has_for_input_queue
-        erg = []
-        for queue in erg_queue:
-            position_list = queue.has_for_position
-            for position in position_list:
-                for product in position.has_for_product:
-                    if (
-                        product.blocked_for_machine == 0
-                        and product.has_for_product_state[0].state_name != "sink"
-                    ):
-                        event_list = position.is_position_event_of
-                        for event in event_list:
-                            if event.type == Queue_Enum.Change.value:
-                                erg.append([product, event.time])
-
+        erg = self._get_products(machine_onto)
         erg.sort(key=lambda x: x[1])
 
         res = defaultdict(list)

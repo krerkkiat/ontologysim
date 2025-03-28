@@ -17,6 +17,8 @@ class ServiceController:
         """
         pass
 
+# NOTE(KC): The evaluateService in both ServiceControllerTransporter and
+# ServiceControllerMachine are quite similarly close, but not quite the same.
 
 class ServiceControllerTransporter(ServiceController):
     """
