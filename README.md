@@ -20,7 +20,7 @@ Installation
 pip
 -----------
 
-A stable version of Production simulation is periodically updated on pyPi and installed as follows:
+An unstable version of Production simulation is periodically updated on pyPi and installed as follows:
 
 ````bash
 pip install 'ontologysim@git+https://github.com/krerkkiat/ontologysim.git'
