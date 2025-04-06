@@ -20,10 +20,9 @@ Ontologysim follows a set of high-level design choices which differentiate it fr
 
 .. toctree::
   :maxdepth: 1
-  :caption: Config & Pnml
+  :caption: Config
 
   configs/ini_file
-  configs/pnml
 
 
 

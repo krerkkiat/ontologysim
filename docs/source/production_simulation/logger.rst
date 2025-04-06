@@ -24,12 +24,3 @@ Plot logger
    :maxdepth: 0
 
    logger/ProductionSimulation.logger.plot
-
-Depreciated logger
---------------------
-.. toctree::
-   :maxdepth: 0
-
-   logger/ProductionSimulation.logger.depreciated_logger
-
-
