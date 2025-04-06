@@ -43,7 +43,95 @@ uv sync
 First Start
 ===============
 
-Go to the ``/example/Main.py`` and run this python file.
+1. Make a folder to keep the simulation configuration files.
+
+````bash
+mkdir simulation-working-dir
+````
+
+2. Create these files in said folder.
+
+````ini
+# controller_config.ini
+[Controller]
+machine = {'type': 'ontologysim.ProductionSimulation.controller:MachineController_FIFO', 'add': {}}
+transporter = {'type': 'ontologysim.ProductionSimulation.controller:TransporterController_Hybrid', 'add': {'ontologysim.ProductionSimulation.controller:TransporterController_FIFO': 0.43539036099361705, 'ontologysim.ProductionSimulation.controller:TransporterController_NJF': 0.6759958569333095, 'ontologysim.ProductionSimulation.controller:TransporterController_EDD': 0.5773536432743988}}
+orderrelease = {'type':'ontologysim.ProductionSimulation.controller:OrderReleaseControllerEqual','add':{},'fillLevel':0.5}
+service_machine = {'type':'ontologysim.ProductionSimulation.controller:ServiceControllerMachine','add':{}}
+service_transporter = {'type':'ontologysim.ProductionSimulation.controller:ServiceControllerTransporter','add':{}}
+````
+
+````ini
+# owl_config.ini
+[OWL]
+owl_save_path=[{'type':"production_without_task_defect",'save':False,'path':"owl/production_without_task_defect.owl"},
+                {'type':"production",'save':False,'path':"owl/production.owl"}
+                ]
+````
+
+````ini
+# logger_config_lvl3.ini
+[Type]
+type = 'lvl3'
+
+[KPIs]
+time_interval=100
+log_summary=True
+log_time=True
+log_events=False
+path="log/"
+
+
+[ConfigIni]
+addIni=False
+path="config/"
+
+[Plot]
+plot=False
+number_of_points_x=15
+#max 3 values
+data=[{'object_name':'all','kpi':'AE','type':'machine'},{'object_name':'all','kpi':'AUITp','type':'transporter'},{'object_name':'all','kpi':'AOET','type':'product'}]
+
+[Save]
+csv = False
+database = False
+````
+
+If you want to also specify the plot configuration, you can create this file
+
+````ini
+# plot_log.ini
+[Log]
+save_dir="plot/"
+#supported: formats eps, pdf, pgf, png, ps, raw, rgba, svg, svgz
+file_type=['png','svg','pdf']
+
+[Style]
+colormap="Accent"
+marker=['','o','r']
+
+[LinePlot]
+#without object name all
+y_data=[{'kpi':'AE','type':'machine','object_name':['m0','all']},{'kpi':'FillLevel','type':'queue'}]
+
+[MultipleLinePlot]
+#max 3 kpis
+settings=[{'title':"compare some parameters",'data':[{'kpi':'AE','type':'machine','object_name':['m0','all']},{'kpi':'FE','type':'transporter'}]}]
+
+
+[ScatterPlot]
+x_data=[{'kpi':'AE','type':'machine','object_name':'m1'},{'kpi':'A','type':'machine','object_name':'m1'}]
+y_data=[{'kpi':'AE','type':'machine','object_name':'m0'},{'kpi':'A','type':'machine','object_name':'m0'}]
+````
+
+3. Run the simulation
+
+````bash
+cd simulation-working-dir
+python -m ontologysim run ./production_config_lvl3.ini ./controller_config.ini owl_config.ini logger_config_lvl3.ini
+````
+
+You can add ``--plot-config ./plot_log.ini`` if you want to also produce the plot.
 
 Flask
 ==============
