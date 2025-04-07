@@ -2,7 +2,7 @@ from collections import defaultdict
 
 from ontologysim.ProductionSimulation.sim.Enum import Label, Queue_Enum
 
-from . import TransporterController
+from .base import TransporterController
 
 
 class TransporterController_LIFO(TransporterController):

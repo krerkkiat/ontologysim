@@ -27,7 +27,7 @@ Example
 
 this file is available in ``example/config/owl_config.ini``
 
-.. code-block:: JSON
+.. code-block:: INI
 
     [OWL]
     owl_save_path=[{'type':"production_without_task_defect",'save':True,'path':"/example/owl/production_without_task_defect.owl"},

@@ -34,7 +34,7 @@ Example
 
 this file is available in ``example/config/controller_config.ini``
 
-.. code-block:: JSON
+.. code-block:: INI
 
     [Controller]
     machine = {'type': 'ontologysim.ProductionSimulation.controller:MachineController_FIFO', 'add': {}}

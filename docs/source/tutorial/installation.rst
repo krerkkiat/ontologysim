@@ -4,23 +4,23 @@ Installation
 pip
 -----------
 
-A stable version of Production simulation is periodically updated on pyPi and installed as follows:
+An unstable version can be installed as follows:
 
 .. code-block:: console
 
-   pip install ontologysim
+   pip install 'ontologysim@git+https://github.com/krerkkiat/ontologysim.git'
 
 
 github
 -----------
 
-A stable version of Production simulation is periodically updated on the master and installed as follows:
+An unstable version can be installed as follows:
 
 .. code-block:: console
 
-   git clone https://github.com/larsKiefer/ontologysim
+   git clone https://github.com/krerkkiat/ontologysim.git
    cd ontologysim
-   pip3 install -r requirements.txt
+   uv sync
 
 
 
@@ -34,6 +34,7 @@ Additional installation for ubuntu
 installation of odbc, java and some other packages
 
 .. code-block:: console
+
     sudo apt install build-essential zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libffi-dev wget
     sudo apt-get install unixodbc-dev
     sudo apt install default-jre
@@ -45,10 +46,9 @@ Problem handling
 Owlready2.0
 ~~~~~~~~~~~~
 
-**Java Path**``
+**Java Path**
 
-* to use owlready correctly, your java path needs to be set in the ``owl_config.ini`` 
-    * [owl introduction](../configs/owl/owl_config)
+Please add the ``bin`` folder of the JRE (or JDK) to the ``PATH`` environment variable.
 
 **Java Memory**
 

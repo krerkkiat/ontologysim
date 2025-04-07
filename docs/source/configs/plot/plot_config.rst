@@ -23,7 +23,7 @@ defines the log-folder and the location, where the plot's should be saved
 
 **Example**
 
-.. code-block:: JSON
+.. code-block:: INI
 
     [Log]
     save_dir="plot/"
@@ -54,7 +54,7 @@ For marker style view: `matplotlib.markers <https://matplotlib.org/api/markers_a
 
 **Example**
 
-.. code-block:: JSON
+.. code-block:: INI
 
     [Style]
     colormap="Accent"
@@ -82,7 +82,7 @@ plot's one kpi as line plot
 
 **Example**
 
-.. code-block:: JSON
+.. code-block:: INI
 
     [LinePlot]
     #without object name all data are shown
@@ -112,7 +112,7 @@ plot's multiple kpi as line plot, each kpi has it's own subchart
 
 **Example**
 
-.. code-block:: JSON
+.. code-block:: INI
 
     [MultipleLinePlot]
     #max 3 kpis
@@ -145,7 +145,7 @@ compares two kpi as a scatter plot with histogram at both axes
 
 **Example**
 
-.. code-block:: JSON
+.. code-block:: INI
 
     [ScatterPlot]
     x_data=[{'kpi':'AE','type':'machine','object_name':'m1'},{'kpi':'A','type':'machine','object_name':'m1'}]
@@ -162,7 +162,7 @@ Complete file
 
 this file is available in ``example/config/plot_log.ini``
 
-.. code-block:: JSON
+.. code-block:: INI
 
     [Log]
     save_dir="plot/"

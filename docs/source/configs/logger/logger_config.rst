@@ -7,7 +7,7 @@ The level is saved in the section Type.
 
 **type**: defines the lvl: *'lvl1'*, *'lvl2'* or *'lvl3'*
 
-.. code-block::
+.. code-block:: INI
 
     [Type]
     type = 'lvl2'
@@ -36,7 +36,7 @@ the storage folder depends on the path defined for KPIs
 
 **Example**
 
-.. code-block:: JSON
+.. code-block:: INI
 
     [KPIs]
     time_interval=100
@@ -66,7 +66,7 @@ the storage folder depends on the path defined for KPIs
 
 **Example**
 
-.. code-block:: JSON
+.. code-block:: INI
 
     [ConfigIni]
     addIni=True
@@ -100,7 +100,7 @@ the following types are defined: machine, transporter, queue, product, transport
 
 **Example**
 
-.. code-block:: JSON
+.. code-block:: INI
 
     [Plot]
     plot=False
@@ -136,8 +136,7 @@ the following types are defined: machine, transporter, queue, product, transport
 
 **Example**
 
-.. code-block:: JSON
-
+.. code-block:: INI
 
     [Save]
     csv = True
@@ -174,7 +173,7 @@ the storage folder depends on the path defined for KPIs
 
 **Example**
 
-.. code-block:: JSON
+.. code-block:: INI
 
     [KPIs]
     time_interval=100
@@ -204,7 +203,7 @@ the storage folder depends on the path defined for KPIs
 
 **Example**
 
-.. code-block:: JSON
+.. code-block:: INI
 
     [ConfigIni]
     addIni=True
@@ -238,7 +237,7 @@ the following types are defined: machine, transporter, queue, product, transport
 
 **Example**
 
-.. code-block:: JSON
+.. code-block:: INI
 
     [Plot]
     plot=False
@@ -273,7 +272,7 @@ the following types are defined: machine, transporter, queue, product, transport
 
 **Example**
 
-.. code-block:: JSON
+.. code-block:: INI
 
 
     [Save]
@@ -295,7 +294,7 @@ LVL3: Example
 +++++++++++++++++++++
 this file is available in ``example/config/logger_config_3.ini``
 
-.. code-block:: JSON
+.. code-block:: INI
 
     [Type]
     type = 'lvl3'
@@ -328,7 +327,7 @@ LVL2: Example
 +++++++++++++++++++++
 this file is available in ``example/config/logger_config_2.ini``
 
-.. code-block:: JSON
+.. code-block:: INI
 
     [Type]
     type = 'lvl2'

@@ -1,4 +1,4 @@
-from . import TransporterController
+from .base import TransporterController
 
 
 class TransporterController_EDD(TransporterController):

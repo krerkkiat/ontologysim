@@ -12,12 +12,12 @@ from .service import (
     ServiceControllerTransporter,
 )
 from .transporter import TransporterController
-from .transporter.TransporterController_EDD import TransporterController_EDD
-from .transporter.TransporterController_FIFO import TransporterController_FIFO
-from .transporter.TransporterController_Hybrid import TransporterController_Hybrid
-from .transporter.TransporterController_LIFO import TransporterController_LIFO
-from .transporter.TransporterController_NJF import TransporterController_NJF
-from .transporter.TransporterController_SQF import TransporterController_SQF
+from .transporter.edd import TransporterController_EDD
+from .transporter.fifo import TransporterController_FIFO
+from .transporter.hybrid import TransporterController_Hybrid
+from .transporter.lifo import TransporterController_LIFO
+from .transporter.njf import TransporterController_NJF
+from .transporter.sqf import TransporterController_SQF
 
 __all__ = [
     OrderReleaseController,
@@ -30,7 +30,7 @@ __all__ = [
     MachineController_FIFO,
     MachineController_Hybrid,
     MachineController_LIFO,
-    TransporterController, 
+    TransporterController,
     TransporterController_EDD,
     TransporterController_FIFO,
     TransporterController_Hybrid,

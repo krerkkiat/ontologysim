@@ -1,10 +1,3 @@
 
-
-Service Controller
-----------------------------------------------------------------------------
-
-.. automodule:: ontologysim.ProductionSimulation.controller.service.ServiceController
+.. automodule:: ontologysim.ProductionSimulation.controller.service
    :members:
-   :undoc-members:
-   :show-inheritance:
-

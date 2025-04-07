@@ -8,20 +8,17 @@ A simplified not complete schema. For a complete overview please use a graph too
 
 ![Graph](OntologysimGraph.png "Graph")
 
-Online view
+Details
 -------------
-For better overview of the production simulation, you can use a dynamic graph view tool
 
-1. open Link: [WebVOWL](http://www.visualdataweb.de/webvowl)
-2. under Ontology: upload file
-    * example owl files a provided under `/example/owl/`
+For a better overview of the production simulation ontology, you can use tool like [Protégé](https://protege.stanford.edu/) or [WebVOWL](https://service.tib.eu/webvowl/)
 
+1. Run ``python -m ontologysim export-ontology ./ontologysim.rdf``.
+2. Open ``./ontologysim.rdf`` in the tool of your choice.
 
 
 Complete list
 ---------------
-
-
 
 ```python
 
