@@ -1,7 +1,8 @@
+from io import BytesIO
+
 from flask import Flask, Response, json, request
 
 from ontologysim.Flask.Actions.APIAction import APIAction
-from ontologysim.ProductionSimulation.utilities import PathTest
 
 
 class OwlDownloadAction(APIAction):
@@ -18,14 +19,11 @@ class OwlDownloadAction(APIAction):
         self.action()
 
         if self.flaskApp.startAlready:
-            defaultPath = "/ontologysim/Flask/Assets/DefaultSaveFolder/saved.owl"
-            print(PathTest.check_dir_path(defaultPath))
-            self.flaskApp.simCore.save_ontology(defaultPath)
-            f = open(PathTest.check_file_path(defaultPath), "r")
-            fString = f.read()
-
-            self.response = self.response200OK(json.dumps({"file": fString}))
-
+            buffer = BytesIO()
+            self.flaskApp.simCore.save_ontology(buffer)
+            buffer.seek(0)
+            content = buffer.read()
+            self.response = self.response200OK(json.dumps({"file": content.decode("utf-8")}))
         else:
             self.response = self.response400BadRequest("simulation not started")
 

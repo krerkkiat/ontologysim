@@ -531,7 +531,7 @@ class Initializer:
         :param owl_path: .owl file
         """
         path = sanitize_path(os.getcwd(), owl_path)
-        self.s.onto = get_ontology(path).load()
+        self.s.onto = get_ontology(str(path)).load()
         self.s.central.init_class()
         self.s.central.simInstance = self.s.central.sim_class(Label.SimCore.value + "0")
         self.s.central.init_all_ids()

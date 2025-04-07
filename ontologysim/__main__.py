@@ -92,7 +92,7 @@ def main() -> None:
         default_config_filenames = ["production_config_lvl3.ini", "owl_config.ini", "controller_config.ini", "logger_config_lvl3.ini"]
         for filename in default_config_filenames:
             if (Path(".") / filename).exists():
-                user_response = input(f"File '{filename}' already exist, it will be OVERWRITTEN. Do you want to continue? [y/N]")
+                user_response = input(f"File '{filename}' already exist, it will be OVERWRITTEN. Do you want to continue? [y/N]: ")
                 if user_response.strip().lower() == "y":
                     continue
                 else:

@@ -41,6 +41,7 @@ function DownloadSimulation(props) {
         var blob = new Blob([res.data.file], {
           type: "text/plain;charset=utf-8",
         });
+        // FIXME(KC): Given the file a unique name.
         FileSaver.saveAs(blob, "simulation.owl");
         setState({ ...state, isLoading: false });
       })

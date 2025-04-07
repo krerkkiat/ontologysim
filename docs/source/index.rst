@@ -1,7 +1,9 @@
 Ontologysim: a Owlready2 library for applied production simulation
 ====================================================================
 
-Ontologysim is an open-source production simulation framework, with an emphasis on modularized flexible library design and straightforward usability for applications in research and practice. Ontologysim is built on top of `Owlready2 framework <https://pypi.org/project/Owlready2/>`_ and requires Python >= 3.12.
+Ontologysim is an open-source production simulation framework, with an emphasis on modularized flexible library
+design and straightforward usability for applications in research and practice. Ontologysim is built on top of
+`Owlready2 framework <https://pypi.org/project/Owlready2/>`_ and requires Python >= 3.9.
 
 Ontologysim follows a set of high-level design choices which differentiate it from other similar libraries:
 
