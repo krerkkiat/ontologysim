@@ -1,7 +1,7 @@
 Ontologysim: a Owlready2 library for applied production simulation
 =====================================================================
 
-Ontologysim is an open-source deep production simulation framework, with an emphasis on modularized flexible library design and straightforward usability for applications in research and practice. Ontologysim is built on top of Owlready2 framework and requires Python >3.7.
+Ontologysim is an open-source deep production simulation framework, with an emphasis on modularized flexible library design and straightforward usability for applications in research and practice. Ontologysim is built on top of Owlready2 framework and requires Python >= 3.9.
 
 Ontologysim follows a set of high-level design choices which differentiate it from other similar libraries:
 
@@ -20,7 +20,7 @@ Installation
 pip
 -----------
 
-An unstable version of Production simulation is periodically updated on pyPi and installed as follows:
+An unstable version can be installed as follows:
 
 ````bash
 pip install 'ontologysim@git+https://github.com/krerkkiat/ontologysim.git'
@@ -29,8 +29,7 @@ pip install 'ontologysim@git+https://github.com/krerkkiat/ontologysim.git'
 github
 -----------
 
-An unstable version of Production simulation is periodically updated on the main branch and
-can be installed as follows:
+An unstable version can be installed as follows:
 
 ````bash
 git clone https://github.com/krerkkiat/ontologysim.git
@@ -38,7 +37,7 @@ cd ontologysim
 uv sync
 ````
 
-
+This will also give access to the ``example/`` folder.
 
 First Start
 ===============
@@ -128,7 +127,7 @@ y_data=[{'kpi':'AE','type':'machine','object_name':'m0'},{'kpi':'A','type':'mach
 
 ````bash
 cd simulation-working-dir
-python -m ontologysim run ./production_config_lvl3.ini ./controller_config.ini owl_config.ini logger_config_lvl3.ini
+python -m ontologysim run ./production_config_lvl3.ini ./controller_config.ini ./owl_config.ini ./logger_config_lvl3.ini
 ````
 
 You can add ``--plot-config ./plot_log.ini`` if you want to also produce the plot.

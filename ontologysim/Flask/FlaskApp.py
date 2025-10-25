@@ -38,7 +38,7 @@ class FlaskAppWrapper:
     wrapper object with handels database connection
     """
 
-    def __init__(self, name, init, fileDict):
+    def __init__(self, name, init, fileDict: dict | None = None):
         """
 
         saves all routes, connects to database
@@ -47,7 +47,15 @@ class FlaskAppWrapper:
         :param init: Initializer
         :param fileDict: default dict of files
         """
-        self.fileDict = fileDict
+        self.fileDict = {
+            "production": Path(__file__).parent / "Assets" / "DefaultFiles" / "production_config_lvl3.ini",
+            "owl": Path(__file__).parent / "Assets" / "DefaultFiles" / "owl_config.ini",
+            "controller": Path(__file__).parent / "Assets" / "DefaultFiles" / "controller_config.ini",
+            "logger": Path(__file__).parent / "Assets" / "DefaultFiles" / "logger_config_lvl3.ini"
+        }
+        if fileDict is not None:
+            self.fileDict = fileDict
+
         self.app = Flask(name, static_url_path=None)
 
         try:
