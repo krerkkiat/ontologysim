@@ -5,6 +5,7 @@ import inspect
 import sys
 from os import listdir
 from os.path import isfile
+from pathlib import Path
 
 current_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 parent_dir = os.path.dirname(current_dir)
@@ -37,37 +38,28 @@ class MainTest(unittest.TestCase):
         test all files in /tests/configFiles/defaultTest/
         :return:
         """
-
-        defaultTestPath = "/tests/configFiles/defaultTest/"
-
-        onlyfiles = [
-            f
-            for f in listdir(parent_parent_dir + defaultTestPath)
-            if isfile(os.path.join(parent_parent_dir + defaultTestPath, f))
-        ]
-
-        self.assertTrue(len(onlyfiles) == 4)
-
-        listConfig = {}
-        listConfig["production"] = defaultTestPath + "production_config_lvl3.ini"
-        listConfig["config"] = defaultTestPath + "owl_config.ini"
-        listConfig["controller"] = defaultTestPath + "controller_config.ini"
-        listConfig["logger"] = defaultTestPath + "logger_config_lvl3.ini"
-        output = ""
-
-        output = subprocess.check_output(
-            "python "
-            + parent_parent_dir
-            + "/tests/processes/MainProcess.py "
-            + ' "'
-            + str(listConfig)
-            + '"',
-            shell=True,
-            stderr=subprocess.STDOUT,
-            timeout=self.timeoutMiddle,
+        default_test_configs_root = (
+            Path(__file__).parent.parent / "configFiles" / "defaultTest"
         )
 
-        self.assertTrue(output)
+        onlyfiles = [f for f in default_test_configs_root.iterdir() if f.is_file()]
+        self.assertTrue(len(onlyfiles) == 4)
+
+        process_result = subprocess.run(
+            [
+                sys.executable,
+                "-m",
+                "ontologysim",
+                "run",
+                str(default_test_configs_root / "production_config_lvl3.ini"),
+                str(default_test_configs_root / "controller_config.ini"),
+                str(default_test_configs_root / "owl_config.ini"),
+                str(default_test_configs_root / "logger_config_lvl3.ini"),
+            ],
+            capture_output=True,
+            timeout=self.timeoutMiddle
+        )
+        self.assertEqual(process_result.returncode, 0)
 
     # @unittest.skip
     def test_run_main_file(self):
