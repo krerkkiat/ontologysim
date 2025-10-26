@@ -36,7 +36,7 @@ class ProductionAction(APIAction):
         if "data" in requestDict.keys():
             productionData = requestDict["data"]
 
-            initializer = Initializer(current_dir)
+            initializer = Initializer()
             initializer.initSimCore()
             try:
                 initializer.s.destroyOnto()

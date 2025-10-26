@@ -7,6 +7,8 @@ from os import listdir
 from os.path import isfile
 from pathlib import Path
 
+from ontologysim import get_default_config_file_paths
+
 current_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 parent_dir = os.path.dirname(current_dir)
 parent_parent_dir = os.path.dirname(parent_dir)
@@ -60,21 +62,6 @@ class MainTest(unittest.TestCase):
             timeout=self.timeoutMiddle
         )
         self.assertEqual(process_result.returncode, 0)
-
-    # @unittest.skip
-    def test_run_main_file(self):
-        """
-        test Main.py file
-        :return:
-        """
-        output = subprocess.check_output(
-            "python " + parent_parent_dir + "/example/Main.py",
-            shell=True,
-            stderr=subprocess.STDOUT,
-            timeout=self.timeoutLong,
-        )
-
-        self.assertTrue(output)
 
     # @unittest.skip
     def test_main_config_files(self):
@@ -153,6 +140,9 @@ class MainTest(unittest.TestCase):
         test all files in "/example/config/for_docu/"
         :return:
         """
+        config_files_root = (
+            Path(__file__).parent.parent.parent / "example" / "config" / "for_docu"
+        )
 
         defaultTestPath = "/example/config/for_docu/"
         productionConifgFiles = [
@@ -169,11 +159,7 @@ class MainTest(unittest.TestCase):
         loggerConfigFiles = ["logger_config_lvl3.ini", "logger_config_lvl2.ini"]
         listConfig = {}
 
-        onlyfiles = [
-            f
-            for f in listdir(parent_parent_dir + defaultTestPath)
-            if isfile(os.path.join(parent_parent_dir + defaultTestPath, f))
-        ]
+        onlyfiles = [f for f in config_files_root.iterdir() if f.is_file()]
 
         for file in onlyfiles:
             init = Init(parent_parent_dir + defaultTestPath + file)
@@ -195,6 +181,7 @@ class MainTest(unittest.TestCase):
                 else:
                     raise Exception(str(type) + "not defined")
 
+        # NOTE(KC): This looks like an attempt at test parameterization ...
         for i, productionConfigFile in enumerate(productionConifgFiles):
             listConfig = {}
             listConfig["production"] = defaultTestPath + productionConfigFile
@@ -228,35 +215,23 @@ class MainTest(unittest.TestCase):
         test file in "/ontologysim/Flask/Assets/DefaultFiles/"
         :return:
         """
-        defaultTestPath = "/ontologysim/Flask/Assets/DefaultFiles/"
-
-        onlyfiles = [
-            f
-            for f in listdir(parent_parent_dir + defaultTestPath)
-            if isfile(os.path.join(parent_parent_dir + defaultTestPath, f))
-        ]
-
-        self.assertTrue(len(onlyfiles) == 4)
-
-        listConfig = {}
-        listConfig["production"] = defaultTestPath + "production_config_lvl3.ini"
-        listConfig["config"] = defaultTestPath + "owl_config.ini"
-        listConfig["controller"] = defaultTestPath + "controller_config.ini"
-        listConfig["logger"] = defaultTestPath + "logger_config_lvl3.ini"
-
-        output = subprocess.check_output(
-            "python "
-            + parent_parent_dir
-            + "/tests/processes/MainProcess.py "
-            + ' "'
-            + str(listConfig)
-            + '"',
-            shell=True,
-            stderr=subprocess.STDOUT,
-            timeout=self.timeoutMiddle,
+        # NOTE(KC): We could also parameterize this along with test_default_test.
+        flask_defailt_configs = get_default_config_file_paths()
+        process_result = subprocess.run(
+            [
+                sys.executable,
+                "-m",
+                "ontologysim",
+                "run",
+                str(flask_defailt_configs["production"]),
+                str(flask_defailt_configs["controller"]),
+                str(flask_defailt_configs["owl"]),
+                str(flask_defailt_configs["logger"]),
+            ],
+            capture_output=True,
+            timeout=self.timeoutMiddle
         )
-        print(output)
-        self.assertTrue(output)
+        self.assertEqual(process_result.returncode, 0)
 
 
 if __name__ == "__main__":
