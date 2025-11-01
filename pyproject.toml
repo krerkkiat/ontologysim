@@ -10,7 +10,7 @@ authors = [
 ]
 description = ""
 readme = "README.md"
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 keywords = ["ontology", "manufacturing", "simulation"]
 license-files = ["LICEN[CS]E*"]
 dynamic = ["version"]
@@ -18,7 +18,6 @@ classifiers = [
     "Natural Language :: English",
     "Topic :: Scientific/Engineering",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12"
@@ -26,6 +25,7 @@ classifiers = [
 # We are not using
 # - redis
 # - python-decouple; they may be heading there, but the current codebase does not use it.
+# - pyodbc == 5.0.1; was used by ontologysim/ProductionSimulation/logger/depreciated_logger/DataBase.py
 #
 # Not sure as to why both jwt and pyjwt are needed.
 # Not sure why Cython is needed.
@@ -36,7 +36,6 @@ dependencies = [
     "pandas ~= 2.1.2",
     "requests == 2.31.0",
     "Cython == 3.0.5",
-    "pyodbc == 5.0.1",
     "owlready2 == 0.44",
     "matplotlib ~= 3.8.1",
     "flask",
