@@ -525,6 +525,13 @@ class TestFlaskApi(unittest.TestCase):
         test "/component/id" , id=m0 and id=""
         :return:
         """
+        pass
+
+    def test_api_docs(self):
+        url = BASE_URL + "/api/docs/"
+        response = self.testApp.get(url, content_type="text/html")
+        # FIXME(KC): Use full browser to test the swagger.json.
+        self.assertEqual(response.status_code, 200)
 
 
 if __name__ == "__main__":

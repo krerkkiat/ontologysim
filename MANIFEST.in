@@ -2,6 +2,7 @@ include ontologysim/VERSION
 include *.cfg
 include *.ini
 include *.txt
+include ontologysim/ontologysim/Flask/static/swagger.json
 include ontologysim/ProductionSimulation/database/defaultUser.json
 recursive-include docs *
 recursive-exclude docs *.pyc
