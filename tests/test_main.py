@@ -41,7 +41,7 @@ class MainTest(unittest.TestCase):
         :return:
         """
         default_test_configs_root = (
-            Path(__file__).parent.parent / "configFiles" / "defaultTest"
+            Path(__file__).parent / "configFiles" / "defaultTest"
         )
 
         onlyfiles = [f for f in default_test_configs_root.iterdir() if f.is_file()]
@@ -69,6 +69,7 @@ class MainTest(unittest.TestCase):
         test all predefined files in "/example/config/"
         :return:
         """
+        # FIXME(KC): Change it to a relative path.
         defaultTestPath = "/example/config/"
         productionConifgFiles = [
             "production_config_lvl3.ini",
@@ -141,7 +142,7 @@ class MainTest(unittest.TestCase):
         :return:
         """
         config_files_root = (
-            Path(__file__).parent.parent.parent / "example" / "config" / "for_docu"
+            Path(__file__).parent.parent / "example" / "config" / "for_docu"
         )
 
         defaultTestPath = "/example/config/for_docu/"
