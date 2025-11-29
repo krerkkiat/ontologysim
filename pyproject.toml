@@ -51,10 +51,6 @@ dependencies = [
     "sqlalchemy_utils",
 ]
 
-[project.optional-dependencies]
-dev = ["mypy", "ruff", "tox", "pytest", "pytest-cov"]
-doc = ["sphinx_rtd_theme", "sphinx-markdown-tables"]
-
 [project.urls]
 Homepage = "https://github.com/krerkkiat/ontologysim"
 Repository = "https://github.com/krerkkiat/ontologysim.git"
@@ -99,3 +95,20 @@ files = ["ontologysim"]
 show_error_codes = true
 pretty = true
 strict = true
+
+[dependency-groups]
+dev = [
+    "mypy>=1.15.0",
+    "ruff>=0.11.2",
+]
+docs = [
+    "sphinx-markdown-tables>=0.0.17",
+    "sphinx-rtd-theme>=3.0.2",
+]
+test = [
+    "pytest>=8.3.5",
+    "pytest-cov>=6.0.0",
+    "pytest-playwright>=0.7.1",
+    "tox>=4.32.0",
+    "tox-uv>=1.29.0",
+]
